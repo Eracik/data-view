@@ -1,0 +1,30 @@
+body,
+div,
+p,
+input,
+textarea,
+a,
+span,
+select,
+ul,
+ol,
+ol,
+table,
+tr,
+th,
+td,
+i,
+video,
+audio {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}

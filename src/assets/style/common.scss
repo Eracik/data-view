@@ -1,0 +1,56 @@
+body,
+div,
+p,
+table,
+tr,
+th,
+td,
+ul,
+li,
+input,
+textarea,
+button,
+video,
+audio,
+a,
+span {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+.red {
+  background-color: orangered;
+}
+.blue {
+  background-color: cornflowerblue;
+}
+.green {
+  background-color: #42b983;
+}
+.pointer {
+  cursor: pointer;
+}
+.flex-1 {
+  flex: 1;
+}
+
+.w500 {
+  width: 500px;
+}
+
+.clear-fix::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  clear: both;
+}
