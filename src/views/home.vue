@@ -1,54 +1,55 @@
 <template>
-  <div class="home">
-    <!--    <div class="user-info">-->
-    <!--      {{ userInfo }}-->
-    <!--    </div>-->
-    <!--    <div class="form">-->
-    <!--      <div class="input-group">-->
-    <!--        <label name="userName">用户名</label>-->
-    <!--        <input v-model="userInfo.userName" id="userName" />-->
-    <!--      </div>-->
-    <!--      <button @click="saveUserInfo">修改</button>-->
-    <!--    </div>-->
-    <Map></Map>
-  </div>
+    <div class="home">
+        <!--        <div class="user-info">-->
+        <!--            {{ userInfo }}-->
+        <!--        </div>-->
+        <!--        <div class="form">-->
+        <!--            <div class="input-group">-->
+        <!--                <label name="userName">用户名</label>-->
+        <!--                <input v-model="userInfo.userName" id="userName" />-->
+        <!--            </div>-->
+        <!--            <button @click="saveUserInfo">修改</button>-->
+        <!--        </div>-->
+        <PointMap></PointMap>
+    </div>
 </template>
 
 <script>
-  // @ is an alias to /src
-  import { useStore } from 'vuex'
-  import { ref, onMounted } from 'vue'
-  import Map from '../components/map/Map'
-  export default {
-    name: 'Home',
-    components: { Map },
-    setup() {
-      const store = useStore()
+    import { useStore } from 'vuex'
+    import { ref, onMounted, defineAsyncComponent } from 'vue'
+    const PointMap = defineAsyncComponent(() =>
+        import('../components/charts/point-map/point-map.vue')
+    )
+    export default {
+        name: 'Home',
+        components: { PointMap },
+        setup() {
+            const store = useStore()
 
-      const userInfo = ref({})
+            const userInfo = ref({})
 
-      const saveUserInfo = () => {
-        store.dispatch('user/changeUserInfo', {
-          key: 'userName',
-          val: userInfo.value.userName
-        })
-      }
+            const saveUserInfo = () => {
+                store.dispatch('user/changeUserInfo', {
+                    key: 'userName',
+                    val: userInfo.value.userName
+                })
+            }
 
-      onMounted(() => {
-        userInfo.value = store.state.user.userInfo
-      })
+            onMounted(() => {
+                userInfo.value = store.state.user.userInfo
+            })
 
-      return {
-        userInfo,
-        saveUserInfo
-      }
+            return {
+                userInfo,
+                saveUserInfo
+            }
+        }
     }
-  }
 </script>
 
 <style scoped lang="scss">
-  .home {
-    width: 100vw;
-    height: 100vh;
-  }
+    .home {
+        width: 100vw;
+        height: 100vh;
+    }
 </style>
