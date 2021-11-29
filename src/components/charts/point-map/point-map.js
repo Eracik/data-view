@@ -115,22 +115,8 @@ echarts.use([
 ])
 
 let option
-const tipIcon = require('./assets/data-1619318279159-o6ZbTGoO0.png')
 let chartDom = null
 let myChart = null
-let domImg = document.createElement('img')
-domImg.style.height = domImg.height = domImg.width = domImg.style.width = '2px'
-domImg.src =
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAIAAAAmKNuZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQ4IDc5LjE2NDAzNiwgMjAxOS8wOC8xMy0wMTowNjo1NyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIxLjAgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkE4MTE0OTgyQTdDQzExRUI4Q0RBRkMwQkFGMTY2NDhEIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkE4MTE0OTgzQTdDQzExRUI4Q0RBRkMwQkFGMTY2NDhEIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6QTgxMTQ5ODBBN0NDMTFFQjhDREFGQzBCQUYxNjY0OEQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6QTgxMTQ5ODFBN0NDMTFFQjhDREFGQzBCQUYxNjY0OEQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4v4trwAAAAVklEQVR42mL0D225cu0hAzWAjpY8C9CsL19/wIV4uDnI5gKNYmKgKhjcxrFAggBZiBIuyDhqRQWQOxoVo1ExGhWjUTEaFYMiKoB1LVq1TXZUAI0CCDAAcAlaxCt7dtQAAAAASUVORK5CYII='
-
-let domImgHover = document.createElement('img')
-domImgHover.style.height =
-    domImgHover.height =
-    domImgHover.width =
-    domImgHover.style.width =
-        '2px'
-domImgHover.src =
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAIAAAAmKNuZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQ4IDc5LjE2NDAzNiwgMjAxOS8wOC8xMy0wMTowNjo1NyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIxLjAgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkFDQ0Q2RjYyQTdDRDExRUI4ODUxRDIxRjkzMEExNzg2IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkFDQ0Q2RjYzQTdDRDExRUI4ODUxRDIxRjkzMEExNzg2Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6QUNDRDZGNjBBN0NEMTFFQjg4NTFEMjFGOTMwQTE3ODYiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6QUNDRDZGNjFBN0NEMTFFQjg4NTFEMjFGOTMwQTE3ODYiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6FboimAAAASklEQVR42mIUnL9XtHsDAzXA69IARjWtXJYX7+FCfyQEKeEyMVAVDG7jWCB+RhaihAsybjQqRqNiNCpGo2I0KoZZVDBSt9oGCDAAhYNrvRu3DWEAAAAASUVORK5CYII='
 const createMap = (changeArea) => {
     const _changeArea = changeArea
     chartDom = document.getElementById('main')
@@ -214,13 +200,14 @@ const getAreaName = () => {
     }
 }
 
-let mapInit = () => {
+const mapInit = () => {
     // console.log('currentJson ===> ', currentJson)
     // const geoJson = require(currentJson)
     echarts.registerMap('XUZHOU', currentJson)
     myChart.hideLoading()
     option = {
-        backgroundColor: '#100C2A',
+        backgroundColor: '#0a2e5d',
+        // '#100C2A',
         title: {
             top: 20,
             text: '江苏省 - ' + getAreaName(),
@@ -244,16 +231,14 @@ let mapInit = () => {
         },
         geo: {
             map: 'XUZHOU',
-            // aspectScale: 1.0,
-            // layoutCenter: ['50%', '50%'],
-            // layoutSize: '100%',
+            nameProperty: 'NAME',
             // label: {
             //     show: true,
             //     formatter: function (params) {
             //         return params.name
             //     },
             //     textBorderColor: 'rgba(76,129,210,0.85)',
-            //     offset: [0, 30],
+            //     offset: [0, 0],
             //     textStyle: {
             //         color: '#fff'
             //     }
@@ -269,7 +254,7 @@ let mapInit = () => {
                     }`
                 },
                 position: 'top',
-                backgroundColor: 'rgba(76,129,210,0.85)',
+                backgroundColor: 'rgba(76,129,210,.5)',
                 borderColor: 'rgba(76,129,210,1)',
                 textStyle: {
                     fontSize: 14,
@@ -280,6 +265,7 @@ let mapInit = () => {
             silent: true,
             roam: false,
             z: 0,
+            zoom: 1, // 当前视角的缩放比例
             itemStyle: {
                 normal: {
                     areaColor: 'rgba(82,117,220,0.6)',
@@ -303,6 +289,7 @@ let mapInit = () => {
         series: [
             {
                 type: 'map',
+                selectedMode: false, // 此属性可防止关闭点击选择地图区域时，被选中区域显示黄色的问题。
                 label: {
                     normal: {
                         show: false,
@@ -322,7 +309,7 @@ let mapInit = () => {
                         borderColor: '#2ab8ff',
                         borderWidth: 1,
                         areaColor: {
-                            image: domImg,
+                            image: require('./assets/area-bg.png'),
                             repeat: 'repeat'
                         },
                         shadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -332,7 +319,7 @@ let mapInit = () => {
                     },
                     emphasis: {
                         areaColor: {
-                            image: domImgHover,
+                            image: require('./assets/area-bg-hover.png'),
                             repeat: 'repeat'
                         },
                         borderColor: '#2ab8ff',
@@ -522,7 +509,7 @@ let mapInit = () => {
             // }
         ]
     }
-    myChart.setOption(option)
+    option && myChart.setOption(option)
     // })
 }
 

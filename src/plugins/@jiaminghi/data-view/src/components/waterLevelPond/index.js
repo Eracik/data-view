@@ -1,5 +1,5 @@
 import WaterLevelPond from './src/main.vue'
 
 export default function (Vue) {
-    Vue.component(WaterLevelPond.name, WaterLevelPond)
+  Vue.component(WaterLevelPond.name, WaterLevelPond)
 }

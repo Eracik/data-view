@@ -2,5 +2,5 @@ import './src/main.css'
 import BorderBox5 from './src/main.vue'
 
 export default function (Vue) {
-    Vue.component(BorderBox5.name, BorderBox5)
+  Vue.component(BorderBox5.name, BorderBox5)
 }

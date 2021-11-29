@@ -3,29 +3,31 @@
 var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefault')
 
 Object.defineProperty(exports, '__esModule', {
-    value: true
+  value: true
 })
 exports['default'] = void 0
 
 var _regenerator = _interopRequireDefault(require('@babel/runtime/regenerator'))
 
 var _asyncToGenerator2 = _interopRequireDefault(
-    require('@babel/runtime/helpers/asyncToGenerator')
+  require('@babel/runtime/helpers/asyncToGenerator')
 )
 
 var _typeof2 = _interopRequireDefault(require('@babel/runtime/helpers/typeof'))
 
 var _toConsumableArray2 = _interopRequireDefault(
-    require('@babel/runtime/helpers/toConsumableArray')
+  require('@babel/runtime/helpers/toConsumableArray')
 )
 
 var _classCallCheck2 = _interopRequireDefault(
-    require('@babel/runtime/helpers/classCallCheck')
+  require('@babel/runtime/helpers/classCallCheck')
 )
 
 var _style = _interopRequireDefault(require('./style.class'))
 
-var _transition = _interopRequireDefault(require('@jiaminghi/transition'))
+var _transition = _interopRequireDefault(
+  require('@/plugins/@jiaminghi/transition')
+)
 
 var _util = require('../plugin/util')
 
@@ -36,112 +38,112 @@ var _util = require('../plugin/util')
  * @return {Graph} Instance of Graph
  */
 var Graph = function Graph(graph, config) {
-    ;(0, _classCallCheck2['default'])(this, Graph)
-    config = (0, _util.deepClone)(config, true)
-    var defaultConfig = {
-        /**
-         * @description Weather to render graph
-         * @type {Boolean}
-         * @default visible = true
-         */
-        visible: true,
+  ;(0, _classCallCheck2['default'])(this, Graph)
+  config = (0, _util.deepClone)(config, true)
+  var defaultConfig = {
+    /**
+     * @description Weather to render graph
+     * @type {Boolean}
+     * @default visible = true
+     */
+    visible: true,
 
-        /**
-         * @description Whether to enable drag
-         * @type {Boolean}
-         * @default drag = false
-         */
-        drag: false,
+    /**
+     * @description Whether to enable drag
+     * @type {Boolean}
+     * @default drag = false
+     */
+    drag: false,
 
-        /**
-         * @description Whether to enable hover
-         * @type {Boolean}
-         * @default hover = false
-         */
-        hover: false,
+    /**
+     * @description Whether to enable hover
+     * @type {Boolean}
+     * @default hover = false
+     */
+    hover: false,
 
-        /**
-         * @description Graph rendering index
-         *  Give priority to index high graph in rendering
-         * @type {Number}
-         * @example index = 1
-         */
-        index: 1,
+    /**
+     * @description Graph rendering index
+     *  Give priority to index high graph in rendering
+     * @type {Number}
+     * @example index = 1
+     */
+    index: 1,
 
-        /**
-         * @description Animation delay time(ms)
-         * @type {Number}
-         * @default animationDelay = 0
-         */
-        animationDelay: 0,
+    /**
+     * @description Animation delay time(ms)
+     * @type {Number}
+     * @default animationDelay = 0
+     */
+    animationDelay: 0,
 
-        /**
-         * @description Number of animation frames
-         * @type {Number}
-         * @default animationFrame = 30
-         */
-        animationFrame: 30,
+    /**
+     * @description Number of animation frames
+     * @type {Number}
+     * @default animationFrame = 30
+     */
+    animationFrame: 30,
 
-        /**
-         * @description Animation dynamic curve (Supported by transition)
-         * @type {String}
-         * @default animationCurve = 'linear'
-         * @link https://github.com/jiaming743/Transition
-         */
-        animationCurve: 'linear',
+    /**
+     * @description Animation dynamic curve (Supported by transition)
+     * @type {String}
+     * @default animationCurve = 'linear'
+     * @link https://github.com/jiaming743/Transition
+     */
+    animationCurve: 'linear',
 
-        /**
-         * @description Weather to pause graph animation
-         * @type {Boolean}
-         * @default animationPause = false
-         */
-        animationPause: false,
+    /**
+     * @description Weather to pause graph animation
+     * @type {Boolean}
+     * @default animationPause = false
+     */
+    animationPause: false,
 
-        /**
-         * @description Rectangular hover detection zone
-         *  Use this method for hover detection first
-         * @type {Null|Array}
-         * @default hoverRect = null
-         * @example hoverRect = [0, 0, 100, 100] // [Rect start x, y, Rect width, height]
-         */
-        hoverRect: null,
+    /**
+     * @description Rectangular hover detection zone
+     *  Use this method for hover detection first
+     * @type {Null|Array}
+     * @default hoverRect = null
+     * @example hoverRect = [0, 0, 100, 100] // [Rect start x, y, Rect width, height]
+     */
+    hoverRect: null,
 
-        /**
-         * @description Mouse enter event handler
-         * @type {Function|Null}
-         * @default mouseEnter = null
-         */
-        mouseEnter: null,
+    /**
+     * @description Mouse enter event handler
+     * @type {Function|Null}
+     * @default mouseEnter = null
+     */
+    mouseEnter: null,
 
-        /**
-         * @description Mouse outer event handler
-         * @type {Function|Null}
-         * @default mouseOuter = null
-         */
-        mouseOuter: null,
+    /**
+     * @description Mouse outer event handler
+     * @type {Function|Null}
+     * @default mouseOuter = null
+     */
+    mouseOuter: null,
 
-        /**
-         * @description Mouse click event handler
-         * @type {Function|Null}
-         * @default click = null
-         */
-        click: null
-    }
-    var configAbleNot = {
-        status: 'static',
-        animationRoot: [],
-        animationKeys: [],
-        animationFrameState: [],
-        cache: {}
-    }
-    if (!config.shape) config.shape = {}
-    if (!config.style) config.style = {}
-    var shape = Object.assign({}, graph.shape, config.shape)
-    Object.assign(defaultConfig, config, configAbleNot)
-    Object.assign(this, graph, defaultConfig)
-    this.shape = shape
-    this.style = new _style['default'](config.style)
-    this.addedProcessor()
+    /**
+     * @description Mouse click event handler
+     * @type {Function|Null}
+     * @default click = null
+     */
+    click: null
+  }
+  var configAbleNot = {
+    status: 'static',
+    animationRoot: [],
+    animationKeys: [],
+    animationFrameState: [],
+    cache: {}
+  }
+  if (!config.shape) config.shape = {}
+  if (!config.style) config.style = {}
+  var shape = Object.assign({}, graph.shape, config.shape)
+  Object.assign(defaultConfig, config, configAbleNot)
+  Object.assign(this, graph, defaultConfig)
+  this.shape = shape
+  this.style = new _style['default'](config.style)
+  this.addedProcessor()
 }
 /**
  * @description Processor of added
@@ -151,10 +153,9 @@ var Graph = function Graph(graph, config) {
 exports['default'] = Graph
 
 Graph.prototype.addedProcessor = function () {
-    if (typeof this.setGraphCenter === 'function')
-        this.setGraphCenter(null, this) // The life cycle 'added"
+  if (typeof this.setGraphCenter === 'function') this.setGraphCenter(null, this) // The life cycle 'added"
 
-    if (typeof this.added === 'function') this.added(this)
+  if (typeof this.added === 'function') this.added(this)
 }
 /**
  * @description Processor of draw
@@ -164,12 +165,12 @@ Graph.prototype.addedProcessor = function () {
  */
 
 Graph.prototype.drawProcessor = function (render, graph) {
-    var ctx = render.ctx
-    graph.style.initStyle(ctx)
-    if (typeof this.beforeDraw === 'function') this.beforeDraw(this, render)
-    graph.draw(render, graph)
-    if (typeof this.drawed === 'function') this.drawed(this, render)
-    graph.style.restoreTransform(ctx)
+  var ctx = render.ctx
+  graph.style.initStyle(ctx)
+  if (typeof this.beforeDraw === 'function') this.beforeDraw(this, render)
+  graph.draw(render, graph)
+  if (typeof this.drawed === 'function') this.drawed(this, render)
+  graph.style.restoreTransform(ctx)
 }
 /**
  * @description Processor of hover check
@@ -179,44 +180,40 @@ Graph.prototype.drawProcessor = function (render, graph) {
  */
 
 Graph.prototype.hoverCheckProcessor = function (position, _ref) {
-    var hoverRect = _ref.hoverRect,
-        style = _ref.style,
-        hoverCheck = _ref.hoverCheck
-    var graphCenter = style.graphCenter,
-        rotate = style.rotate,
-        scale = style.scale,
-        translate = style.translate
+  var hoverRect = _ref.hoverRect,
+    style = _ref.style,
+    hoverCheck = _ref.hoverCheck
+  var graphCenter = style.graphCenter,
+    rotate = style.rotate,
+    scale = style.scale,
+    translate = style.translate
 
-    if (graphCenter) {
-        if (rotate)
-            position = (0, _util.getRotatePointPos)(
-                -rotate,
-                position,
-                graphCenter
-            )
-        if (scale)
-            position = (0, _util.getScalePointPos)(
-                scale.map(function (s) {
-                    return 1 / s
-                }),
-                position,
-                graphCenter
-            )
-        if (translate)
-            position = (0, _util.getTranslatePointPos)(
-                translate.map(function (v) {
-                    return v * -1
-                }),
-                position
-            )
-    }
+  if (graphCenter) {
+    if (rotate)
+      position = (0, _util.getRotatePointPos)(-rotate, position, graphCenter)
+    if (scale)
+      position = (0, _util.getScalePointPos)(
+        scale.map(function (s) {
+          return 1 / s
+        }),
+        position,
+        graphCenter
+      )
+    if (translate)
+      position = (0, _util.getTranslatePointPos)(
+        translate.map(function (v) {
+          return v * -1
+        }),
+        position
+      )
+  }
 
-    if (hoverRect)
-        return _util.checkPointIsInRect.apply(
-            void 0,
-            [position].concat((0, _toConsumableArray2['default'])(hoverRect))
-        )
-    return hoverCheck(position, this)
+  if (hoverRect)
+    return _util.checkPointIsInRect.apply(
+      void 0,
+      [position].concat((0, _toConsumableArray2['default'])(hoverRect))
+    )
+  return hoverCheck(position, this)
 }
 /**
  * @description Processor of move
@@ -225,10 +222,10 @@ Graph.prototype.hoverCheckProcessor = function (position, _ref) {
  */
 
 Graph.prototype.moveProcessor = function (e) {
-    this.move(e, this)
-    if (typeof this.beforeMove === 'function') this.beforeMove(e, this)
-    if (typeof this.setGraphCenter === 'function') this.setGraphCenter(e, this)
-    if (typeof this.moved === 'function') this.moved(e, this)
+  this.move(e, this)
+  if (typeof this.beforeMove === 'function') this.beforeMove(e, this)
+  if (typeof this.setGraphCenter === 'function') this.setGraphCenter(e, this)
+  if (typeof this.moved === 'function') this.moved(e, this)
 }
 /**
  * @description Update graph state
@@ -238,25 +235,25 @@ Graph.prototype.moveProcessor = function (e) {
  */
 
 Graph.prototype.attr = function (attrName) {
-    var change =
-        arguments.length > 1 && arguments[1] !== undefined
-            ? arguments[1]
-            : undefined
-    if (!attrName || change === undefined) return false
-    var isObject = (0, _typeof2['default'])(this[attrName]) === 'object'
-    if (isObject) change = (0, _util.deepClone)(change, true)
-    var render = this.render
+  var change =
+    arguments.length > 1 && arguments[1] !== undefined
+      ? arguments[1]
+      : undefined
+  if (!attrName || change === undefined) return false
+  var isObject = (0, _typeof2['default'])(this[attrName]) === 'object'
+  if (isObject) change = (0, _util.deepClone)(change, true)
+  var render = this.render
 
-    if (attrName === 'style') {
-        this.style.update(change)
-    } else if (isObject) {
-        Object.assign(this[attrName], change)
-    } else {
-        this[attrName] = change
-    }
+  if (attrName === 'style') {
+    this.style.update(change)
+  } else if (isObject) {
+    Object.assign(this[attrName], change)
+  } else {
+    this[attrName] = change
+  }
 
-    if (attrName === 'index') render.sortGraphsByIndex()
-    render.drawAllGraph()
+  if (attrName === 'index') render.sortGraphsByIndex()
+  render.drawAllGraph()
 }
 /**
  * @description Update graphics state (with animation)
@@ -269,161 +266,135 @@ Graph.prototype.attr = function (attrName) {
  */
 
 Graph.prototype.animation =
-    /*#__PURE__*/
-    (function () {
-        var _ref2 = (0, _asyncToGenerator2['default'])(
-            /*#__PURE__*/
-            _regenerator['default'].mark(function _callee2(attrName, change) {
-                var wait,
-                    changeRoot,
-                    changeKeys,
-                    beforeState,
-                    animationFrame,
+  /*#__PURE__*/
+  (function () {
+    var _ref2 = (0, _asyncToGenerator2['default'])(
+      /*#__PURE__*/
+      _regenerator['default'].mark(function _callee2(attrName, change) {
+        var wait,
+          changeRoot,
+          changeKeys,
+          beforeState,
+          animationFrame,
+          animationCurve,
+          animationDelay,
+          animationFrameState,
+          render,
+          _args2 = arguments
+        return _regenerator['default'].wrap(
+          function _callee2$(_context2) {
+            while (1) {
+              switch ((_context2.prev = _context2.next)) {
+                case 0:
+                  wait =
+                    _args2.length > 2 && _args2[2] !== undefined
+                      ? _args2[2]
+                      : false
+
+                  if (!(attrName !== 'shape' && attrName !== 'style')) {
+                    _context2.next = 4
+                    break
+                  }
+
+                  console.error('Only supported shape and style animation!')
+                  return _context2.abrupt('return')
+
+                case 4:
+                  change = (0, _util.deepClone)(change, true)
+                  if (attrName === 'style') this.style.colorProcessor(change)
+                  changeRoot = this[attrName]
+                  changeKeys = Object.keys(change)
+                  beforeState = {}
+                  changeKeys.forEach(function (key) {
+                    return (beforeState[key] = changeRoot[key])
+                  })
+                  ;(animationFrame = this.animationFrame),
+                    (animationCurve = this.animationCurve),
+                    (animationDelay = this.animationDelay)
+                  animationFrameState = (0, _transition['default'])(
                     animationCurve,
-                    animationDelay,
-                    animationFrameState,
-                    render,
-                    _args2 = arguments
-                return _regenerator['default'].wrap(
-                    function _callee2$(_context2) {
-                        while (1) {
-                            switch ((_context2.prev = _context2.next)) {
-                                case 0:
-                                    wait =
-                                        _args2.length > 2 &&
-                                        _args2[2] !== undefined
-                                            ? _args2[2]
-                                            : false
+                    beforeState,
+                    change,
+                    animationFrame,
+                    true
+                  )
+                  this.animationRoot.push(changeRoot)
+                  this.animationKeys.push(changeKeys)
+                  this.animationFrameState.push(animationFrameState)
 
-                                    if (
-                                        !(
-                                            attrName !== 'shape' &&
-                                            attrName !== 'style'
-                                        )
-                                    ) {
-                                        _context2.next = 4
-                                        break
-                                    }
+                  if (!wait) {
+                    _context2.next = 17
+                    break
+                  }
 
-                                    console.error(
-                                        'Only supported shape and style animation!'
-                                    )
-                                    return _context2.abrupt('return')
+                  return _context2.abrupt('return')
 
-                                case 4:
-                                    change = (0, _util.deepClone)(change, true)
-                                    if (attrName === 'style')
-                                        this.style.colorProcessor(change)
-                                    changeRoot = this[attrName]
-                                    changeKeys = Object.keys(change)
-                                    beforeState = {}
-                                    changeKeys.forEach(function (key) {
-                                        return (beforeState[key] =
-                                            changeRoot[key])
-                                    })
-                                    ;(animationFrame = this.animationFrame),
-                                        (animationCurve = this.animationCurve),
-                                        (animationDelay = this.animationDelay)
-                                    animationFrameState = (0,
-                                    _transition['default'])(
-                                        animationCurve,
-                                        beforeState,
-                                        change,
-                                        animationFrame,
-                                        true
-                                    )
-                                    this.animationRoot.push(changeRoot)
-                                    this.animationKeys.push(changeKeys)
-                                    this.animationFrameState.push(
-                                        animationFrameState
-                                    )
+                case 17:
+                  if (!(animationDelay > 0)) {
+                    _context2.next = 20
+                    break
+                  }
 
-                                    if (!wait) {
-                                        _context2.next = 17
-                                        break
-                                    }
+                  _context2.next = 20
+                  return delay(animationDelay)
 
-                                    return _context2.abrupt('return')
+                case 20:
+                  render = this.render
+                  return _context2.abrupt(
+                    'return',
+                    new Promise(
+                      /*#__PURE__*/
+                      (function () {
+                        var _ref3 = (0, _asyncToGenerator2['default'])(
+                          /*#__PURE__*/
+                          _regenerator['default'].mark(function _callee(
+                            resolve
+                          ) {
+                            return _regenerator['default'].wrap(
+                              function _callee$(_context) {
+                                while (1) {
+                                  switch ((_context.prev = _context.next)) {
+                                    case 0:
+                                      _context.next = 2
+                                      return render.launchAnimation()
 
-                                case 17:
-                                    if (!(animationDelay > 0)) {
-                                        _context2.next = 20
-                                        break
-                                    }
+                                    case 2:
+                                      resolve()
 
-                                    _context2.next = 20
-                                    return delay(animationDelay)
+                                    case 3:
+                                    case 'end':
+                                      return _context.stop()
+                                  }
+                                }
+                              },
+                              _callee
+                            )
+                          })
+                        )
 
-                                case 20:
-                                    render = this.render
-                                    return _context2.abrupt(
-                                        'return',
-                                        new Promise(
-                                            /*#__PURE__*/
-                                            (function () {
-                                                var _ref3 = (0,
-                                                _asyncToGenerator2['default'])(
-                                                    /*#__PURE__*/
-                                                    _regenerator[
-                                                        'default'
-                                                    ].mark(function _callee(
-                                                        resolve
-                                                    ) {
-                                                        return _regenerator[
-                                                            'default'
-                                                        ].wrap(
-                                                            function _callee$(
-                                                                _context
-                                                            ) {
-                                                                while (1) {
-                                                                    switch (
-                                                                        (_context.prev =
-                                                                            _context.next)
-                                                                    ) {
-                                                                        case 0:
-                                                                            _context.next = 2
-                                                                            return render.launchAnimation()
-
-                                                                        case 2:
-                                                                            resolve()
-
-                                                                        case 3:
-                                                                        case 'end':
-                                                                            return _context.stop()
-                                                                    }
-                                                                }
-                                                            },
-                                                            _callee
-                                                        )
-                                                    })
-                                                )
-
-                                                return function (_x3) {
-                                                    return _ref3.apply(
-                                                        this,
-                                                        arguments
-                                                    )
-                                                }
-                                            })()
-                                        )
-                                    )
-
-                                case 22:
-                                case 'end':
-                                    return _context2.stop()
-                            }
+                        return function (_x3) {
+                          return _ref3.apply(this, arguments)
                         }
-                    },
-                    _callee2,
-                    this
-                )
-            })
-        )
+                      })()
+                    )
+                  )
 
-        return function (_x, _x2) {
-            return _ref2.apply(this, arguments)
-        }
-    })()
+                case 22:
+                case 'end':
+                  return _context2.stop()
+              }
+            }
+          },
+          _callee2,
+          this
+        )
+      })
+    )
+
+    return function (_x, _x2) {
+      return _ref2.apply(this, arguments)
+    }
+  })()
 /**
  * @description Extract the next frame of data from the animation queue
  *              and update the graph state
@@ -431,33 +402,33 @@ Graph.prototype.animation =
  */
 
 Graph.prototype.turnNextAnimationFrame = function (timeStamp) {
-    var animationDelay = this.animationDelay,
-        animationRoot = this.animationRoot,
-        animationKeys = this.animationKeys,
-        animationFrameState = this.animationFrameState,
-        animationPause = this.animationPause
-    if (animationPause) return
-    if (Date.now() - timeStamp < animationDelay) return
-    animationRoot.forEach(function (root, i) {
-        animationKeys[i].forEach(function (key) {
-            root[key] = animationFrameState[i][0][key]
-        })
+  var animationDelay = this.animationDelay,
+    animationRoot = this.animationRoot,
+    animationKeys = this.animationKeys,
+    animationFrameState = this.animationFrameState,
+    animationPause = this.animationPause
+  if (animationPause) return
+  if (Date.now() - timeStamp < animationDelay) return
+  animationRoot.forEach(function (root, i) {
+    animationKeys[i].forEach(function (key) {
+      root[key] = animationFrameState[i][0][key]
     })
-    animationFrameState.forEach(function (stateItem, i) {
-        stateItem.shift()
-        var noFrame = stateItem.length === 0
-        if (noFrame) animationRoot[i] = null
-        if (noFrame) animationKeys[i] = null
-    })
-    this.animationFrameState = animationFrameState.filter(function (state) {
-        return state.length
-    })
-    this.animationRoot = animationRoot.filter(function (root) {
-        return root
-    })
-    this.animationKeys = animationKeys.filter(function (keys) {
-        return keys
-    })
+  })
+  animationFrameState.forEach(function (stateItem, i) {
+    stateItem.shift()
+    var noFrame = stateItem.length === 0
+    if (noFrame) animationRoot[i] = null
+    if (noFrame) animationKeys[i] = null
+  })
+  this.animationFrameState = animationFrameState.filter(function (state) {
+    return state.length
+  })
+  this.animationRoot = animationRoot.filter(function (root) {
+    return root
+  })
+  this.animationKeys = animationKeys.filter(function (keys) {
+    return keys
+  })
 }
 /**
  * @description Skip to the last frame of animation
@@ -465,21 +436,21 @@ Graph.prototype.turnNextAnimationFrame = function (timeStamp) {
  */
 
 Graph.prototype.animationEnd = function () {
-    var animationFrameState = this.animationFrameState,
-        animationKeys = this.animationKeys,
-        animationRoot = this.animationRoot,
-        render = this.render
-    animationRoot.forEach(function (root, i) {
-        var currentKeys = animationKeys[i]
-        var lastState = animationFrameState[i].pop()
-        currentKeys.forEach(function (key) {
-            return (root[key] = lastState[key])
-        })
+  var animationFrameState = this.animationFrameState,
+    animationKeys = this.animationKeys,
+    animationRoot = this.animationRoot,
+    render = this.render
+  animationRoot.forEach(function (root, i) {
+    var currentKeys = animationKeys[i]
+    var lastState = animationFrameState[i].pop()
+    currentKeys.forEach(function (key) {
+      return (root[key] = lastState[key])
     })
-    this.animationFrameState = []
-    this.animationKeys = []
-    this.animationRoot = []
-    return render.drawAllGraph()
+  })
+  this.animationFrameState = []
+  this.animationKeys = []
+  this.animationRoot = []
+  return render.drawAllGraph()
 }
 /**
  * @description Pause animation behavior
@@ -487,7 +458,7 @@ Graph.prototype.animationEnd = function () {
  */
 
 Graph.prototype.pauseAnimation = function () {
-    this.attr('animationPause', true)
+  this.attr('animationPause', true)
 }
 /**
  * @description Try animation behavior
@@ -495,41 +466,38 @@ Graph.prototype.pauseAnimation = function () {
  */
 
 Graph.prototype.playAnimation = function () {
-    var render = this.render
-    this.attr('animationPause', false)
-    return new Promise(
+  var render = this.render
+  this.attr('animationPause', false)
+  return new Promise(
+    /*#__PURE__*/
+    (function () {
+      var _ref4 = (0, _asyncToGenerator2['default'])(
         /*#__PURE__*/
-        (function () {
-            var _ref4 = (0, _asyncToGenerator2['default'])(
-                /*#__PURE__*/
-                _regenerator['default'].mark(function _callee3(resolve) {
-                    return _regenerator['default'].wrap(function _callee3$(
-                        _context3
-                    ) {
-                        while (1) {
-                            switch ((_context3.prev = _context3.next)) {
-                                case 0:
-                                    _context3.next = 2
-                                    return render.launchAnimation()
+        _regenerator['default'].mark(function _callee3(resolve) {
+          return _regenerator['default'].wrap(function _callee3$(_context3) {
+            while (1) {
+              switch ((_context3.prev = _context3.next)) {
+                case 0:
+                  _context3.next = 2
+                  return render.launchAnimation()
 
-                                case 2:
-                                    resolve()
+                case 2:
+                  resolve()
 
-                                case 3:
-                                case 'end':
-                                    return _context3.stop()
-                            }
-                        }
-                    },
-                    _callee3)
-                })
-            )
-
-            return function (_x4) {
-                return _ref4.apply(this, arguments)
+                case 3:
+                case 'end':
+                  return _context3.stop()
+              }
             }
-        })()
-    )
+          }, _callee3)
+        })
+      )
+
+      return function (_x4) {
+        return _ref4.apply(this, arguments)
+      }
+    })()
+  )
 }
 /**
  * @description Processor of delete
@@ -538,16 +506,16 @@ Graph.prototype.playAnimation = function () {
  */
 
 Graph.prototype.delProcessor = function (render) {
-    var _this = this
+  var _this = this
 
-    var graphs = render.graphs
-    var index = graphs.findIndex(function (graph) {
-        return graph === _this
-    })
-    if (index === -1) return
-    if (typeof this.beforeDelete === 'function') this.beforeDelete(this)
-    graphs.splice(index, 1, null)
-    if (typeof this.deleted === 'function') this.deleted(this)
+  var graphs = render.graphs
+  var index = graphs.findIndex(function (graph) {
+    return graph === _this
+  })
+  if (index === -1) return
+  if (typeof this.beforeDelete === 'function') this.beforeDelete(this)
+  graphs.splice(index, 1, null)
+  if (typeof this.deleted === 'function') this.deleted(this)
 }
 /**
  * @description Return a timed release Promise
@@ -556,7 +524,7 @@ Graph.prototype.delProcessor = function (render) {
  */
 
 function delay(time) {
-    return new Promise(function (resolve) {
-        setTimeout(resolve, time)
-    })
+  return new Promise(function (resolve) {
+    setTimeout(resolve, time)
+  })
 }

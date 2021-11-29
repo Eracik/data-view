@@ -23,18 +23,18 @@ import { legendConfig } from './legend'
 import { deepMerge } from '../util'
 
 const allConfig = {
-    colorConfig,
-    gridConfig,
-    xAxisConfig,
-    yAxisConfig,
-    titleConfig,
-    lineConfig,
-    barConfig,
-    pieConfig,
-    radarAxisConfig,
-    radarConfig,
-    gaugeConfig,
-    legendConfig
+  colorConfig,
+  gridConfig,
+  xAxisConfig,
+  yAxisConfig,
+  titleConfig,
+  lineConfig,
+  barConfig,
+  pieConfig,
+  radarAxisConfig,
+  radarConfig,
+  gaugeConfig,
+  legendConfig
 }
 
 /**
@@ -43,42 +43,42 @@ const allConfig = {
  * @param {Object|Array} config Your config
  * @return {Undefined} No return
  */
-export function changeDefaultConfig(key, config) {
-    if (!allConfig[`${key}Config`]) {
-        console.warn('Change default config Error - Invalid key!')
+export function changeDefaultConfig (key, config) {
+  if (!allConfig[`${key}Config`]) {
+    console.warn('Change default config Error - Invalid key!')
 
-        return
-    }
+    return
+  }
 
-    deepMerge(allConfig[`${key}Config`], config)
+  deepMerge(allConfig[`${key}Config`], config)
 }
 
 export const keys = [
-    'color',
-    'title',
-    'legend',
-    'xAxis',
-    'yAxis',
-    'grid',
-    'radarAxis',
-    'line',
-    'bar',
-    'pie',
-    'radar',
-    'gauge'
+  'color',
+  'title',
+  'legend',
+  'xAxis',
+  'yAxis',
+  'grid',
+  'radarAxis',
+  'line',
+  'bar',
+  'pie',
+  'radar',
+  'gauge'
 ]
 
 export {
-    colorConfig,
-    gridConfig,
-    xAxisConfig,
-    yAxisConfig,
-    titleConfig,
-    lineConfig,
-    barConfig,
-    pieConfig,
-    radarAxisConfig,
-    radarConfig,
-    gaugeConfig,
-    legendConfig
+  colorConfig,
+  gridConfig,
+  xAxisConfig,
+  yAxisConfig,
+  titleConfig,
+  lineConfig,
+  barConfig,
+  pieConfig,
+  radarAxisConfig,
+  radarConfig,
+  gaugeConfig,
+  legendConfig
 }

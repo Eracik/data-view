@@ -1,5 +1,5 @@
-import color from '@jiaminghi/color'
-import bezierCurve from '@jiaminghi/bezier-curve'
+import color from '@/plugins/@jiaminghi/color'
+import bezierCurve from '@/plugins/@jiaminghi/bezier-curve'
 
 import { deepClone } from '../plugin/util'
 
@@ -13,64 +13,64 @@ import Graph from './graph.class'
  * @return {CRender}      Instance of CRender
  */
 export default class CRender {
-    constructor(canvas) {
-        if (!canvas) {
-            console.error('CRender Missing parameters!')
+  constructor(canvas) {
+    if (!canvas) {
+      console.error('CRender Missing parameters!')
 
-            return
-        }
-
-        const ctx = canvas.getContext('2d')
-
-        const { clientWidth, clientHeight } = canvas
-
-        const area = [clientWidth, clientHeight]
-
-        canvas.setAttribute('width', clientWidth)
-        canvas.setAttribute('height', clientHeight)
-
-        /**
-         * @description Context of the canvas
-         * @type {Object}
-         * @example ctx = canvas.getContext('2d')
-         */
-        this.ctx = ctx
-        /**
-         * @description Width and height of the canvas
-         * @type {Array}
-         * @example area = [300，100]
-         */
-        this.area = area
-        /**
-         * @description Whether render is in animation rendering
-         * @type {Boolean}
-         * @example animationStatus = true|false
-         */
-        this.animationStatus = false
-        /**
-         * @description Added graph
-         * @type {[Graph]}
-         * @example graphs = [Graph, Graph, ...]
-         */
-        this.graphs = []
-        /**
-         * @description Color plugin
-         * @type {Object}
-         * @link https://github.com/jiaming743/color
-         */
-        this.color = color
-        /**
-         * @description Bezier Curve plugin
-         * @type {Object}
-         * @link https://github.com/jiaming743/BezierCurve
-         */
-        this.bezierCurve = bezierCurve
-
-        // bind event handler
-        canvas.addEventListener('mousedown', mouseDown.bind(this))
-        canvas.addEventListener('mousemove', mouseMove.bind(this))
-        canvas.addEventListener('mouseup', mouseUp.bind(this))
+      return
     }
+
+    const ctx = canvas.getContext('2d')
+
+    const { clientWidth, clientHeight } = canvas
+
+    const area = [clientWidth, clientHeight]
+
+    canvas.setAttribute('width', clientWidth)
+    canvas.setAttribute('height', clientHeight)
+
+    /**
+     * @description Context of the canvas
+     * @type {Object}
+     * @example ctx = canvas.getContext('2d')
+     */
+    this.ctx = ctx
+    /**
+     * @description Width and height of the canvas
+     * @type {Array}
+     * @example area = [300，100]
+     */
+    this.area = area
+    /**
+     * @description Whether render is in animation rendering
+     * @type {Boolean}
+     * @example animationStatus = true|false
+     */
+    this.animationStatus = false
+    /**
+     * @description Added graph
+     * @type {[Graph]}
+     * @example graphs = [Graph, Graph, ...]
+     */
+    this.graphs = []
+    /**
+     * @description Color plugin
+     * @type {Object}
+     * @link https://github.com/jiaming743/color
+     */
+    this.color = color
+    /**
+     * @description Bezier Curve plugin
+     * @type {Object}
+     * @link https://github.com/jiaming743/BezierCurve
+     */
+    this.bezierCurve = bezierCurve
+
+    // bind event handler
+    canvas.addEventListener('mousedown', mouseDown.bind(this))
+    canvas.addEventListener('mousemove', mouseMove.bind(this))
+    canvas.addEventListener('mouseup', mouseUp.bind(this))
+  }
 }
 
 /**
@@ -78,9 +78,9 @@ export default class CRender {
  * @return {Undefined} Void
  */
 CRender.prototype.clearArea = function () {
-    const { area } = this
+  const { area } = this
 
-    this.ctx.clearRect(0, 0, ...area)
+  this.ctx.clearRect(0, 0, ...area)
 }
 
 /**
@@ -89,35 +89,35 @@ CRender.prototype.clearArea = function () {
  * @return {Graph}        Graph instance
  */
 CRender.prototype.add = function (config = {}) {
-    const { name } = config
+  const { name } = config
 
-    if (!name) {
-        console.error('add Missing parameters!')
+  if (!name) {
+    console.error('add Missing parameters!')
 
-        return
-    }
+    return
+  }
 
-    const graphConfig = allGraph.get(name)
+  const graphConfig = allGraph.get(name)
 
-    if (!graphConfig) {
-        console.warn('No corresponding graph configuration found!')
+  if (!graphConfig) {
+    console.warn('No corresponding graph configuration found!')
 
-        return
-    }
+    return
+  }
 
-    const graph = new Graph(graphConfig, config)
+  const graph = new Graph(graphConfig, config)
 
-    if (!graph.validator(graph)) return
+  if (!graph.validator(graph)) return
 
-    graph.render = this
+  graph.render = this
 
-    this.graphs.push(graph)
+  this.graphs.push(graph)
 
-    this.sortGraphsByIndex()
+  this.sortGraphsByIndex()
 
-    this.drawAllGraph()
+  this.drawAllGraph()
 
-    return graph
+  return graph
 }
 
 /**
@@ -125,13 +125,13 @@ CRender.prototype.add = function (config = {}) {
  * @return {Undefined} Void
  */
 CRender.prototype.sortGraphsByIndex = function () {
-    const { graphs } = this
+  const { graphs } = this
 
-    graphs.sort((a, b) => {
-        if (a.index > b.index) return 1
-        if (a.index === b.index) return 0
-        if (a.index < b.index) return -1
-    })
+  graphs.sort((a, b) => {
+    if (a.index > b.index) return 1
+    if (a.index === b.index) return 0
+    if (a.index < b.index) return -1
+  })
 }
 
 /**
@@ -140,13 +140,13 @@ CRender.prototype.sortGraphsByIndex = function () {
  * @return {Undefined}  Void
  */
 CRender.prototype.delGraph = function (graph) {
-    if (typeof graph.delProcessor !== 'function') return
+  if (typeof graph.delProcessor !== 'function') return
 
-    graph.delProcessor(this)
+  graph.delProcessor(this)
 
-    this.graphs = this.graphs.filter((graph) => graph)
+  this.graphs = this.graphs.filter((graph) => graph)
 
-    this.drawAllGraph()
+  this.drawAllGraph()
 }
 
 /**
@@ -154,11 +154,11 @@ CRender.prototype.delGraph = function (graph) {
  * @return {Undefined} Void
  */
 CRender.prototype.delAllGraph = function () {
-    this.graphs.forEach((graph) => graph.delProcessor(this))
+  this.graphs.forEach((graph) => graph.delProcessor(this))
 
-    this.graphs = this.graphs.filter((graph) => graph)
+  this.graphs = this.graphs.filter((graph) => graph)
 
-    this.drawAllGraph()
+  this.drawAllGraph()
 }
 
 /**
@@ -166,11 +166,11 @@ CRender.prototype.delAllGraph = function () {
  * @return {Undefined} Void
  */
 CRender.prototype.drawAllGraph = function () {
-    this.clearArea()
+  this.clearArea()
 
-    this.graphs
-        .filter((graph) => graph && graph.visible)
-        .forEach((graph) => graph.drawProcessor(this, graph))
+  this.graphs
+    .filter((graph) => graph && graph.visible)
+    .forEach((graph) => graph.drawProcessor(this, graph))
 }
 
 /**
@@ -179,23 +179,23 @@ CRender.prototype.drawAllGraph = function () {
  * @return {Promise} Animation Promise
  */
 CRender.prototype.launchAnimation = function () {
-    const { animationStatus } = this
+  const { animationStatus } = this
 
-    if (animationStatus) return
+  if (animationStatus) return
 
-    this.animationStatus = true
+  this.animationStatus = true
 
-    return new Promise((resolve) => {
-        animation.call(
-            this,
-            () => {
-                this.animationStatus = false
+  return new Promise((resolve) => {
+    animation.call(
+      this,
+      () => {
+        this.animationStatus = false
 
-                resolve()
-            },
-            Date.now()
-        )
-    })
+        resolve()
+      },
+      Date.now()
+    )
+  })
 }
 
 /**
@@ -205,19 +205,19 @@ CRender.prototype.launchAnimation = function () {
  * @return {Undefined} Void
  */
 function animation(callback, timeStamp) {
-    const { graphs } = this
+  const { graphs } = this
 
-    if (!animationAble(graphs)) {
-        callback()
+  if (!animationAble(graphs)) {
+    callback()
 
-        return
-    }
+    return
+  }
 
-    graphs.forEach((graph) => graph.turnNextAnimationFrame(timeStamp))
+  graphs.forEach((graph) => graph.turnNextAnimationFrame(timeStamp))
 
-    this.drawAllGraph()
+  this.drawAllGraph()
 
-    requestAnimationFrame(animation.bind(this, callback, timeStamp))
+  requestAnimationFrame(animation.bind(this, callback, timeStamp))
 }
 
 /**
@@ -226,9 +226,9 @@ function animation(callback, timeStamp) {
  * @return {Boolean}
  */
 function animationAble(graphs) {
-    return graphs.find(
-        (graph) => !graph.animationPause && graph.animationFrameState.length
-    )
+  return graphs.find(
+    (graph) => !graph.animationPause && graph.animationFrameState.length
+  )
 }
 
 /**
@@ -236,13 +236,13 @@ function animationAble(graphs) {
  * @return {Undefined} Void
  */
 function mouseDown(e) {
-    const { graphs } = this
+  const { graphs } = this
 
-    const hoverGraph = graphs.find((graph) => graph.status === 'hover')
+  const hoverGraph = graphs.find((graph) => graph.status === 'hover')
 
-    if (!hoverGraph) return
+  if (!hoverGraph) return
 
-    hoverGraph.status = 'active'
+  hoverGraph.status = 'active'
 }
 
 /**
@@ -250,91 +250,84 @@ function mouseDown(e) {
  * @return {Undefined} Void
  */
 function mouseMove(e) {
-    const { offsetX, offsetY } = e
-    const position = [offsetX, offsetY]
+  const { offsetX, offsetY } = e
+  const position = [offsetX, offsetY]
 
-    const { graphs } = this
+  const { graphs } = this
 
-    const activeGraph = graphs.find(
-        (graph) => graph.status === 'active' || graph.status === 'drag'
-    )
+  const activeGraph = graphs.find(
+    (graph) => graph.status === 'active' || graph.status === 'drag'
+  )
 
-    if (activeGraph) {
-        if (!activeGraph.drag) return
+  if (activeGraph) {
+    if (!activeGraph.drag) return
 
-        if (typeof activeGraph.move !== 'function') {
-            console.error('No move method is provided, cannot be dragged!')
+    if (typeof activeGraph.move !== 'function') {
+      console.error('No move method is provided, cannot be dragged!')
 
-            return
-        }
-
-        activeGraph.moveProcessor(e)
-
-        activeGraph.status = 'drag'
-
-        return
+      return
     }
 
-    const hoverGraph = graphs.find((graph) => graph.status === 'hover')
+    activeGraph.moveProcessor(e)
 
-    const hoverAbleGraphs = graphs.filter(
-        (graph) =>
-            graph.hover &&
-            (typeof graph.hoverCheck === 'function' || graph.hoverRect)
-    )
+    activeGraph.status = 'drag'
 
-    const hoveredGraph = hoverAbleGraphs.find((graph) =>
-        graph.hoverCheckProcessor(position, graph)
-    )
+    return
+  }
 
-    if (hoveredGraph) {
-        document.body.style.cursor = hoveredGraph.style.hoverCursor
-    } else {
-        document.body.style.cursor = 'default'
-    }
+  const hoverGraph = graphs.find((graph) => graph.status === 'hover')
 
-    let [hoverGraphMouseOuterIsFun, hoveredGraphMouseEnterIsFun] = [
-        false,
-        false
-    ]
+  const hoverAbleGraphs = graphs.filter(
+    (graph) =>
+      graph.hover && (typeof graph.hoverCheck === 'function' || graph.hoverRect)
+  )
 
-    if (hoverGraph)
-        hoverGraphMouseOuterIsFun = typeof hoverGraph.mouseOuter === 'function'
-    if (hoveredGraph)
-        hoveredGraphMouseEnterIsFun =
-            typeof hoveredGraph.mouseEnter === 'function'
+  const hoveredGraph = hoverAbleGraphs.find((graph) =>
+    graph.hoverCheckProcessor(position, graph)
+  )
 
-    if (!hoveredGraph && !hoverGraph) return
+  if (hoveredGraph) {
+    document.body.style.cursor = hoveredGraph.style.hoverCursor
+  } else {
+    document.body.style.cursor = 'default'
+  }
 
-    if (!hoveredGraph && hoverGraph) {
-        if (hoverGraphMouseOuterIsFun) hoverGraph.mouseOuter(e, hoverGraph)
+  let [hoverGraphMouseOuterIsFun, hoveredGraphMouseEnterIsFun] = [false, false]
 
-        hoverGraph.status = 'static'
+  if (hoverGraph)
+    hoverGraphMouseOuterIsFun = typeof hoverGraph.mouseOuter === 'function'
+  if (hoveredGraph)
+    hoveredGraphMouseEnterIsFun = typeof hoveredGraph.mouseEnter === 'function'
 
-        return
-    }
+  if (!hoveredGraph && !hoverGraph) return
 
-    if (hoveredGraph && hoveredGraph === hoverGraph) return
+  if (!hoveredGraph && hoverGraph) {
+    if (hoverGraphMouseOuterIsFun) hoverGraph.mouseOuter(e, hoverGraph)
 
-    if (hoveredGraph && !hoverGraph) {
-        if (hoveredGraphMouseEnterIsFun)
-            hoveredGraph.mouseEnter(e, hoveredGraph)
+    hoverGraph.status = 'static'
 
-        hoveredGraph.status = 'hover'
+    return
+  }
 
-        return
-    }
+  if (hoveredGraph && hoveredGraph === hoverGraph) return
 
-    if (hoveredGraph && hoverGraph && hoveredGraph !== hoverGraph) {
-        if (hoverGraphMouseOuterIsFun) hoverGraph.mouseOuter(e, hoverGraph)
+  if (hoveredGraph && !hoverGraph) {
+    if (hoveredGraphMouseEnterIsFun) hoveredGraph.mouseEnter(e, hoveredGraph)
 
-        hoverGraph.status = 'static'
+    hoveredGraph.status = 'hover'
 
-        if (hoveredGraphMouseEnterIsFun)
-            hoveredGraph.mouseEnter(e, hoveredGraph)
+    return
+  }
 
-        hoveredGraph.status = 'hover'
-    }
+  if (hoveredGraph && hoverGraph && hoveredGraph !== hoverGraph) {
+    if (hoverGraphMouseOuterIsFun) hoverGraph.mouseOuter(e, hoverGraph)
+
+    hoverGraph.status = 'static'
+
+    if (hoveredGraphMouseEnterIsFun) hoveredGraph.mouseEnter(e, hoveredGraph)
+
+    hoveredGraph.status = 'hover'
+  }
 }
 
 /**
@@ -342,18 +335,18 @@ function mouseMove(e) {
  * @return {Undefined} Void
  */
 function mouseUp(e) {
-    const { graphs } = this
+  const { graphs } = this
 
-    const activeGraph = graphs.find((graph) => graph.status === 'active')
-    const dragGraph = graphs.find((graph) => graph.status === 'drag')
+  const activeGraph = graphs.find((graph) => graph.status === 'active')
+  const dragGraph = graphs.find((graph) => graph.status === 'drag')
 
-    if (activeGraph && typeof activeGraph.click === 'function')
-        activeGraph.click(e, activeGraph)
+  if (activeGraph && typeof activeGraph.click === 'function')
+    activeGraph.click(e, activeGraph)
 
-    graphs.forEach((graph) => graph && (graph.status = 'static'))
+  graphs.forEach((graph) => graph && (graph.status = 'static'))
 
-    if (activeGraph) activeGraph.status = 'hover'
-    if (dragGraph) dragGraph.status = 'hover'
+  if (activeGraph) activeGraph.status = 'hover'
+  if (dragGraph) dragGraph.status = 'hover'
 }
 
 /**
@@ -362,13 +355,13 @@ function mouseUp(e) {
  * @return {Graph}      Cloned graph
  */
 CRender.prototype.clone = function (graph) {
-    const style = graph.style.getStyle()
+  const style = graph.style.getStyle()
 
-    let clonedGraph = { ...graph, style }
+  let clonedGraph = { ...graph, style }
 
-    delete clonedGraph.render
+  delete clonedGraph.render
 
-    clonedGraph = deepClone(clonedGraph, true)
+  clonedGraph = deepClone(clonedGraph, true)
 
-    return this.add(clonedGraph)
+  return this.add(clonedGraph)
 }

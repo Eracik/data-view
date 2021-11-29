@@ -7,9 +7,9 @@ const getNodeParams = require('./plugin/nodeParams')
 let config = null
 
 try {
-    config = require('./config')
+  config = require('./config')
 } catch (err) {
-    void 0
+  void 0
 }
 
 const DIST_PATH = './dist/'
@@ -17,65 +17,65 @@ const FTP_PATH = './transition/'
 
 const ftp = new Client()
 
-ftp.on('ready', async (foo) => {
-    print.tip('FTP connected!')
+ftp.on('ready', async foo => {
+  print.tip('FTP connected!')
 
-    const isEmpty = await emptyDir(ftp, FTP_PATH)
+  const isEmpty = await emptyDir(ftp, FTP_PATH)
 
-    if (!isEmpty) {
-        print.error('Exception in emptyDir!')
+  if (!isEmpty) {
+    print.error('Exception in emptyDir!')
 
-        return false
+    return false
+  }
+
+  let status = true
+
+  await fileForEach(DIST_PATH, async src => {
+    const destPath = FTP_PATH + src.split('/').slice(-1)[0]
+
+    print.tip('Upload: ' + destPath)
+
+    if (!await put(ftp, src, destPath)) {
+      status = false
+      
+      print.error('Exception in upload ' + destPath)
     }
+  })
 
-    let status = true
+  if (status) {
+    print.yellow('-------------------------------------')
+    print.success('    Automatic Deployment Success!    ')
+    print.yellow('-------------------------------------')  
+  }
 
-    await fileForEach(DIST_PATH, async (src) => {
-        const destPath = FTP_PATH + src.split('/').slice(-1)[0]
-
-        print.tip('Upload: ' + destPath)
-
-        if (!(await put(ftp, src, destPath))) {
-            status = false
-
-            print.error('Exception in upload ' + destPath)
-        }
-    })
-
-    if (status) {
-        print.yellow('-------------------------------------')
-        print.success('    Automatic Deployment Success!    ')
-        print.yellow('-------------------------------------')
-    }
-
-    ftp.destroy()
+  ftp.destroy()
 })
 
-ftp.on('greeting', (foo) => {
-    print.tip('FTP greeting')
+ftp.on('greeting', foo => {
+  print.tip('FTP greeting')
 })
-ftp.on('close', (foo) => {
-    print.tip('FTP close')
+ftp.on('close', foo => {
+  print.tip('FTP close')
 })
-ftp.on('end', (foo) => {
-    print.tip('FTP end')
+ftp.on('end', foo => {
+  print.tip('FTP end')
 })
-ftp.on('error', (foo) => {
-    print.tip('FTP error')
+ftp.on('error', foo => {
+  print.tip('FTP error')
 })
 
 const { host, user, pass } = config || getNodeParams()
 
 if (!host || !user || !pass) {
-    print.error('Upload Dist to FTP Missing Parameters!')
+  print.error('Upload Dist to FTP Missing Parameters!')
 
-    return false
+  return false
 }
 
 print.tip('Start Upload!')
 
 ftp.connect({
-    host,
-    user,
-    password: pass
+  host,
+  user,
+  password: pass
 })

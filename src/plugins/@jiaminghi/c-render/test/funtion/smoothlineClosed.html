@@ -1,84 +1,85 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf8" />
-        <title>Smoothline Closed</title>
-        <style>
-            html,
-            body,
-            #canvas {
-                width: 100%;
-                height: 100%;
-                margin: 0px;
-                padding: 0px;
-            }
-        </style>
-        <script src="../../dist/crender.map.js"></script>
-    </head>
+  <head>
+    <meta charset="utf8" />
+    <title>Smoothline Closed</title>
+    <style>
+      html, body, #canvas {
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+    <script src="../../dist/crender.map.js"></script>
+  </head>
 
-    <body>
-        <canvas id="canvas"></canvas>
-    </body>
+  <body>
 
-    <script>
-        const { CRender, extendNewGraph } = window.CRender
+    <canvas id="canvas"></canvas>
 
-        const render = new CRender(document.querySelector('#canvas'))
+  </body>
 
-        const [w, h] = render.area
+  <script>
+    const { CRender, extendNewGraph } = window.CRender
 
-        const points = [
-            [w / 2, h / 2 - 100],
-            [w / 2 - 100, h / 2 + 100],
-            [w / 2 + 100, h / 2 + 100]
-        ]
+    const render = new CRender(document.querySelector('#canvas'))
 
-        const smoothline = render.add({
-            name: 'smoothline',
-            animationCurve: 'easeOutCubic',
-            animationFrame: 50,
-            drag: true,
-            hover: true,
-            shape: {
-                points,
-                close: true
-            },
-            style: {
-                fill: '#ffee97',
-                stroke: 'goldenrod',
-                lineWidth: 2,
-                rotate: 360
-            },
-            setGraphCenter(e, { style }) {
-                if (e) {
-                    const { movementX, movementY } = e
-                    const [cx, cy] = style.graphCenter
+    const [w, h] = render.area
 
-                    style.graphCenter = [cx + movementX, cy + movementY]
-                } else {
-                    style.graphCenter = [w / 2, h / 2]
-                }
-            }
-        })
+    const points = [
+      [w / 2, h / 2 - 100],
+      [w / 2 - 100, h / 2 + 100],
+      [w / 2 + 100, h / 2 + 100]
+    ]
 
-        function wait(time) {
-            return new Promise((resolve) => setTimeout(resolve, time))
+    const smoothline = render.add({
+      name: 'smoothline',
+      animationCurve: 'easeOutCubic',
+      animationFrame: 50,
+      drag: true,
+      hover: true,
+      shape: {
+        points,
+        close: true
+      },
+      style: {
+        fill: '#ffee97',
+        stroke: 'goldenrod',
+        lineWidth: 2,
+        rotate: 360
+      },
+      setGraphCenter (e, { style }) {
+        if (e) {
+          const { movementX, movementY } = e
+          const [cx, cy] = style.graphCenter
+
+          style.graphCenter = [cx + movementX, cy + movementY]
+        } else {
+          style.graphCenter = [w / 2, h / 2]
         }
+      }
+    })
 
-        async function start() {
-            await wait(1000)
+    function wait (time) {
+      return new Promise(resolve => setTimeout(resolve, time))
+    }
 
-            await smoothline.animation('style', {
-                rotate: 0
-            })
+    async function start () {
+      await wait(1000)
 
-            await wait(1000)
+      await smoothline.animation('style', {
+        rotate: 0
+      })
 
-            smoothline.animation('style', {
-                fill: 'lemonchiffon'
-            })
-        }
+      await wait(1000)
 
-        start()
-    </script>
+      smoothline.animation('style', {
+        fill: 'lemonchiffon'
+      })
+    }
+
+    start()
+
+  </script>
 </html>

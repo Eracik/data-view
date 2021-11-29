@@ -1,11 +1,4 @@
-const {
-    copyDir,
-    fileForEach,
-    readFile,
-    writeFile,
-    unlinkDirFileByExtname,
-    dirForEach
-} = require('@jiaminghi/fs')
+const { copyDir, fileForEach, readFile, writeFile, unlinkDirFileByExtname, dirForEach } = require('@jiaminghi/fs')
 const print = require('./plugin/print')
 const path = require('path')
 const exec = require('./plugin/exec')
@@ -16,206 +9,203 @@ const COMPONENTS_DIR = '/components'
 const ENTRANCE = '/index.js'
 const libName = 'datav'
 
-async function start() {
-    // Compile for NPM
+async function start () {
+  // Compile for NPM
 
-    const copyPackage = await copyDir(PACKAGE_SRC, COMPILE_SRC)
+  const copyPackage = await copyDir(PACKAGE_SRC, COMPILE_SRC)
 
-    if (!copyPackage) {
-        print.error('Exception in file copy!')
+  if (!copyPackage) {
+    print.error('Exception in file copy!')
 
-        return false
-    }
+    return false
+  }
 
-    print.success('Complete file copy!')
+  print.success('Complete file copy!')
 
-    const abstract = await abstractLessFromVue()
+  const abstract = await abstractLessFromVue()
 
-    if (!abstract) {
-        print.error('Exception in less file extraction!')
+  if (!abstract) {
+    print.error('Exception in less file extraction!')
 
-        return false
-    }
+    return false
+  }
 
-    print.success('Complete less file extraction!')
+  print.success('Complete less file extraction!')
 
-    await compileLessToCss()
+  await compileLessToCss()
 
-    print.success('Complete less compilation to css!')
+  print.success('Complete less compilation to css!')
 
-    const unlink = await unlinkDirFileByExtname(COMPILE_SRC, ['.less'])
+  const unlink = await unlinkDirFileByExtname(COMPILE_SRC, ['.less'])
 
-    if (!unlink) {
-        print.error('Exception in less file deletion!')
+  if (!unlink) {
+    print.error('Exception in less file deletion!')
 
-        return false
-    }
+    return false
+  }
 
-    print.success('Complete less file deletion!')
+  print.success('Complete less file deletion!')
 
-    const addImport = await addCssImport()
+  const addImport = await addCssImport()
 
-    if (!addImport) {
-        print.error('Exception in adding css import statement!')
+  if (!addImport) {
+    print.error('Exception in adding css import statement!')
 
-        return false
-    }
+    return false
+  }
 
-    print.success('Finish adding css import statement!')
+  print.success('Finish adding css import statement!')
 
-    const componentsExport = await addComponentsExport()
+  const componentsExport = await addComponentsExport()
 
-    if (!componentsExport) {
-        print.error('Exception in adding components export statement!')
+  if (!componentsExport) {
+    print.error('Exception in adding components export statement!')
 
-        return false
-    }
+    return false
+  }
 
-    print.success('Finish adding components export statement!')
+  print.success('Finish adding components export statement!')
 
-    // Compile for UMD version
-    const rollupCompile = await exec(`rollup -c build/rollup.config.js`)
+  // Compile for UMD version
+  const rollupCompile = await exec(`rollup -c build/rollup.config.js`)
 
-    if (!rollupCompile) {
-        print.error('Exception in rollupCompile')
+  if (!rollupCompile) {
+    print.error('Exception in rollupCompile')
 
-        return
-    }
+    return
+  }
 
-    print.tip('After rollupCompile')
+  print.tip('After rollupCompile')
 
-    const terser = await exec(`rollup -c build/rollup.terser.config.js`)
+  const terser = await exec(`rollup -c build/rollup.terser.config.js`)
 
-    if (!terser) {
-        print.error('Exception in terser')
+  if (!terser) {
+    print.error('Exception in terser')
 
-        return
-    }
+    return
+  }
 
-    print.tip('After terser')
+  print.tip('After terser')
 
-    print.yellow('-------------------------------------')
-    print.success('     DataV Lib Compile Success!      ')
-    print.yellow('-------------------------------------')
+  print.yellow('-------------------------------------')
+  print.success('     DataV Lib Compile Success!      ')
+  print.yellow('-------------------------------------')
 
-    return true
+  return true
 }
 
-async function abstractLessFromVue() {
-    let abstractSuccess = true
+async function abstractLessFromVue () {
+  let abstractSuccess = true
 
-    await fileForEach(COMPILE_SRC, async (src) => {
-        if (path.extname(src) !== '.vue') return
+  await fileForEach(COMPILE_SRC, async src => {
+    if (path.extname(src) !== '.vue') return
 
-        let template = await readFile(src)
+    let template = await readFile(src)
 
-        let style = template.match(/<style[ \S\n\r]*/g)
-        if (style) style = style[0]
-        if (!style) return
+    let style = template.match(/<style[ \S\n\r]*/g)
+    if (style) style = style[0]
+    if (!style) return
 
-        style = style.replace(/<style[ a-z="']*>(\n|\r)?|<\/style>/g, '')
-        style = style.replace(/[\n\r]*$/, '')
+    style = style.replace(/<style[ a-z="']*>(\n|\r)?|<\/style>/g, '')
+    style = style.replace(/[\n\r]*$/, '')
 
-        const styleSrc = src.replace('.vue', '.less')
-        let write = await writeFile(styleSrc, style)
+    const styleSrc = src.replace('.vue', '.less')
+    let write = await writeFile(styleSrc, style)
 
-        if (!write) {
-            print.error(styleSrc + ' write error!')
+    if (!write) {
+      print.error(styleSrc + ' write error!')
 
-            abstractSuccess = false
-        }
+      abstractSuccess = false
+    }
 
-        template = template.replace(/<style[ \S\n\r]*/g, '')
-        template = template.replace(/[\n\r]*$/, '')
-        write = await writeFile(src, template)
+    template = template.replace(/<style[ \S\n\r]*/g, '')
+    template = template.replace(/[\n\r]*$/, '')
+    write = await writeFile(src, template)
 
-        if (!write) {
-            print.error(src + ' rewrite error!')
+    if (!write) {
+      print.error(src + ' rewrite error!')
 
-            abstractSuccess = false
-        }
+      abstractSuccess = false
+    }
+  })
+
+  return abstractSuccess
+}
+
+async function compileLessToCss () {
+  let compileSuccess = true
+
+  await fileForEach(COMPILE_SRC, async src => {
+    if (path.extname(src) !== '.less') return
+
+    src = src.replace('./', '')
+
+    const execString = `lessc ${src} ${src.replace('less', 'css')}`
+
+    print.yellow(execString, {
+      maxBuffer: 1024 ** 5
     })
 
-    return abstractSuccess
+    const compile = await exec(execString)
+
+    if (!compile) {
+      print.error(execString + ' Error!')
+
+      compileSuccess = false
+    }
+  })
+
+  return compileSuccess
 }
 
-async function compileLessToCss() {
-    let compileSuccess = true
+async function addCssImport () {
+  let importSuccess = true
 
-    await fileForEach(COMPILE_SRC, async (src) => {
-        if (path.extname(src) !== '.less') return
+  await fileForEach(COMPILE_SRC + COMPONENTS_DIR, async src => {
+    if (path.extname(src) !== '.js') return
 
-        src = src.replace('./', '')
+    let content = await readFile(src)
 
-        const execString = `lessc ${src} ${src.replace('less', 'css')}`
+    if (content.search(/import[ \S]* from '[\S]*\.vue'/) === -1) return
 
-        print.yellow(execString, {
-            maxBuffer: 1024 ** 5
-        })
+    content = `import './src/main.css'\n` + content
 
-        const compile = await exec(execString)
+    let write = await writeFile(src, content)
 
-        if (!compile) {
-            print.error(execString + ' Error!')
+    if (!write) {
+      print.error(src + ' write import error!')
 
-            compileSuccess = false
-        }
-    })
+      importSuccess = false
+    }
+  })
 
-    return compileSuccess
+  return importSuccess
 }
 
-async function addCssImport() {
-    let importSuccess = true
+async function addComponentsExport () {
+  const components = []
 
-    await fileForEach(COMPILE_SRC + COMPONENTS_DIR, async (src) => {
-        if (path.extname(src) !== '.js') return
+  await dirForEach(COMPILE_SRC + COMPONENTS_DIR, src => {
+    components.push(src.split('/').slice(-1)[0])
+  })
 
-        let content = await readFile(src)
+  const importString = components.reduce((all, current) => {
+    return all + '\n' + `export { default as ${current} } from '.${COMPONENTS_DIR}/${current}/index'`
+  }, '/**\n * EXPORT COMPONENTS\n */') + '\n'
 
-        if (content.search(/import[ \S]* from '[\S]*\.vue'/) === -1) return
+  const targetSrc = COMPILE_SRC + ENTRANCE
 
-        content = `import './src/main.css'\n` + content
+  let content = await readFile(targetSrc)
 
-        let write = await writeFile(src, content)
+  content = importString + content
 
-        if (!write) {
-            print.error(src + ' write import error!')
+  let write = await writeFile(targetSrc, content)
 
-            importSuccess = false
-        }
-    })
-
-    return importSuccess
+  return write
 }
 
-async function addComponentsExport() {
-    const components = []
+async function compileUMDVersion () {
 
-    await dirForEach(COMPILE_SRC + COMPONENTS_DIR, (src) => {
-        components.push(src.split('/').slice(-1)[0])
-    })
-
-    const importString =
-        components.reduce((all, current) => {
-            return (
-                all +
-                '\n' +
-                `export { default as ${current} } from '.${COMPONENTS_DIR}/${current}/index'`
-            )
-        }, '/**\n * EXPORT COMPONENTS\n */') + '\n'
-
-    const targetSrc = COMPILE_SRC + ENTRANCE
-
-    let content = await readFile(targetSrc)
-
-    content = importString + content
-
-    let write = await writeFile(targetSrc, content)
-
-    return write
 }
-
-async function compileUMDVersion() {}
 
 start()

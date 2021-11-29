@@ -25,38 +25,30 @@ const defaultSegmentPointsNum = 50
  * @return {Number}           Option.cycles Number of iterations
  * @return {Number}           Option.rounds The number of recursions for the last iteration
  */
-function abstractBezierCurveToPolyline(bezierCurve, precision = 5) {
-    const segmentsNum = bezierCurve.length - 1
+function abstractBezierCurveToPolyline (bezierCurve, precision = 5) {
+  const segmentsNum = bezierCurve.length - 1
 
-    const startPoint = bezierCurve[0]
-    const endPoint = bezierCurve[segmentsNum][2]
+  const startPoint = bezierCurve[0]
+  const endPoint = bezierCurve[segmentsNum][2]
 
-    const segments = bezierCurve.slice(1)
+  const segments = bezierCurve.slice(1)
 
-    const getSegmentTPointFuns = segments.map((seg, i) => {
-        let beginPoint = i === 0 ? startPoint : segments[i - 1][2]
+  const getSegmentTPointFuns = segments.map((seg, i) => {
+    let beginPoint = (i === 0) ? startPoint : segments[i - 1][2]
 
-        return createGetBezierCurveTPointFun(beginPoint, ...seg)
-    })
+    return createGetBezierCurveTPointFun(beginPoint, ...seg)
+  })
 
-    // Initialize the curve to a polyline
-    let segmentPointsNum = new Array(segmentsNum).fill(defaultSegmentPointsNum)
-    let segmentPoints = getSegmentPointsByNum(
-        getSegmentTPointFuns,
-        segmentPointsNum
-    )
+  // Initialize the curve to a polyline
+  let segmentPointsNum = new Array(segmentsNum).fill(defaultSegmentPointsNum)
+  let segmentPoints = getSegmentPointsByNum(getSegmentTPointFuns, segmentPointsNum)
 
-    // Calculate uniformly distributed points by iteratively
-    const result = calcUniformPointsByIteration(
-        segmentPoints,
-        getSegmentTPointFuns,
-        segments,
-        precision
-    )
+  // Calculate uniformly distributed points by iteratively
+  const result = calcUniformPointsByIteration(segmentPoints, getSegmentTPointFuns, segments, precision)
 
-    result.segmentPoints.push(endPoint)
+  result.segmentPoints.push(endPoint)
 
-    return result
+  return result
 }
 
 /**
@@ -67,32 +59,21 @@ function abstractBezierCurveToPolyline(bezierCurve, precision = 5) {
  * @param {Array} endPoint      BezierCurve end point. [x, y]
  * @return {Function} Expected function
  */
-function createGetBezierCurveTPointFun(
-    beginPoint,
-    controlPoint1,
-    controlPoint2,
-    endPoint
-) {
-    return function (t) {
-        const tSubed1 = 1 - t
+function createGetBezierCurveTPointFun (beginPoint, controlPoint1, controlPoint2, endPoint) {
+  return function (t) {
+    const tSubed1 = 1 - t
 
-        const tSubed1Pow3 = pow(tSubed1, 3)
-        const tSubed1Pow2 = pow(tSubed1, 2)
+    const tSubed1Pow3 = pow(tSubed1, 3)
+    const tSubed1Pow2 = pow(tSubed1, 2)
 
-        const tPow3 = pow(t, 3)
-        const tPow2 = pow(t, 2)
+    const tPow3 = pow(t, 3)
+    const tPow2 = pow(t, 2)
 
-        return [
-            beginPoint[0] * tSubed1Pow3 +
-                3 * controlPoint1[0] * t * tSubed1Pow2 +
-                3 * controlPoint2[0] * tPow2 * tSubed1 +
-                endPoint[0] * tPow3,
-            beginPoint[1] * tSubed1Pow3 +
-                3 * controlPoint1[1] * t * tSubed1Pow2 +
-                3 * controlPoint2[1] * tPow2 * tSubed1 +
-                endPoint[1] * tPow3
-        ]
-    }
+    return [
+      beginPoint[0] * tSubed1Pow3 + 3 * controlPoint1[0] * t * tSubed1Pow2 + 3 * controlPoint2[0] * tPow2 * tSubed1 + endPoint[0] * tPow3,
+      beginPoint[1] * tSubed1Pow3 + 3 * controlPoint1[1] * t * tSubed1Pow2 + 3 * controlPoint2[1] * tPow2 * tSubed1 + endPoint[1] * tPow3
+    ]
+  }
 }
 
 /**
@@ -101,8 +82,8 @@ function createGetBezierCurveTPointFun(
  * @param {Array} point2 BezierCurve controlPoint1. [x, y]
  * @return {Number} Expected distance
  */
-function getTwoPointDistance([ax, ay], [bx, by]) {
-    return sqrt(pow(ax - bx, 2) + pow(ay - by, 2))
+function getTwoPointDistance ([ax, ay], [bx, by]) {
+  return sqrt(pow(ax - bx, 2) + pow(ay - by, 2))
 }
 
 /**
@@ -110,8 +91,8 @@ function getTwoPointDistance([ax, ay], [bx, by]) {
  * @param {Array} nums An array of numbers
  * @return {Number} Expected sum
  */
-function getNumsSum(nums) {
-    return nums.reduce((sum, num) => sum + num, 0)
+function getNumsSum (nums) {
+  return nums.reduce((sum, num) => sum + num, 0)
 }
 
 /**
@@ -119,12 +100,12 @@ function getNumsSum(nums) {
  * @param {Array} segmentPoints Multiple sets of point data
  * @return {Array} Distance of multiple sets of point data
  */
-function getSegmentPointsDistance(segmentPoints) {
-    return segmentPoints.map((points, i) => {
-        return new Array(points.length - 1)
-            .fill(0)
-            .map((temp, j) => getTwoPointDistance(points[j], points[j + 1]))
-    })
+function getSegmentPointsDistance (segmentPoints) {
+  return segmentPoints.map((points, i) => {
+    return new Array(points.length - 1)
+      .fill(0)
+      .map((temp, j) => getTwoPointDistance(points[j], points[j + 1]))
+  })
 }
 
 /**
@@ -132,14 +113,14 @@ function getSegmentPointsDistance(segmentPoints) {
  * @param {Array} segmentPoints Multiple sets of point data
  * @return {Array} Distance of multiple sets of point data
  */
-function getSegmentPointsByNum(getSegmentTPointFuns, segmentPointsNum) {
-    return getSegmentTPointFuns.map((getSegmentTPointFun, i) => {
-        const tGap = 1 / segmentPointsNum[i]
+function getSegmentPointsByNum (getSegmentTPointFuns, segmentPointsNum) {
+  return getSegmentTPointFuns.map((getSegmentTPointFun, i) => {
+    const tGap = 1 / segmentPointsNum[i]
 
-        return new Array(segmentPointsNum[i])
-            .fill('')
-            .map((foo, j) => getSegmentTPointFun(j * tGap))
-    })
+    return new Array(segmentPointsNum[i])
+      .fill('')
+      .map((foo, j) => getSegmentTPointFun(j * tGap))
+  })
 }
 
 /**
@@ -148,11 +129,11 @@ function getSegmentPointsByNum(getSegmentTPointFuns, segmentPointsNum) {
  * @param {Number} avgLength            Average length of the line segment
  * @return {Number} Deviations
  */
-function getAllDeviations(segmentPointsDistance, avgLength) {
-    return segmentPointsDistance
-        .map((seg) => seg.map((s) => abs(s - avgLength)))
-        .map((seg) => getNumsSum(seg))
-        .reduce((total, v) => total + v, 0)
+function getAllDeviations (segmentPointsDistance, avgLength) {
+  return segmentPointsDistance
+    .map(seg => seg.map(s => abs(s - avgLength)))
+    .map(seg => getNumsSum(seg))
+    .reduce((total, v) => total + v, 0)
 }
 
 /**
@@ -166,124 +147,100 @@ function getAllDeviations(segmentPointsDistance, avgLength) {
  * @return {Number} Option.cycles Number of iterations
  * @return {Number} Option.rounds The number of recursions for the last iteration
  */
-function calcUniformPointsByIteration(
+function calcUniformPointsByIteration (segmentPoints, getSegmentTPointFuns, segments, precision) {
+  // The number of loops for the current iteration
+  let rounds = 4
+
+  // Number of iterations
+  let cycles = 1
+
+  do {
+    // Recalculate the number of points per curve based on the last iteration data
+    let totalPointsNum = segmentPoints.reduce((total, seg) => total + seg.length, 0)
+
+    // Add last points of segment to calc exact segment length
+    segmentPoints.forEach((seg, i) => seg.push(segments[i][2]))
+
+    let segmentPointsDistance = getSegmentPointsDistance(segmentPoints)
+
+    let lineSegmentNum = segmentPointsDistance.reduce((total, seg) => total + seg.length, 0)
+
+    let segmentlength = segmentPointsDistance.map(seg => getNumsSum(seg))
+
+    let totalLength = getNumsSum(segmentlength)
+
+    let avgLength = totalLength / lineSegmentNum
+
+    // Check if precision is reached
+    let allDeviations = getAllDeviations(segmentPointsDistance, avgLength)
+
+    if (allDeviations <= precision) break
+
+    totalPointsNum = ceil(avgLength / precision * totalPointsNum * 1.1)
+
+    const segmentPointsNum = segmentlength.map(length => ceil(length / totalLength * totalPointsNum))
+
+    // Calculate the points after redistribution
+    segmentPoints = getSegmentPointsByNum(getSegmentTPointFuns, segmentPointsNum)
+
+    totalPointsNum = segmentPoints.reduce((total, seg) => total + seg.length, 0)
+
+    let segmentPointsForLength = JSON.parse(JSON.stringify(segmentPoints))
+
+    segmentPointsForLength.forEach((seg, i) => seg.push(segments[i][2]))
+
+    segmentPointsDistance = getSegmentPointsDistance(segmentPointsForLength)
+
+    lineSegmentNum = segmentPointsDistance.reduce((total, seg) => total + seg.length, 0)
+
+    segmentlength = segmentPointsDistance.map(seg => getNumsSum(seg))
+
+    totalLength = getNumsSum(segmentlength)
+
+    avgLength = totalLength / lineSegmentNum
+
+    const stepSize = 1 / totalPointsNum / 10
+
+    // Recursively for each segment of the polyline
+    getSegmentTPointFuns.forEach((getSegmentTPointFun, i) => {
+      const currentSegmentPointsNum = segmentPointsNum[i]
+
+      const t = new Array(currentSegmentPointsNum).fill('').map((foo, j) => j / segmentPointsNum[i])
+
+      // Repeated recursive offset
+      for (let r = 0; r < rounds; r++) {
+        let distance = getSegmentPointsDistance([segmentPoints[i]])[0]
+
+        const deviations = distance.map(d => d - avgLength)
+
+        let offset = 0
+
+        for (let j = 0; j < currentSegmentPointsNum; j++) {
+          if (j === 0) return
+
+          offset += deviations[j - 1]
+
+          t[j] -= stepSize * offset
+
+          if (t[j] > 1) t[j] = 1
+          if (t[j] < 0) t[j] = 0
+          segmentPoints[i][j] = getSegmentTPointFun(t[j])
+        }
+      }
+    })
+
+    rounds *= 4
+
+    cycles++
+  } while (rounds <= 1025)
+
+  segmentPoints = segmentPoints.reduce((all, seg) => all.concat(seg), [])
+
+  return {
     segmentPoints,
-    getSegmentTPointFuns,
-    segments,
-    precision
-) {
-    // The number of loops for the current iteration
-    let rounds = 4
-
-    // Number of iterations
-    let cycles = 1
-
-    do {
-        // Recalculate the number of points per curve based on the last iteration data
-        let totalPointsNum = segmentPoints.reduce(
-            (total, seg) => total + seg.length,
-            0
-        )
-
-        // Add last points of segment to calc exact segment length
-        segmentPoints.forEach((seg, i) => seg.push(segments[i][2]))
-
-        let segmentPointsDistance = getSegmentPointsDistance(segmentPoints)
-
-        let lineSegmentNum = segmentPointsDistance.reduce(
-            (total, seg) => total + seg.length,
-            0
-        )
-
-        let segmentlength = segmentPointsDistance.map((seg) => getNumsSum(seg))
-
-        let totalLength = getNumsSum(segmentlength)
-
-        let avgLength = totalLength / lineSegmentNum
-
-        // Check if precision is reached
-        let allDeviations = getAllDeviations(segmentPointsDistance, avgLength)
-
-        if (allDeviations <= precision) break
-
-        totalPointsNum = ceil((avgLength / precision) * totalPointsNum * 1.1)
-
-        const segmentPointsNum = segmentlength.map((length) =>
-            ceil((length / totalLength) * totalPointsNum)
-        )
-
-        // Calculate the points after redistribution
-        segmentPoints = getSegmentPointsByNum(
-            getSegmentTPointFuns,
-            segmentPointsNum
-        )
-
-        totalPointsNum = segmentPoints.reduce(
-            (total, seg) => total + seg.length,
-            0
-        )
-
-        let segmentPointsForLength = JSON.parse(JSON.stringify(segmentPoints))
-
-        segmentPointsForLength.forEach((seg, i) => seg.push(segments[i][2]))
-
-        segmentPointsDistance = getSegmentPointsDistance(segmentPointsForLength)
-
-        lineSegmentNum = segmentPointsDistance.reduce(
-            (total, seg) => total + seg.length,
-            0
-        )
-
-        segmentlength = segmentPointsDistance.map((seg) => getNumsSum(seg))
-
-        totalLength = getNumsSum(segmentlength)
-
-        avgLength = totalLength / lineSegmentNum
-
-        const stepSize = 1 / totalPointsNum / 10
-
-        // Recursively for each segment of the polyline
-        getSegmentTPointFuns.forEach((getSegmentTPointFun, i) => {
-            const currentSegmentPointsNum = segmentPointsNum[i]
-
-            const t = new Array(currentSegmentPointsNum)
-                .fill('')
-                .map((foo, j) => j / segmentPointsNum[i])
-
-            // Repeated recursive offset
-            for (let r = 0; r < rounds; r++) {
-                let distance = getSegmentPointsDistance([segmentPoints[i]])[0]
-
-                const deviations = distance.map((d) => d - avgLength)
-
-                let offset = 0
-
-                for (let j = 0; j < currentSegmentPointsNum; j++) {
-                    if (j === 0) return
-
-                    offset += deviations[j - 1]
-
-                    t[j] -= stepSize * offset
-
-                    if (t[j] > 1) t[j] = 1
-                    if (t[j] < 0) t[j] = 0
-                    segmentPoints[i][j] = getSegmentTPointFun(t[j])
-                }
-            }
-        })
-
-        rounds *= 4
-
-        cycles++
-    } while (rounds <= 1025)
-
-    segmentPoints = segmentPoints.reduce((all, seg) => all.concat(seg), [])
-
-    return {
-        segmentPoints,
-        cycles,
-        rounds
-    }
+    cycles,
+    rounds
+  }
 }
 
 /**
@@ -292,35 +249,28 @@ function calcUniformPointsByIteration(
  * @param {Number} precision  Calculation accuracy. Recommended for 1-20. Default = 5
  * @return {Array|Boolean} Point data that constitutes a polyline after calculation (Invalid input will return false)
  */
-export function bezierCurveToPolyline(bezierCurve, precision = 5) {
-    if (!bezierCurve) {
-        console.error('bezierCurveToPolyline: Missing parameters!')
+export function bezierCurveToPolyline (bezierCurve, precision = 5) {
+  if (!bezierCurve) {
+    console.error('bezierCurveToPolyline: Missing parameters!')
 
-        return false
-    }
+    return false
+  }
 
-    if (!(bezierCurve instanceof Array)) {
-        console.error(
-            'bezierCurveToPolyline: Parameter bezierCurve must be an array!'
-        )
+  if (!(bezierCurve instanceof Array)) {
+    console.error('bezierCurveToPolyline: Parameter bezierCurve must be an array!')
 
-        return false
-    }
+    return false
+  }
 
-    if (typeof precision !== 'number') {
-        console.error(
-            'bezierCurveToPolyline: Parameter precision must be a number!'
-        )
+  if (typeof precision !== 'number') {
+    console.error('bezierCurveToPolyline: Parameter precision must be a number!')
 
-        return false
-    }
+    return false
+  }
 
-    const { segmentPoints } = abstractBezierCurveToPolyline(
-        bezierCurve,
-        precision
-    )
+  const { segmentPoints } = abstractBezierCurveToPolyline(bezierCurve, precision)
 
-    return segmentPoints
+  return segmentPoints
 }
 
 /**
@@ -329,39 +279,32 @@ export function bezierCurveToPolyline(bezierCurve, precision = 5) {
  * @param {Number} precision  calculation accuracy. Recommended for 5-10. Default = 5
  * @return {Number|Boolean} BezierCurve length (Invalid input will return false)
  */
-export function getBezierCurveLength(bezierCurve, precision = 5) {
-    if (!bezierCurve) {
-        console.error('getBezierCurveLength: Missing parameters!')
+export function getBezierCurveLength (bezierCurve, precision = 5) {
+  if (!bezierCurve) {
+    console.error('getBezierCurveLength: Missing parameters!')
 
-        return false
-    }
+    return false
+  }
 
-    if (!(bezierCurve instanceof Array)) {
-        console.error(
-            'getBezierCurveLength: Parameter bezierCurve must be an array!'
-        )
+  if (!(bezierCurve instanceof Array)) {
+    console.error('getBezierCurveLength: Parameter bezierCurve must be an array!')
 
-        return false
-    }
+    return false
+  }
 
-    if (typeof precision !== 'number') {
-        console.error(
-            'getBezierCurveLength: Parameter precision must be a number!'
-        )
+  if (typeof precision !== 'number') {
+    console.error('getBezierCurveLength: Parameter precision must be a number!')
 
-        return false
-    }
+    return false
+  }
 
-    const { segmentPoints } = abstractBezierCurveToPolyline(
-        bezierCurve,
-        precision
-    )
+  const { segmentPoints } = abstractBezierCurveToPolyline(bezierCurve, precision)
 
-    // Calculate the total length of the points that make up the polyline
-    const pointsDistance = getSegmentPointsDistance([segmentPoints])[0]
-    const length = getNumsSum(pointsDistance)
+  // Calculate the total length of the points that make up the polyline
+  const pointsDistance = getSegmentPointsDistance([segmentPoints])[0]
+  const length = getNumsSum(pointsDistance)
 
-    return length
+  return length
 }
 
 export default bezierCurveToPolyline

@@ -5,33 +5,33 @@
 <p align="center">
     <a href="https://travis-ci.com/jiaming743/bezierCurve"><img src="https://img.shields.io/travis/com/jiaming743/bezierCurve.svg" alt="Travis CI"></a>
     <a href="https://github.com/jiaming743/BezierCurve/blob/master/LICENSE"><img src="https://img.shields.io/github/license/jiaming743/bezierCurve.svg" alt="LICENSE" /> </a>
-    <a href="https://www.npmjs.com/package/@jiaminghi/bezier-curve"><img src="https://img.shields.io/npm/v/@jiaminghi/bezier-curve.svg" alt="LICENSE" /> </a>
+    <a href="https://www.npmjs.com/package/@/plugins/@jiaminghi/bezier-curve"><img src="https://img.shields.io/npm/v/@/plugins/@jiaminghi/bezier-curve.svg" alt="LICENSE" /> </a>
 </p>
 
 ### 这是一个提供如下几个方法的三次贝塞尔曲线插件。
 
--   **[bezierCurveToPolyline](#bezierCurveToPolyline)**
+- **[bezierCurveToPolyline](#bezierCurveToPolyline)**
 
-    将贝塞尔曲线抽象成由 N 个**均匀分布**的点构成的折线
+  将贝塞尔曲线抽象成由N个**均匀分布**的点构成的折线
 
--   **[getBezierCurveLength](#getBezierCurveLength)**
+- **[getBezierCurveLength](#getBezierCurveLength)**
 
-    获取贝塞尔曲线的长度
+  获取贝塞尔曲线的长度
 
--   **[polylineToBezierCurve](#polylineToBezierCurve)**
+- **[polylineToBezierCurve](#polylineToBezierCurve)**
 
-    将由 N 个点构成的折线抽象成光滑的贝塞尔曲线
+  将由N个点构成的折线抽象成光滑的贝塞尔曲线
 
-### npm 安装
+### npm安装
 
 ```shell
-$ npm install @jiaminghi/bezier-curve
+$ npm install @/plugins/@jiaminghi/bezier-curve
 ```
 
 ### 使用
 
 ```javascript
-import bezierCurve from '@jiaminghi/bezier-curve'
+import bezierCurve from '@/plugins/@jiaminghi/bezier-curve'
 
 // do something
 ```
@@ -45,16 +45,12 @@ import bezierCurve from '@jiaminghi/bezier-curve'
 <!--压缩版-->
 <script src="http://lib.jiaminghi.com/bezierCurve/bezierCurve.min.js"></script>
 <script>
-    const {
-        bezierCurveToPolyline,
-        getBezierCurveLength,
-        polylineToBezierCurve
-    } = window.bezierCurve
+    const { bezierCurveToPolyline, getBezierCurveLength, polylineToBezierCurve } = window.bezierCurve
     // do something
 </script>
 ```
 
----
+------
 
 <h3 align="center">示例</h3>
 
@@ -64,14 +60,12 @@ import bezierCurve from '@jiaminghi/bezier-curve'
 // 贝塞尔曲线数据结构
 const bezierCurve = [
     // 起始点
-    [20, 20],
+	[20, 20],
     // 多段贝塞尔曲线
     [
         // 控制点1，控制点2，结束点
-        [100, 20],
-        [100, 80],
-        [180, 80]
-    ]
+        [100, 20],[100, 80],[180,80]
+    ],
     // 下一段贝塞尔曲线的起始点是上一段的结束点
     // [...],[...]
 ]
@@ -92,8 +86,8 @@ const bezierCurve = [
  * @param {Number} precision  计算精度 建议5-10 默认为5
  * @return {Array|Boolean} 构成折线的点集 (无效输入将返回false)
  */
-function bezierCurveToPolyline(bezierCurve, precision = 5) {
-    // ...
+function bezierCurveToPolyline (bezierCurve, precision = 5) {
+  // ...
 }
 
 const precision = 5
@@ -114,11 +108,13 @@ const polyline = bezierCurveToPolyline(bezierCurve, precision)
 
 #### Notice
 
--   *bezierCurveToPolyline*的计算结果是由 N 个点构成的折线，N 取决于设置的精度。
--   理想情况下，计算结果中相邻的两个点的距离等于设置的精度（单位 px）。
--   建议精度 5-10。
--   如果设置的精度过小或过大（小于 1 或大于 10），可能导致计算异常。
--   设置的精度并不是每次都能达到。
+- *bezierCurveToPolyline*的计算结果是由N个点构成的折线，N取决于设置的精度。
+- 理想情况下，计算结果中相邻的两个点的距离等于设置的精度（单位px）。
+- 建议精度5-10。
+- 如果设置的精度过小或过大（小于1或大于10），可能导致计算异常。
+- 设置的精度并不是每次都能达到。
+
+
 
 #### getBezierCurveLength
 
@@ -129,13 +125,15 @@ const polyline = bezierCurveToPolyline(bezierCurve, precision)
  * @param {Number} precision  计算精度 建议5-10 默认为5
  * @return {Number|Boolean} 贝塞尔曲线长度 (无效输入将返回false)
  */
-export function getBezierCurveLength(bezierCurve, precision = 5) {
-    // ...
+export function getBezierCurveLength (bezierCurve, precision = 5) {
+  // ...
 }
 
 // 通常情况下，默认精度已经能够达到较好的视觉效果。
 const length = bezierCurveToPolyline(bezierCurve)
 ```
+
+
 
 #### polyline
 
@@ -156,6 +154,8 @@ const polyline = [
 
 <p align="center"><i>polyline</i> in <b>SVG</b></p>
 
+
+
 #### polylineToBezierCurve
 
 ```javascript
@@ -167,13 +167,8 @@ const polyline = [
  * @param {Number} offsetB 光滑程度
  * @return {Array|Boolean} 贝塞尔曲线数据 (无效输入将返回false)
  */
-function polylineToBezierCurve(
-    polyline,
-    close = false,
-    offsetA = 0.25,
-    offsetB = 0.25
-) {
-    // ...
+function polylineToBezierCurve (polyline, close = false, offsetA = 0.25, offsetB = 0.25) {
+	// ...
 }
 
 const bezierCurve = polylineToBezierCurve(polyline)
@@ -208,3 +203,4 @@ const closedBezierCurve = polylineToBezierCurve(polyline, true)
 </p>
 
 <p align="center"><i>closedBezierCurve</i> in <b>SVG</b></p>
+

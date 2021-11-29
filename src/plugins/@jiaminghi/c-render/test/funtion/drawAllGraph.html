@@ -1,78 +1,74 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf8" />
-        <title>drawAllGraph</title>
-        <style>
-            html,
-            body,
-            #canvas {
-                width: 100%;
-                height: 100%;
-                margin: 0px;
-                padding: 0px;
-            }
-        </style>
-        <script src="../../dist/crender.map.js"></script>
-    </head>
+  <head>
+    <meta charset="utf8" />
+    <title>drawAllGraph</title>
+    <style>
+      html, body, #canvas {
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+    <script src="../../dist/crender.map.js"></script>
+  </head>
 
-    <body>
-        <canvas id="canvas"></canvas>
-    </body>
+  <body>
 
-    <script>
-        const { CRender, extendNewGraph } = window.CRender
+    <canvas id="canvas"></canvas>
 
-        const render = new CRender(document.querySelector('#canvas'))
+  </body>
 
-        const [w, h] = render.area
+  <script>
+    const { CRender, extendNewGraph } = window.CRender
 
-        function randomNum(minNum, maxNum) {
-            switch (arguments.length) {
-                case 1:
-                    return parseInt(Math.random() * minNum + 1, 10)
+    const render = new CRender(document.querySelector('#canvas'))
 
-                case 2:
-                    return parseInt(
-                        Math.random() * (maxNum - minNum + 1) + minNum,
-                        10
-                    )
+    const [w, h] = render.area
 
-                default:
-                    return 0
-            }
-        }
+    function randomNum (minNum, maxNum) {
+      switch (arguments.length) {
+        case 1:
+          return parseInt(Math.random() * minNum + 1, 10)
 
-        const circles = new Array(100).fill(0).map((foo) =>
-            render.add({
-                name: 'circle',
-                shape: {
-                    rx: randomNum(0, w),
-                    ry: randomNum(0, h),
-                    r: 10
-                },
-                style: {
-                    fill: '#ffee97',
-                    stroke: 'goldenrod',
-                    lineWidth: 2
-                }
-            })
-        )
+        case 2:
+          return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10)
 
-        function wait(time) {
-            return new Promise((resolve) => setTimeout(resolve, time))
-        }
+        default:
+          return 0
+      }
+    }
 
-        async function start() {
-            await wait(1000)
+    const circles = new Array(100).fill(0).map(foo => render.add({
+      name: 'circle',
+      shape: {
+        rx: randomNum(0, w),
+        ry: randomNum(0, h),
+        r: 10
+      },
+      style: {
+        fill: '#ffee97',
+        stroke: 'goldenrod',
+        lineWidth: 2
+      }
+    }))
 
-            render.clearArea()
+    function wait (time) {
+      return new Promise(resolve => setTimeout(resolve, time))
+    }
 
-            await wait(1000)
+    async function start () {
+      await wait(1000)
 
-            render.drawAllGraph()
-        }
+      render.clearArea()
 
-        start()
-    </script>
+      await wait(1000)
+
+      render.drawAllGraph()
+    }
+
+    start()
+
+  </script>
 </html>

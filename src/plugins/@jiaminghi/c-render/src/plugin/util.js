@@ -6,28 +6,28 @@ const { abs, sqrt, sin, cos, max, min, PI } = Math
  * @param {Boolean} recursion   Whether to use recursive cloning
  * @return {Object|Array} Clone object
  */
-export function deepClone(object, recursion = false) {
-    if (!object) return object
+export function deepClone (object, recursion = false) {
+  if (!object) return object
 
-    const { parse, stringify } = JSON
+  const { parse, stringify } = JSON
 
-    if (!recursion) return parse(stringify(object))
+  if (!recursion) return parse(stringify(object))
 
-    const clonedObj = object instanceof Array ? [] : {}
+  const clonedObj = object instanceof Array ? [] : {}
 
-    if (object && typeof object === 'object') {
-        for (let key in object) {
-            if (object.hasOwnProperty(key)) {
-                if (object[key] && typeof object[key] === 'object') {
-                    clonedObj[key] = deepClone(object[key], true)
-                } else {
-                    clonedObj[key] = object[key]
-                }
-            }
+  if (object && typeof object === 'object') {
+    for (let key in object) {
+      if (object.hasOwnProperty(key)) {
+        if (object[key] && typeof object[key] === 'object') {
+          clonedObj[key] = deepClone(object[key], true)
+        } else {
+          clonedObj[key] = object[key]
         }
+      }
     }
+  }
 
-    return clonedObj
+  return clonedObj
 }
 
 /**
@@ -35,8 +35,8 @@ export function deepClone(object, recursion = false) {
  * @param {Array} points Line points
  * @return {Array} Line points after processed
  */
-export function eliminateBlur(points) {
-    return points.map(([x, y]) => [parseInt(x) + 0.5, parseInt(y) + 0.5])
+export function eliminateBlur (points) {
+  return points.map(([x, y]) => [parseInt(x) + 0.5, parseInt(y) + 0.5])
 }
 
 /**
@@ -47,8 +47,8 @@ export function eliminateBlur(points) {
  * @param {Number} r    Circle radius
  * @return {Boolean} Result of check
  */
-export function checkPointIsInCircle(point, rx, ry, r) {
-    return getTwoPointDistance(point, [rx, ry]) <= r
+export function checkPointIsInCircle (point, rx, ry, r) {
+  return getTwoPointDistance(point, [rx, ry]) <= r
 }
 
 /**
@@ -57,11 +57,11 @@ export function checkPointIsInCircle(point, rx, ry, r) {
  * @param {Array} point2 point2
  * @return {Number} Distance between two points
  */
-export function getTwoPointDistance([xa, ya], [xb, yb]) {
-    const minusX = abs(xa - xb)
-    const minusY = abs(ya - yb)
+export function getTwoPointDistance ([xa, ya], [xb, yb]) {
+  const minusX = abs(xa - xb)
+  const minusY = abs(ya - yb)
 
-    return sqrt(minusX * minusX + minusY * minusY)
+  return sqrt(minusX * minusX + minusY * minusY)
 }
 
 /**
@@ -70,33 +70,31 @@ export function getTwoPointDistance([xa, ya], [xb, yb]) {
  * @param {Array} points The points that makes up a polyline
  * @return {Boolean} Result of check
  */
-export function checkPointIsInPolygon(point, polygon) {
-    let counter = 0
+export function checkPointIsInPolygon (point, polygon) {
+  let counter = 0
 
-    const [x, y] = point
+  const [x, y] = point
 
-    const pointNum = polygon.length
+  const pointNum = polygon.length
 
-    for (let i = 1, p1 = polygon[0]; i <= pointNum; i++) {
-        const p2 = polygon[i % pointNum]
-        if (x > min(p1[0], p2[0]) && x <= max(p1[0], p2[0])) {
-            if (y <= max(p1[1], p2[1])) {
-                if (p1[0] !== p2[0]) {
-                    const xinters =
-                        ((x - p1[0]) * (p2[1] - p1[1])) / (p2[0] - p1[0]) +
-                        p1[1]
+  for (let i = 1, p1 = polygon[0]; i <= pointNum; i++) {
+    const p2 = polygon[i % pointNum]
+    if (x > min(p1[0], p2[0]) && x <= max(p1[0], p2[0])) {
+      if (y <= max(p1[1], p2[1])) {
+        if (p1[0] !== p2[0]) {
+          const xinters = (x - p1[0]) * (p2[1] - p1[1]) / (p2[0] - p1[0]) + p1[1]
 
-                    if (p1[1] === p2[1] || y <= xinters) {
-                        counter++
-                    }
-                }
-            }
+          if (p1[1] === p2[1] || y <= xinters) {
+            counter++
+          }
         }
-
-        p1 = p2
+      }
     }
 
-    return counter % 2 === 1
+    p1 = p2
+  }
+
+  return counter % 2 === 1
 }
 
 /**
@@ -110,49 +108,41 @@ export function checkPointIsInPolygon(point, polygon) {
  * @param {Boolean} clockWise Whether the sector angle is clockwise
  * @return {Boolean} Result of check
  */
-export function checkPointIsInSector(
-    point,
-    rx,
-    ry,
-    r,
-    startAngle,
-    endAngle,
-    clockWise
-) {
-    if (!point) return false
+export function checkPointIsInSector (point, rx, ry, r, startAngle, endAngle, clockWise) {
+  if (!point) return false
 
-    if (getTwoPointDistance(point, [rx, ry]) > r) return false
+  if (getTwoPointDistance(point, [rx, ry]) > r) return false
 
-    if (!clockWise) [startAngle, endAngle] = deepClone([endAngle, startAngle])
+  if (!clockWise) [startAngle, endAngle] = deepClone([endAngle, startAngle])
 
-    const reverseBE = startAngle > endAngle
+  const reverseBE = startAngle > endAngle
 
-    if (reverseBE) [startAngle, endAngle] = [endAngle, startAngle]
+  if (reverseBE) [startAngle, endAngle] = [endAngle, startAngle]
 
-    const minus = endAngle - startAngle
+  const minus = endAngle - startAngle
 
-    if (minus >= PI * 2) return true
+  if (minus >= PI * 2) return true
 
-    const [x, y] = point
+  const [x, y] = point
 
-    const [bx, by] = getCircleRadianPoint(rx, ry, r, startAngle)
-    const [ex, ey] = getCircleRadianPoint(rx, ry, r, endAngle)
+  const [bx, by] = getCircleRadianPoint(rx, ry, r, startAngle)
+  const [ex, ey] = getCircleRadianPoint(rx, ry, r, endAngle)
 
-    const vPoint = [x - rx, y - ry]
-    let vBArm = [bx - rx, by - ry]
-    let vEArm = [ex - rx, ey - ry]
+  const vPoint = [x - rx, y - ry]
+  let vBArm = [bx - rx, by - ry]
+  let vEArm = [ex - rx, ey - ry]
 
-    const reverse = minus > PI
+  const reverse = minus > PI
 
-    if (reverse) [vBArm, vEArm] = deepClone([vEArm, vBArm])
+  if (reverse) [vBArm, vEArm] = deepClone([vEArm, vBArm])
 
-    let inSector = isClockWise(vBArm, vPoint) && !isClockWise(vEArm, vPoint)
+  let inSector = isClockWise(vBArm, vPoint) && !isClockWise(vEArm, vPoint)
 
-    if (reverse) inSector = !inSector
+  if (reverse) inSector = !inSector
 
-    if (reverseBE) inSector = !inSector
+  if (reverseBE) inSector = !inSector
 
-    return inSector
+  return inSector
 }
 
 /**
@@ -161,11 +151,11 @@ export function checkPointIsInSector(
  * @param {Array} vPoint Point
  * @return {Boolean} Result of check
  */
-function isClockWise(vArm, vPoint) {
-    const [ax, ay] = vArm
-    const [px, py] = vPoint
+function isClockWise (vArm, vPoint) {
+  const [ax, ay] = vArm
+  const [px, py] = vPoint
 
-    return -ay * px + ax * py > 0
+  return -ay * px + ax * py > 0
 }
 
 /**
@@ -175,15 +165,15 @@ function isClockWise(vArm, vPoint) {
  * @param {Number} lineWidth Polyline linewidth
  * @return {Boolean} Result of check
  */
-export function checkPointIsNearPolyline(point, polyline, lineWidth) {
-    const halfLineWidth = lineWidth / 2
+export function checkPointIsNearPolyline (point, polyline, lineWidth) {
+  const halfLineWidth = lineWidth / 2
 
-    const moveUpPolyline = polyline.map(([x, y]) => [x, y - halfLineWidth])
-    const moveDownPolyline = polyline.map(([x, y]) => [x, y + halfLineWidth])
+  const moveUpPolyline = polyline.map(([x, y]) => [x, y - halfLineWidth])
+  const moveDownPolyline = polyline.map(([x, y]) => [x, y + halfLineWidth])
 
-    const polygon = [...moveUpPolyline, ...moveDownPolyline.reverse()]
+  const polygon = [...moveUpPolyline, ...moveDownPolyline.reverse()]
 
-    return checkPointIsInPolygon(point, polygon)
+  return checkPointIsInPolygon(point, polygon)
 }
 
 /**
@@ -195,14 +185,14 @@ export function checkPointIsNearPolyline(point, polyline, lineWidth) {
  * @param {Number} height Rect height
  * @return {Boolean} Result of check
  */
-export function checkPointIsInRect([px, py], x, y, width, height) {
-    if (px < x) return false
-    if (py < y) return false
+export function checkPointIsInRect ([px, py], x, y, width, height) {
+  if (px < x) return false
+  if (py < y) return false
 
-    if (px > x + width) return false
-    if (py > y + height) return false
+  if (px > x + width) return false
+  if (py > y + height) return false
 
-    return true
+  return true
 }
 
 /**
@@ -213,21 +203,21 @@ export function checkPointIsInRect([px, py], x, y, width, height) {
  * @param {Array} origin  Rotation center
  * @return {Number} Coordinates after rotation
  */
-export function getRotatePointPos(rotate = 0, point, origin = [0, 0]) {
-    if (!point) return false
+export function getRotatePointPos (rotate = 0, point, origin = [0, 0]) {
+  if (!point) return false
 
-    if (rotate % 360 === 0) return point
+  if (rotate % 360 === 0) return point
 
-    const [x, y] = point
+  const [x, y] = point
 
-    const [ox, oy] = origin
+  const [ox, oy] = origin
 
-    rotate *= PI / 180
+  rotate *= PI / 180
 
-    return [
-        (x - ox) * cos(rotate) - (y - oy) * sin(rotate) + ox,
-        (x - ox) * sin(rotate) + (y - oy) * cos(rotate) + oy
-    ]
+  return [
+    (x - ox) * cos(rotate) - (y - oy) * sin(rotate) + ox,
+    (x - ox) * sin(rotate) + (y - oy) * cos(rotate) + oy
+  ]
 }
 
 /**
@@ -237,21 +227,24 @@ export function getRotatePointPos(rotate = 0, point, origin = [0, 0]) {
  * @param {Array} origin Scale center
  * @return {Number} Coordinates after scale
  */
-export function getScalePointPos(scale = [1, 1], point, origin = [0, 0]) {
-    if (!point) return false
+export function getScalePointPos (scale = [1, 1], point, origin = [0, 0]) {
+  if (!point) return false
 
-    if (scale === 1) return point
+  if (scale === 1) return point
 
-    const [x, y] = point
+  const [x, y] = point
 
-    const [ox, oy] = origin
+  const [ox, oy] = origin
 
-    const [xs, ys] = scale
+  const [xs, ys] = scale
 
-    const relativePosX = x - ox
-    const relativePosY = y - oy
+  const relativePosX = x - ox
+  const relativePosY = y - oy
 
-    return [relativePosX * xs + ox, relativePosY * ys + oy]
+  return [
+    relativePosX * xs + ox,
+    relativePosY * ys + oy
+  ]
 }
 
 /**
@@ -260,13 +253,13 @@ export function getScalePointPos(scale = [1, 1], point, origin = [0, 0]) {
  * @param {Array} point     Postion of point
  * @return {Number} Coordinates after translation
  */
-export function getTranslatePointPos(translate, point) {
-    if (!translate || !point) return false
+export function getTranslatePointPos (translate, point) {
+  if (!translate || !point) return false
 
-    const [x, y] = point
-    const [tx, ty] = translate
+  const [x, y] = point
+  const [tx, ty] = translate
 
-    return [x + tx, y + ty]
+  return [x + tx, y + ty]
 }
 
 /**
@@ -276,21 +269,21 @@ export function getTranslatePointPos(translate, point) {
  * @param {Array} lineEnd   Line end position
  * @return {Number} Distance between point and line
  */
-export function getDistanceBetweenPointAndLine(point, lineBegin, lineEnd) {
-    if (!point || !lineBegin || !lineEnd) return false
+export function getDistanceBetweenPointAndLine (point, lineBegin, lineEnd) {
+  if (!point || !lineBegin || !lineEnd) return false
 
-    const [x, y] = point
-    const [x1, y1] = lineBegin
-    const [x2, y2] = lineEnd
+  const [x, y] = point
+  const [x1, y1] = lineBegin
+  const [x2, y2] = lineEnd
 
-    const a = y2 - y1
-    const b = x1 - x2
-    const c = y1 * (x2 - x1) - x1 * (y2 - y1)
+  const a = y2 - y1
+  const b = x1 - x2
+  const c = y1 * (x2 - x1) - x1 * (y2 - y1)
 
-    const molecule = abs(a * x + b * y + c)
-    const denominator = sqrt(a * a + b * b)
+  const molecule = abs(a * x + b * y + c)
+  const denominator = sqrt(a * a + b * b)
 
-    return molecule / denominator
+  return molecule / denominator
 }
 
 /**
@@ -301,8 +294,8 @@ export function getDistanceBetweenPointAndLine(point, lineBegin, lineEnd) {
  * @param {Number} radian Specfied radian
  * @return {Array} Postion of point
  */
-export function getCircleRadianPoint(x, y, radius, radian) {
-    return [x + cos(radian) * radius, y + sin(radian) * radius]
+export function getCircleRadianPoint (x, y, radius, radian) {
+  return [x + cos(radian) * radius, y + sin(radian) * radius]
 }
 
 /**
@@ -314,28 +307,26 @@ export function getCircleRadianPoint(x, y, radius, radian) {
  * @param {Number} minus Radian offset
  * @return {Array} Points that make up a regular polygon
  */
-export function getRegularPolygonPoints(rx, ry, r, side, minus = PI * -0.5) {
-    const radianGap = (PI * 2) / side
+export function getRegularPolygonPoints (rx, ry, r, side, minus = PI * -0.5) {
+  const radianGap = PI * 2 / side
 
-    const radians = new Array(side)
-        .fill('')
-        .map((t, i) => i * radianGap + minus)
+  const radians = new Array(side).fill('').map((t, i) => i * radianGap + minus)
 
-    return radians.map((radian) => getCircleRadianPoint(rx, ry, r, radian))
+  return radians.map(radian => getCircleRadianPoint(rx, ry, r, radian))
 }
 
 export default {
-    deepClone,
-    eliminateBlur,
-    checkPointIsInCircle,
-    checkPointIsInPolygon,
-    checkPointIsInSector,
-    checkPointIsNearPolyline,
-    getTwoPointDistance,
-    getRotatePointPos,
-    getScalePointPos,
-    getTranslatePointPos,
-    getCircleRadianPoint,
-    getRegularPolygonPoints,
-    getDistanceBetweenPointAndLine
+  deepClone,
+  eliminateBlur,
+  checkPointIsInCircle,
+  checkPointIsInPolygon,
+  checkPointIsInSector,
+  checkPointIsNearPolyline,
+  getTwoPointDistance,
+  getRotatePointPos,
+  getScalePointPos,
+  getTranslatePointPos,
+  getCircleRadianPoint,
+  getRegularPolygonPoints,
+  getDistanceBetweenPointAndLine
 }

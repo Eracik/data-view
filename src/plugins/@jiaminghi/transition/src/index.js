@@ -12,36 +12,25 @@ const defaultTransitionBC = 'linear'
  * @param {Boolean} deep                   Whether to use recursive mode
  * @return {Array|Boolean} State of each frame of the animation (Invalid input will return false)
  */
-export function transition(
-    tBC,
-    startState = null,
-    endState = null,
-    frameNum = 30,
-    deep = false
-) {
-    if (!checkParams(...arguments)) return false
+export function transition (tBC, startState = null, endState = null, frameNum = 30, deep = false) {
+  if (!checkParams(...arguments)) return false
 
-    try {
-        // Get the transition bezier curve
-        const bezierCurve = getBezierCurve(tBC)
+  try {
+    // Get the transition bezier curve
+    const bezierCurve = getBezierCurve(tBC)
 
-        // Get the progress of each frame state
-        const frameStateProgress = getFrameStateProgress(bezierCurve, frameNum)
+    // Get the progress of each frame state
+    const frameStateProgress = getFrameStateProgress(bezierCurve, frameNum)
 
-        // If the recursion mode is not enabled or the state type is Number, the shallow state calculation is performed directly.
-        if (!deep || typeof endState === 'number')
-            return getTransitionState(startState, endState, frameStateProgress)
+    // If the recursion mode is not enabled or the state type is Number, the shallow state calculation is performed directly.
+    if (!deep || typeof endState === 'number') return getTransitionState(startState, endState, frameStateProgress)
 
-        return recursionTransitionState(
-            startState,
-            endState,
-            frameStateProgress
-        )
-    } catch {
-        console.warn('Transition parameter may be abnormal!')
+    return recursionTransitionState(startState, endState, frameStateProgress)
+  } catch {
+    console.warn('Transition parameter may be abnormal!')
 
-        return [endState]
-    }
+    return [endState]
+  }
 }
 
 /**
@@ -52,34 +41,32 @@ export function transition(
  * @param {Number} frameNum Number of transition frames
  * @return {Boolean} Is the parameter legal
  */
-function checkParams(tBC, startState = false, endState = false, frameNum = 30) {
-    if (!tBC || startState === false || endState === false || !frameNum) {
-        console.error('transition: Missing Parameters!')
+function checkParams (tBC, startState = false, endState = false, frameNum = 30) {
+  if (!tBC || startState === false || endState === false || !frameNum) {
+    console.error('transition: Missing Parameters!')
 
-        return false
-    }
+    return false
+  }
 
-    if (typeof startState !== typeof endState) {
-        console.error('transition: Inconsistent Status Types!')
+  if (typeof startState !== typeof endState) {
+    console.error('transition: Inconsistent Status Types!')
 
-        return false
-    }
+    return false
+  }
 
-    const stateType = typeof endState
+  const stateType = typeof endState
 
-    if (stateType === 'string' || stateType === 'boolean' || !tBC.length) {
-        console.error('transition: Unsupported Data Type of State!')
+  if (stateType === 'string' || stateType === 'boolean' || !tBC.length) {
+    console.error('transition: Unsupported Data Type of State!')
 
-        return false
-    }
+    return false
+  }
 
-    if (!curves.has(tBC) && !(tBC instanceof Array)) {
-        console.warn(
-            'transition: Transition curve not found, default curve will be used!'
-        )
-    }
+  if (!curves.has(tBC) && !(tBC instanceof Array)) {
+    console.warn('transition: Transition curve not found, default curve will be used!')
+  }
 
-    return true
+  return true
 }
 
 /**
@@ -87,18 +74,18 @@ function checkParams(tBC, startState = false, endState = false, frameNum = 30) {
  * @param {String} tBC Name of transition bezier curve
  * @return {Array} Bezier curve data
  */
-function getBezierCurve(tBC) {
-    let bezierCurve = ''
+function getBezierCurve (tBC) {
+  let bezierCurve = ''
 
-    if (curves.has(tBC)) {
-        bezierCurve = curves.get(tBC)
-    } else if (tBC instanceof Array) {
-        bezierCurve = tBC
-    } else {
-        bezierCurve = curves.get(defaultTransitionBC)
-    }
+  if (curves.has(tBC)) {
+    bezierCurve = curves.get(tBC)
+  } else if (tBC instanceof Array) {
+    bezierCurve = tBC
+  } else {
+    bezierCurve = curves.get(defaultTransitionBC)
+  }
 
-    return bezierCurve
+  return bezierCurve
 }
 
 /**
@@ -107,14 +94,14 @@ function getBezierCurve(tBC) {
  * @param {Number} frameNum   Number of transition frames
  * @return {Array} Progress of each frame state
  */
-function getFrameStateProgress(bezierCurve, frameNum) {
-    const tMinus = 1 / (frameNum - 1)
+function getFrameStateProgress (bezierCurve, frameNum) {
+  const tMinus = 1 / (frameNum - 1)
 
-    const tState = new Array(frameNum).fill(0).map((t, i) => i * tMinus)
+  const tState = new Array(frameNum).fill(0).map((t, i) => i * tMinus)
 
-    const frameState = tState.map((t) => getFrameStateFromT(bezierCurve, t))
+  const frameState = tState.map(t => getFrameStateFromT(bezierCurve, t))
 
-    return frameState
+  return frameState
 }
 
 /**
@@ -123,12 +110,12 @@ function getFrameStateProgress(bezierCurve, frameNum) {
  * @param {Number} t          Current frame t
  * @return {Number} Progress of current frame
  */
-function getFrameStateFromT(bezierCurve, t) {
-    const tBezierCurvePoint = getBezierCurvePointFromT(bezierCurve, t)
+function getFrameStateFromT (bezierCurve, t) {
+  const tBezierCurvePoint = getBezierCurvePointFromT(bezierCurve, t)
 
-    const bezierCurvePointT = getBezierCurvePointTFromReT(tBezierCurvePoint, t)
+  const bezierCurvePointT = getBezierCurvePointTFromReT(tBezierCurvePoint, t)
 
-    return getBezierCurveTState(tBezierCurvePoint, bezierCurvePointT)
+  return getBezierCurveTState(tBezierCurvePoint, bezierCurvePointT)
 }
 
 /**
@@ -137,29 +124,29 @@ function getFrameStateFromT(bezierCurve, t) {
  * @param {Number} t          Current frame t
  * @return {Array} Sub-curve of t
  */
-function getBezierCurvePointFromT(bezierCurve, t) {
-    const lastIndex = bezierCurve.length - 1
+function getBezierCurvePointFromT (bezierCurve, t) {
+  const lastIndex = bezierCurve.length - 1
 
-    let [begin, end] = ['', '']
+  let [begin, end] = ['', '']
 
-    bezierCurve.findIndex((item, i) => {
-        if (i === lastIndex) return
+  bezierCurve.findIndex((item, i) => {
+    if (i === lastIndex) return
 
-        begin = item
-        end = bezierCurve[i + 1]
+    begin = item
+    end = bezierCurve[i + 1]
 
-        const currentMainPointX = begin[0][0]
-        const nextMainPointX = end[0][0]
+    const currentMainPointX = begin[0][0]
+    const nextMainPointX = end[0][0]
 
-        return t >= currentMainPointX && t < nextMainPointX
-    })
+    return t >= currentMainPointX && t < nextMainPointX
+  })
 
-    const p0 = begin[0]
-    const p1 = begin[2] || begin[0]
-    const p2 = end[1] || end[0]
-    const p3 = end[0]
+  const p0 = begin[0]
+  const p1 = begin[2] || begin[0]
+  const p2 = end[1] || end[0]
+  const p3 = end[0]
 
-    return [p0, p1, p2, p3]
+  return [p0, p1, p2, p3]
 }
 
 /**
@@ -168,15 +155,15 @@ function getBezierCurvePointFromT(bezierCurve, t) {
  * @param {Number} t          Current frame t
  * @return {Number} local t of sub-curve
  */
-function getBezierCurvePointTFromReT(bezierCurve, t) {
-    const reBeginX = bezierCurve[0][0]
-    const reEndX = bezierCurve[3][0]
+function getBezierCurvePointTFromReT (bezierCurve, t) {
+  const reBeginX = bezierCurve[0][0]
+  const reEndX = bezierCurve[3][0]
 
-    const xMinus = reEndX - reBeginX
+  const xMinus = reEndX - reBeginX
 
-    const tMinus = t - reBeginX
+  const tMinus = t - reBeginX
 
-    return tMinus / xMinus
+  return tMinus / xMinus
 }
 
 /**
@@ -185,20 +172,20 @@ function getBezierCurvePointTFromReT(bezierCurve, t) {
  * @param {Number} t          Current frame t
  * @return {Number} Progress of current frame
  */
-function getBezierCurveTState([[, p0], [, p1], [, p2], [, p3]], t) {
-    const { pow } = Math
+function getBezierCurveTState ([[, p0], [, p1], [, p2], [, p3]], t) {
+  const { pow } = Math
 
-    const tMinus = 1 - t
+  const tMinus = 1 - t
 
-    const result1 = p0 * pow(tMinus, 3)
+  const result1 = p0 * pow(tMinus, 3)
 
-    const result2 = 3 * p1 * t * pow(tMinus, 2)
+  const result2 = 3 * p1 * t * pow(tMinus, 2)
 
-    const result3 = 3 * p2 * pow(t, 2) * tMinus
+  const result3 = 3 * p2 * pow(t, 2) * tMinus
 
-    const result4 = p3 * pow(t, 3)
+  const result4 = p3 * pow(t, 3)
 
-    return 1 - (result1 + result2 + result3 + result4)
+  return 1 - (result1 + result2 + result3 + result4)
 }
 
 /**
@@ -208,20 +195,17 @@ function getBezierCurveTState([[, p0], [, p1], [, p2], [, p3]], t) {
  * @param {Array} frameState Frame state progress
  * @return {Array} Transition frame state
  */
-function getTransitionState(begin, end, frameState) {
-    let stateType = 'object'
+function getTransitionState (begin, end, frameState) {
+  let stateType = 'object'
 
-    if (typeof begin === 'number') stateType = 'number'
-    if (begin instanceof Array) stateType = 'array'
+  if (typeof begin === 'number') stateType = 'number'
+  if (begin instanceof Array) stateType = 'array'
 
-    if (stateType === 'number')
-        return getNumberTransitionState(begin, end, frameState)
-    if (stateType === 'array')
-        return getArrayTransitionState(begin, end, frameState)
-    if (stateType === 'object')
-        return getObjectTransitionState(begin, end, frameState)
+  if (stateType === 'number') return getNumberTransitionState(begin, end, frameState)
+  if (stateType === 'array') return getArrayTransitionState(begin, end, frameState)
+  if (stateType === 'object') return getObjectTransitionState(begin, end, frameState)
 
-    return frameState.map((t) => end)
+  return frameState.map(t => end)
 }
 
 /**
@@ -231,10 +215,10 @@ function getTransitionState(begin, end, frameState) {
  * @param {Array} frameState  Frame state progress
  * @return {Array} Transition frame state
  */
-function getNumberTransitionState(begin, end, frameState) {
-    const minus = end - begin
+function getNumberTransitionState (begin, end, frameState) {
+  const minus = end - begin
 
-    return frameState.map((s) => begin + minus * s)
+  return frameState.map(s => begin + minus * s)
 }
 
 /**
@@ -244,20 +228,19 @@ function getNumberTransitionState(begin, end, frameState) {
  * @param {Array} frameState Frame state progress
  * @return {Array} Transition frame state
  */
-function getArrayTransitionState(begin, end, frameState) {
-    const minus = end.map((v, i) => {
-        if (typeof v !== 'number') return false
+function getArrayTransitionState (begin, end, frameState) {
+  const minus = end.map((v, i) => {
+    if (typeof v !== 'number') return false
 
-        return v - begin[i]
-    })
+    return v - begin[i]
+  })
 
-    return frameState.map((s) =>
-        minus.map((v, i) => {
-            if (v === false) return end[i]
+  return frameState.map(s =>
+    minus.map((v, i) => {
+      if (v === false) return end[i]
 
-            return begin[i] + v * s
-        })
-    )
+      return begin[i] + v * s
+    }))
 }
 
 /**
@@ -267,21 +250,21 @@ function getArrayTransitionState(begin, end, frameState) {
  * @param {Array} frameState  Frame state progress
  * @return {Array} Transition frame state
  */
-function getObjectTransitionState(begin, end, frameState) {
-    const keys = Object.keys(end)
+function getObjectTransitionState (begin, end, frameState) {
+  const keys = Object.keys(end)
 
-    const beginValue = keys.map((k) => begin[k])
-    const endValue = keys.map((k) => end[k])
+  const beginValue = keys.map(k => begin[k])
+  const endValue = keys.map(k => end[k])
 
-    const arrayState = getArrayTransitionState(beginValue, endValue, frameState)
+  const arrayState = getArrayTransitionState(beginValue, endValue, frameState)
 
-    return arrayState.map((item) => {
-        const frameData = {}
+  return arrayState.map(item => {
+    const frameData = {}
 
-        item.forEach((v, i) => (frameData[keys[i]] = v))
+    item.forEach((v, i) => (frameData[keys[i]] = v))
 
-        return frameData
-    })
+    return frameData
+  })
 }
 
 /**
@@ -291,21 +274,21 @@ function getObjectTransitionState(begin, end, frameState) {
  * @param {Array} frameState        Frame state progress
  * @return {Array} Transition frame state
  */
-function recursionTransitionState(begin, end, frameState) {
-    const state = getTransitionState(begin, end, frameState)
+function recursionTransitionState (begin, end, frameState) {
+  const state = getTransitionState(begin, end, frameState)
 
-    for (let key in end) {
-        const bTemp = begin[key]
-        const eTemp = end[key]
+  for (let key in end) {
+    const bTemp = begin[key]
+    const eTemp = end[key]
 
-        if (typeof eTemp !== 'object') continue
+    if (typeof eTemp !== 'object') continue
 
-        const data = recursionTransitionState(bTemp, eTemp, frameState)
+    const data = recursionTransitionState(bTemp, eTemp, frameState)
 
-        state.forEach((fs, i) => (fs[key] = data[i]))
-    }
+    state.forEach((fs, i) => (fs[key] = data[i]))
+  }
 
-    return state
+  return state
 }
 
 /**
@@ -314,14 +297,14 @@ function recursionTransitionState(begin, end, frameState) {
  * @param {Array} curve Bezier curve data
  * @return {Undefined} No return
  */
-export function injectNewCurve(key, curve) {
-    if (!key || !curve) {
-        console.error('InjectNewCurve Missing Parameters!')
+export function injectNewCurve (key, curve) {
+  if (!key || !curve) {
+    console.error('InjectNewCurve Missing Parameters!')
 
-        return
-    }
+    return
+  }
 
-    curves.set(key, curve)
+  curves.set(key, curve)
 }
 
 export default transition

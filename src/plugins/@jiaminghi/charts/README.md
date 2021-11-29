@@ -6,41 +6,41 @@
     <a href="https://github.com/DataV-Team/charts/blob/master/LICENSE">
         <img src="https://img.shields.io/github/license/DataV-Team/charts.svg" alt="LICENSE" />
     </a>
-    <a href="https://www.npmjs.com/package/@jiaminghi/charts">
-        <img src="https://img.shields.io/npm/v/@jiaminghi/charts.svg" alt="LICENSE" />
+    <a href="https://www.npmjs.com/package/@/plugins/@jiaminghi/charts">
+        <img src="https://img.shields.io/npm/v/@/plugins/@jiaminghi/charts.svg" alt="LICENSE" />
     </a>
 </p>
 
-### Charts 是干什么的?
+### Charts是干什么的?
 
--   它是一个基于**canvas**的`轻量`图表库.
+- 它是一个基于**canvas**的`轻量`图表库.
 
 ### 支持
 
--   `折线图`
--   `柱状图`
--   `饼状图`
--   `雷达图`
--   `仪表盘`
+* `折线图`
+* `柱状图`
+* `饼状图`
+* `雷达图`
+* `仪表盘`
 
-### npm 安装
+### npm安装
 
 ```shell
-$ npm install @jiaminghi/charts
+$ npm install @/plugins/@jiaminghi/charts
 ```
 
 ### 使用
 
 ```javascript
-import Charts from '@jiaminghi/charts'
+import Charts from '@/plugins/@jiaminghi/charts'
 
 const container = document.getElementById('container')
 
 const myChart = new Charts(container)
 
 myChart.setOption({
-    title: 'My Chart'
-    // ...otherConfig
+  title: 'My Chart',
+  // ...otherConfig
 })
 ```
 
@@ -55,7 +55,7 @@ myChart.setOption({
 <!--压缩版-->
 <script src="http://lib.jiaminghi.com/charts/charts.min.js"></script>
 <script>
-    const Charts = window.Charts.default
-    // do something
+  const Charts = window.Charts.default
+  // do something
 </script>
 ```

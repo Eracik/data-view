@@ -1,35 +1,31 @@
-'use strict'
+"use strict";
 
-var _interopRequireDefault = require('@babel/runtime/helpers/interopRequireDefault')
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-})
-exports.deepClone = deepClone
-exports.eliminateBlur = eliminateBlur
-exports.checkPointIsInCircle = checkPointIsInCircle
-exports.getTwoPointDistance = getTwoPointDistance
-exports.checkPointIsInPolygon = checkPointIsInPolygon
-exports.checkPointIsInSector = checkPointIsInSector
-exports.checkPointIsNearPolyline = checkPointIsNearPolyline
-exports.checkPointIsInRect = checkPointIsInRect
-exports.getRotatePointPos = getRotatePointPos
-exports.getScalePointPos = getScalePointPos
-exports.getTranslatePointPos = getTranslatePointPos
-exports.getDistanceBetweenPointAndLine = getDistanceBetweenPointAndLine
-exports.getCircleRadianPoint = getCircleRadianPoint
-exports.getRegularPolygonPoints = getRegularPolygonPoints
-exports['default'] = void 0
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.deepClone = deepClone;
+exports.eliminateBlur = eliminateBlur;
+exports.checkPointIsInCircle = checkPointIsInCircle;
+exports.getTwoPointDistance = getTwoPointDistance;
+exports.checkPointIsInPolygon = checkPointIsInPolygon;
+exports.checkPointIsInSector = checkPointIsInSector;
+exports.checkPointIsNearPolyline = checkPointIsNearPolyline;
+exports.checkPointIsInRect = checkPointIsInRect;
+exports.getRotatePointPos = getRotatePointPos;
+exports.getScalePointPos = getScalePointPos;
+exports.getTranslatePointPos = getTranslatePointPos;
+exports.getDistanceBetweenPointAndLine = getDistanceBetweenPointAndLine;
+exports.getCircleRadianPoint = getCircleRadianPoint;
+exports.getRegularPolygonPoints = getRegularPolygonPoints;
+exports["default"] = void 0;
 
-var _toConsumableArray2 = _interopRequireDefault(
-    require('@babel/runtime/helpers/toConsumableArray')
-)
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
-var _slicedToArray2 = _interopRequireDefault(
-    require('@babel/runtime/helpers/slicedToArray')
-)
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 
-var _typeof2 = _interopRequireDefault(require('@babel/runtime/helpers/typeof'))
+var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
 
 var abs = Math.abs,
     sqrt = Math.sqrt,
@@ -37,7 +33,7 @@ var abs = Math.abs,
     cos = Math.cos,
     max = Math.max,
     min = Math.min,
-    PI = Math.PI
+    PI = Math.PI;
 /**
  * @description Clone an object or array
  * @param {Object|Array} object Cloned object
@@ -46,32 +42,26 @@ var abs = Math.abs,
  */
 
 function deepClone(object) {
-    var recursion =
-        arguments.length > 1 && arguments[1] !== undefined
-            ? arguments[1]
-            : false
-    if (!object) return object
-    var parse = JSON.parse,
-        stringify = JSON.stringify
-    if (!recursion) return parse(stringify(object))
-    var clonedObj = object instanceof Array ? [] : {}
+  var recursion = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  if (!object) return object;
+  var parse = JSON.parse,
+      stringify = JSON.stringify;
+  if (!recursion) return parse(stringify(object));
+  var clonedObj = object instanceof Array ? [] : {};
 
-    if (object && (0, _typeof2['default'])(object) === 'object') {
-        for (var key in object) {
-            if (object.hasOwnProperty(key)) {
-                if (
-                    object[key] &&
-                    (0, _typeof2['default'])(object[key]) === 'object'
-                ) {
-                    clonedObj[key] = deepClone(object[key], true)
-                } else {
-                    clonedObj[key] = object[key]
-                }
-            }
+  if (object && (0, _typeof2["default"])(object) === 'object') {
+    for (var key in object) {
+      if (object.hasOwnProperty(key)) {
+        if (object[key] && (0, _typeof2["default"])(object[key]) === 'object') {
+          clonedObj[key] = deepClone(object[key], true);
+        } else {
+          clonedObj[key] = object[key];
         }
+      }
     }
+  }
 
-    return clonedObj
+  return clonedObj;
 }
 /**
  * @description Eliminate line blur due to 1px line width
@@ -79,14 +69,15 @@ function deepClone(object) {
  * @return {Array} Line points after processed
  */
 
-function eliminateBlur(points) {
-    return points.map(function (_ref) {
-        var _ref2 = (0, _slicedToArray2['default'])(_ref, 2),
-            x = _ref2[0],
-            y = _ref2[1]
 
-        return [parseInt(x) + 0.5, parseInt(y) + 0.5]
-    })
+function eliminateBlur(points) {
+  return points.map(function (_ref) {
+    var _ref2 = (0, _slicedToArray2["default"])(_ref, 2),
+        x = _ref2[0],
+        y = _ref2[1];
+
+    return [parseInt(x) + 0.5, parseInt(y) + 0.5];
+  });
 }
 /**
  * @description Check if the point is inside the circle
@@ -97,8 +88,9 @@ function eliminateBlur(points) {
  * @return {Boolean} Result of check
  */
 
+
 function checkPointIsInCircle(point, rx, ry, r) {
-    return getTwoPointDistance(point, [rx, ry]) <= r
+  return getTwoPointDistance(point, [rx, ry]) <= r;
 }
 /**
  * @description Get the distance between two points
@@ -107,18 +99,19 @@ function checkPointIsInCircle(point, rx, ry, r) {
  * @return {Number} Distance between two points
  */
 
+
 function getTwoPointDistance(_ref3, _ref4) {
-    var _ref5 = (0, _slicedToArray2['default'])(_ref3, 2),
-        xa = _ref5[0],
-        ya = _ref5[1]
+  var _ref5 = (0, _slicedToArray2["default"])(_ref3, 2),
+      xa = _ref5[0],
+      ya = _ref5[1];
 
-    var _ref6 = (0, _slicedToArray2['default'])(_ref4, 2),
-        xb = _ref6[0],
-        yb = _ref6[1]
+  var _ref6 = (0, _slicedToArray2["default"])(_ref4, 2),
+      xb = _ref6[0],
+      yb = _ref6[1];
 
-    var minusX = abs(xa - xb)
-    var minusY = abs(ya - yb)
-    return sqrt(minusX * minusX + minusY * minusY)
+  var minusX = abs(xa - xb);
+  var minusY = abs(ya - yb);
+  return sqrt(minusX * minusX + minusY * minusY);
 }
 /**
  * @description Check if the point is inside the polygon
@@ -127,36 +120,35 @@ function getTwoPointDistance(_ref3, _ref4) {
  * @return {Boolean} Result of check
  */
 
+
 function checkPointIsInPolygon(point, polygon) {
-    var counter = 0
+  var counter = 0;
 
-    var _point = (0, _slicedToArray2['default'])(point, 2),
-        x = _point[0],
-        y = _point[1]
+  var _point = (0, _slicedToArray2["default"])(point, 2),
+      x = _point[0],
+      y = _point[1];
 
-    var pointNum = polygon.length
+  var pointNum = polygon.length;
 
-    for (var i = 1, p1 = polygon[0]; i <= pointNum; i++) {
-        var p2 = polygon[i % pointNum]
+  for (var i = 1, p1 = polygon[0]; i <= pointNum; i++) {
+    var p2 = polygon[i % pointNum];
 
-        if (x > min(p1[0], p2[0]) && x <= max(p1[0], p2[0])) {
-            if (y <= max(p1[1], p2[1])) {
-                if (p1[0] !== p2[0]) {
-                    var xinters =
-                        ((x - p1[0]) * (p2[1] - p1[1])) / (p2[0] - p1[0]) +
-                        p1[1]
+    if (x > min(p1[0], p2[0]) && x <= max(p1[0], p2[0])) {
+      if (y <= max(p1[1], p2[1])) {
+        if (p1[0] !== p2[0]) {
+          var xinters = (x - p1[0]) * (p2[1] - p1[1]) / (p2[0] - p1[0]) + p1[1];
 
-                    if (p1[1] === p2[1] || y <= xinters) {
-                        counter++
-                    }
-                }
-            }
+          if (p1[1] === p2[1] || y <= xinters) {
+            counter++;
+          }
         }
-
-        p1 = p2
+      }
     }
 
-    return counter % 2 === 1
+    p1 = p2;
+  }
+
+  return counter % 2 === 1;
 }
 /**
  * @description Check if the point is inside the sector
@@ -170,76 +162,63 @@ function checkPointIsInPolygon(point, polygon) {
  * @return {Boolean} Result of check
  */
 
-function checkPointIsInSector(
-    point,
-    rx,
-    ry,
-    r,
-    startAngle,
-    endAngle,
-    clockWise
-) {
-    if (!point) return false
-    if (getTwoPointDistance(point, [rx, ry]) > r) return false
 
-    if (!clockWise) {
-        var _deepClone = deepClone([endAngle, startAngle])
+function checkPointIsInSector(point, rx, ry, r, startAngle, endAngle, clockWise) {
+  if (!point) return false;
+  if (getTwoPointDistance(point, [rx, ry]) > r) return false;
 
-        var _deepClone2 = (0, _slicedToArray2['default'])(_deepClone, 2)
+  if (!clockWise) {
+    var _deepClone = deepClone([endAngle, startAngle]);
 
-        startAngle = _deepClone2[0]
-        endAngle = _deepClone2[1]
-    }
+    var _deepClone2 = (0, _slicedToArray2["default"])(_deepClone, 2);
 
-    var reverseBE = startAngle > endAngle
+    startAngle = _deepClone2[0];
+    endAngle = _deepClone2[1];
+  }
 
-    if (reverseBE) {
-        var _ref7 = [endAngle, startAngle]
-        startAngle = _ref7[0]
-        endAngle = _ref7[1]
-    }
+  var reverseBE = startAngle > endAngle;
 
-    var minus = endAngle - startAngle
-    if (minus >= PI * 2) return true
+  if (reverseBE) {
+    var _ref7 = [endAngle, startAngle];
+    startAngle = _ref7[0];
+    endAngle = _ref7[1];
+  }
 
-    var _point2 = (0, _slicedToArray2['default'])(point, 2),
-        x = _point2[0],
-        y = _point2[1]
+  var minus = endAngle - startAngle;
+  if (minus >= PI * 2) return true;
 
-    var _getCircleRadianPoint = getCircleRadianPoint(rx, ry, r, startAngle),
-        _getCircleRadianPoint2 = (0, _slicedToArray2['default'])(
-            _getCircleRadianPoint,
-            2
-        ),
-        bx = _getCircleRadianPoint2[0],
-        by = _getCircleRadianPoint2[1]
+  var _point2 = (0, _slicedToArray2["default"])(point, 2),
+      x = _point2[0],
+      y = _point2[1];
 
-    var _getCircleRadianPoint3 = getCircleRadianPoint(rx, ry, r, endAngle),
-        _getCircleRadianPoint4 = (0, _slicedToArray2['default'])(
-            _getCircleRadianPoint3,
-            2
-        ),
-        ex = _getCircleRadianPoint4[0],
-        ey = _getCircleRadianPoint4[1]
+  var _getCircleRadianPoint = getCircleRadianPoint(rx, ry, r, startAngle),
+      _getCircleRadianPoint2 = (0, _slicedToArray2["default"])(_getCircleRadianPoint, 2),
+      bx = _getCircleRadianPoint2[0],
+      by = _getCircleRadianPoint2[1];
 
-    var vPoint = [x - rx, y - ry]
-    var vBArm = [bx - rx, by - ry]
-    var vEArm = [ex - rx, ey - ry]
-    var reverse = minus > PI
+  var _getCircleRadianPoint3 = getCircleRadianPoint(rx, ry, r, endAngle),
+      _getCircleRadianPoint4 = (0, _slicedToArray2["default"])(_getCircleRadianPoint3, 2),
+      ex = _getCircleRadianPoint4[0],
+      ey = _getCircleRadianPoint4[1];
 
-    if (reverse) {
-        var _deepClone3 = deepClone([vEArm, vBArm])
+  var vPoint = [x - rx, y - ry];
+  var vBArm = [bx - rx, by - ry];
+  var vEArm = [ex - rx, ey - ry];
+  var reverse = minus > PI;
 
-        var _deepClone4 = (0, _slicedToArray2['default'])(_deepClone3, 2)
+  if (reverse) {
+    var _deepClone3 = deepClone([vEArm, vBArm]);
 
-        vBArm = _deepClone4[0]
-        vEArm = _deepClone4[1]
-    }
+    var _deepClone4 = (0, _slicedToArray2["default"])(_deepClone3, 2);
 
-    var inSector = isClockWise(vBArm, vPoint) && !isClockWise(vEArm, vPoint)
-    if (reverse) inSector = !inSector
-    if (reverseBE) inSector = !inSector
-    return inSector
+    vBArm = _deepClone4[0];
+    vEArm = _deepClone4[1];
+  }
+
+  var inSector = isClockWise(vBArm, vPoint) && !isClockWise(vEArm, vPoint);
+  if (reverse) inSector = !inSector;
+  if (reverseBE) inSector = !inSector;
+  return inSector;
 }
 /**
  * @description Determine if the point is in the clockwise direction of the vector
@@ -248,16 +227,17 @@ function checkPointIsInSector(
  * @return {Boolean} Result of check
  */
 
+
 function isClockWise(vArm, vPoint) {
-    var _vArm = (0, _slicedToArray2['default'])(vArm, 2),
-        ax = _vArm[0],
-        ay = _vArm[1]
+  var _vArm = (0, _slicedToArray2["default"])(vArm, 2),
+      ax = _vArm[0],
+      ay = _vArm[1];
 
-    var _vPoint = (0, _slicedToArray2['default'])(vPoint, 2),
-        px = _vPoint[0],
-        py = _vPoint[1]
+  var _vPoint = (0, _slicedToArray2["default"])(vPoint, 2),
+      px = _vPoint[0],
+      py = _vPoint[1];
 
-    return -ay * px + ax * py > 0
+  return -ay * px + ax * py > 0;
 }
 /**
  * @description Check if the point is inside the polyline
@@ -267,27 +247,25 @@ function isClockWise(vArm, vPoint) {
  * @return {Boolean} Result of check
  */
 
+
 function checkPointIsNearPolyline(point, polyline, lineWidth) {
-    var halfLineWidth = lineWidth / 2
-    var moveUpPolyline = polyline.map(function (_ref8) {
-        var _ref9 = (0, _slicedToArray2['default'])(_ref8, 2),
-            x = _ref9[0],
-            y = _ref9[1]
+  var halfLineWidth = lineWidth / 2;
+  var moveUpPolyline = polyline.map(function (_ref8) {
+    var _ref9 = (0, _slicedToArray2["default"])(_ref8, 2),
+        x = _ref9[0],
+        y = _ref9[1];
 
-        return [x, y - halfLineWidth]
-    })
-    var moveDownPolyline = polyline.map(function (_ref10) {
-        var _ref11 = (0, _slicedToArray2['default'])(_ref10, 2),
-            x = _ref11[0],
-            y = _ref11[1]
+    return [x, y - halfLineWidth];
+  });
+  var moveDownPolyline = polyline.map(function (_ref10) {
+    var _ref11 = (0, _slicedToArray2["default"])(_ref10, 2),
+        x = _ref11[0],
+        y = _ref11[1];
 
-        return [x, y + halfLineWidth]
-    })
-    var polygon = [].concat(
-        (0, _toConsumableArray2['default'])(moveUpPolyline),
-        (0, _toConsumableArray2['default'])(moveDownPolyline.reverse())
-    )
-    return checkPointIsInPolygon(point, polygon)
+    return [x, y + halfLineWidth];
+  });
+  var polygon = [].concat((0, _toConsumableArray2["default"])(moveUpPolyline), (0, _toConsumableArray2["default"])(moveDownPolyline.reverse()));
+  return checkPointIsInPolygon(point, polygon);
 }
 /**
  * @description Check if the point is inside the rect
@@ -299,16 +277,17 @@ function checkPointIsNearPolyline(point, polyline, lineWidth) {
  * @return {Boolean} Result of check
  */
 
-function checkPointIsInRect(_ref12, x, y, width, height) {
-    var _ref13 = (0, _slicedToArray2['default'])(_ref12, 2),
-        px = _ref13[0],
-        py = _ref13[1]
 
-    if (px < x) return false
-    if (py < y) return false
-    if (px > x + width) return false
-    if (py > y + height) return false
-    return true
+function checkPointIsInRect(_ref12, x, y, width, height) {
+  var _ref13 = (0, _slicedToArray2["default"])(_ref12, 2),
+      px = _ref13[0],
+      py = _ref13[1];
+
+  if (px < x) return false;
+  if (py < y) return false;
+  if (px > x + width) return false;
+  if (py > y + height) return false;
+  return true;
 }
 /**
  * @description Get the coordinates of the rotated point
@@ -319,30 +298,24 @@ function checkPointIsInRect(_ref12, x, y, width, height) {
  * @return {Number} Coordinates after rotation
  */
 
+
 function getRotatePointPos() {
-    var rotate =
-        arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0
-    var point = arguments.length > 1 ? arguments[1] : undefined
-    var origin =
-        arguments.length > 2 && arguments[2] !== undefined
-            ? arguments[2]
-            : [0, 0]
-    if (!point) return false
-    if (rotate % 360 === 0) return point
+  var rotate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+  var point = arguments.length > 1 ? arguments[1] : undefined;
+  var origin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [0, 0];
+  if (!point) return false;
+  if (rotate % 360 === 0) return point;
 
-    var _point3 = (0, _slicedToArray2['default'])(point, 2),
-        x = _point3[0],
-        y = _point3[1]
+  var _point3 = (0, _slicedToArray2["default"])(point, 2),
+      x = _point3[0],
+      y = _point3[1];
 
-    var _origin = (0, _slicedToArray2['default'])(origin, 2),
-        ox = _origin[0],
-        oy = _origin[1]
+  var _origin = (0, _slicedToArray2["default"])(origin, 2),
+      ox = _origin[0],
+      oy = _origin[1];
 
-    rotate *= PI / 180
-    return [
-        (x - ox) * cos(rotate) - (y - oy) * sin(rotate) + ox,
-        (x - ox) * sin(rotate) + (y - oy) * cos(rotate) + oy
-    ]
+  rotate *= PI / 180;
+  return [(x - ox) * cos(rotate) - (y - oy) * sin(rotate) + ox, (x - ox) * sin(rotate) + (y - oy) * cos(rotate) + oy];
 }
 /**
  * @description Get the coordinates of the scaled point
@@ -352,34 +325,29 @@ function getRotatePointPos() {
  * @return {Number} Coordinates after scale
  */
 
+
 function getScalePointPos() {
-    var scale =
-        arguments.length > 0 && arguments[0] !== undefined
-            ? arguments[0]
-            : [1, 1]
-    var point = arguments.length > 1 ? arguments[1] : undefined
-    var origin =
-        arguments.length > 2 && arguments[2] !== undefined
-            ? arguments[2]
-            : [0, 0]
-    if (!point) return false
-    if (scale === 1) return point
+  var scale = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [1, 1];
+  var point = arguments.length > 1 ? arguments[1] : undefined;
+  var origin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [0, 0];
+  if (!point) return false;
+  if (scale === 1) return point;
 
-    var _point4 = (0, _slicedToArray2['default'])(point, 2),
-        x = _point4[0],
-        y = _point4[1]
+  var _point4 = (0, _slicedToArray2["default"])(point, 2),
+      x = _point4[0],
+      y = _point4[1];
 
-    var _origin2 = (0, _slicedToArray2['default'])(origin, 2),
-        ox = _origin2[0],
-        oy = _origin2[1]
+  var _origin2 = (0, _slicedToArray2["default"])(origin, 2),
+      ox = _origin2[0],
+      oy = _origin2[1];
 
-    var _scale = (0, _slicedToArray2['default'])(scale, 2),
-        xs = _scale[0],
-        ys = _scale[1]
+  var _scale = (0, _slicedToArray2["default"])(scale, 2),
+      xs = _scale[0],
+      ys = _scale[1];
 
-    var relativePosX = x - ox
-    var relativePosY = y - oy
-    return [relativePosX * xs + ox, relativePosY * ys + oy]
+  var relativePosX = x - ox;
+  var relativePosY = y - oy;
+  return [relativePosX * xs + ox, relativePosY * ys + oy];
 }
 /**
  * @description Get the coordinates of the scaled point
@@ -388,18 +356,19 @@ function getScalePointPos() {
  * @return {Number} Coordinates after translation
  */
 
+
 function getTranslatePointPos(translate, point) {
-    if (!translate || !point) return false
+  if (!translate || !point) return false;
 
-    var _point5 = (0, _slicedToArray2['default'])(point, 2),
-        x = _point5[0],
-        y = _point5[1]
+  var _point5 = (0, _slicedToArray2["default"])(point, 2),
+      x = _point5[0],
+      y = _point5[1];
 
-    var _translate = (0, _slicedToArray2['default'])(translate, 2),
-        tx = _translate[0],
-        ty = _translate[1]
+  var _translate = (0, _slicedToArray2["default"])(translate, 2),
+      tx = _translate[0],
+      ty = _translate[1];
 
-    return [x + tx, y + ty]
+  return [x + tx, y + ty];
 }
 /**
  * @description Get the distance from the point to the line
@@ -409,27 +378,28 @@ function getTranslatePointPos(translate, point) {
  * @return {Number} Distance between point and line
  */
 
+
 function getDistanceBetweenPointAndLine(point, lineBegin, lineEnd) {
-    if (!point || !lineBegin || !lineEnd) return false
+  if (!point || !lineBegin || !lineEnd) return false;
 
-    var _point6 = (0, _slicedToArray2['default'])(point, 2),
-        x = _point6[0],
-        y = _point6[1]
+  var _point6 = (0, _slicedToArray2["default"])(point, 2),
+      x = _point6[0],
+      y = _point6[1];
 
-    var _lineBegin = (0, _slicedToArray2['default'])(lineBegin, 2),
-        x1 = _lineBegin[0],
-        y1 = _lineBegin[1]
+  var _lineBegin = (0, _slicedToArray2["default"])(lineBegin, 2),
+      x1 = _lineBegin[0],
+      y1 = _lineBegin[1];
 
-    var _lineEnd = (0, _slicedToArray2['default'])(lineEnd, 2),
-        x2 = _lineEnd[0],
-        y2 = _lineEnd[1]
+  var _lineEnd = (0, _slicedToArray2["default"])(lineEnd, 2),
+      x2 = _lineEnd[0],
+      y2 = _lineEnd[1];
 
-    var a = y2 - y1
-    var b = x1 - x2
-    var c = y1 * (x2 - x1) - x1 * (y2 - y1)
-    var molecule = abs(a * x + b * y + c)
-    var denominator = sqrt(a * a + b * b)
-    return molecule / denominator
+  var a = y2 - y1;
+  var b = x1 - x2;
+  var c = y1 * (x2 - x1) - x1 * (y2 - y1);
+  var molecule = abs(a * x + b * y + c);
+  var denominator = sqrt(a * a + b * b);
+  return molecule / denominator;
 }
 /**
  * @description Get the coordinates of the specified radian on the circle
@@ -440,8 +410,9 @@ function getDistanceBetweenPointAndLine(point, lineBegin, lineEnd) {
  * @return {Array} Postion of point
  */
 
+
 function getCircleRadianPoint(x, y, radius, radian) {
-    return [x + cos(radian) * radius, y + sin(radian) * radius]
+  return [x + cos(radian) * radius, y + sin(radian) * radius];
 }
 /**
  * @description Get the points that make up a regular polygon
@@ -453,33 +424,31 @@ function getCircleRadianPoint(x, y, radius, radian) {
  * @return {Array} Points that make up a regular polygon
  */
 
+
 function getRegularPolygonPoints(rx, ry, r, side) {
-    var minus =
-        arguments.length > 4 && arguments[4] !== undefined
-            ? arguments[4]
-            : PI * -0.5
-    var radianGap = (PI * 2) / side
-    var radians = new Array(side).fill('').map(function (t, i) {
-        return i * radianGap + minus
-    })
-    return radians.map(function (radian) {
-        return getCircleRadianPoint(rx, ry, r, radian)
-    })
+  var minus = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : PI * -0.5;
+  var radianGap = PI * 2 / side;
+  var radians = new Array(side).fill('').map(function (t, i) {
+    return i * radianGap + minus;
+  });
+  return radians.map(function (radian) {
+    return getCircleRadianPoint(rx, ry, r, radian);
+  });
 }
 
 var _default = {
-    deepClone: deepClone,
-    eliminateBlur: eliminateBlur,
-    checkPointIsInCircle: checkPointIsInCircle,
-    checkPointIsInPolygon: checkPointIsInPolygon,
-    checkPointIsInSector: checkPointIsInSector,
-    checkPointIsNearPolyline: checkPointIsNearPolyline,
-    getTwoPointDistance: getTwoPointDistance,
-    getRotatePointPos: getRotatePointPos,
-    getScalePointPos: getScalePointPos,
-    getTranslatePointPos: getTranslatePointPos,
-    getCircleRadianPoint: getCircleRadianPoint,
-    getRegularPolygonPoints: getRegularPolygonPoints,
-    getDistanceBetweenPointAndLine: getDistanceBetweenPointAndLine
-}
-exports['default'] = _default
+  deepClone: deepClone,
+  eliminateBlur: eliminateBlur,
+  checkPointIsInCircle: checkPointIsInCircle,
+  checkPointIsInPolygon: checkPointIsInPolygon,
+  checkPointIsInSector: checkPointIsInSector,
+  checkPointIsNearPolyline: checkPointIsNearPolyline,
+  getTwoPointDistance: getTwoPointDistance,
+  getRotatePointPos: getRotatePointPos,
+  getScalePointPos: getScalePointPos,
+  getTranslatePointPos: getTranslatePointPos,
+  getCircleRadianPoint: getCircleRadianPoint,
+  getRegularPolygonPoints: getRegularPolygonPoints,
+  getDistanceBetweenPointAndLine: getDistanceBetweenPointAndLine
+};
+exports["default"] = _default;

@@ -1,13 +1,13 @@
-function getNodeParams() {
-    const params = {}
+function getNodeParams () {
+  const params = {}
 
-    process.argv.slice(2).forEach((param) => {
-        param = param.split('=')
+  process.argv.slice(2).forEach(param => {
+    param = param.split('=')
 
-        params[param[0]] = param[1]
-    })
+    params[param[0]] = param[1]
+  })
 
-    return params
+  return params
 }
 
 module.exports = getNodeParams

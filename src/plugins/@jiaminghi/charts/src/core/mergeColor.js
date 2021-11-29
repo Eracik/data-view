@@ -1,49 +1,49 @@
 import { colorConfig } from '../config'
 
-import { deepClone } from '@jiaminghi/c-render/lib/plugin/util'
+import { deepClone } from '@/plugins/@jiaminghi/c-render/lib/plugin/util'
 
 import { deepMerge } from '../util'
 
 export function mergeColor(chart, option = {}) {
-    const defaultColor = deepClone(colorConfig, true)
+  const defaultColor = deepClone(colorConfig, true)
 
-    let { color, series } = option
+  let { color, series } = option
 
-    if (!series) series = []
+  if (!series) series = []
 
-    if (!color) color = []
+  if (!color) color = []
 
-    option.color = color = deepMerge(defaultColor, color)
+  option.color = color = deepMerge(defaultColor, color)
 
-    if (!series.length) return
+  if (!series.length) return
 
-    const colorNum = color.length
+  const colorNum = color.length
 
-    series.forEach((item, i) => {
-        if (item.color) return
+  series.forEach((item, i) => {
+    if (item.color) return
 
-        item.color = color[i % colorNum]
-    })
+    item.color = color[i % colorNum]
+  })
 
-    const pies = series.filter(({ type }) => type === 'pie')
+  const pies = series.filter(({ type }) => type === 'pie')
 
-    pies.forEach((pie) =>
-        pie.data.forEach((di, i) => (di.color = color[i % colorNum]))
-    )
+  pies.forEach((pie) =>
+    pie.data.forEach((di, i) => (di.color = color[i % colorNum]))
+  )
 
-    const gauges = series.filter(({ type }) => type === 'gauge')
+  const gauges = series.filter(({ type }) => type === 'gauge')
 
-    gauges.forEach((gauge) =>
-        gauge.data.forEach((di, i) => (di.color = color[i % colorNum]))
-    )
+  gauges.forEach((gauge) =>
+    gauge.data.forEach((di, i) => (di.color = color[i % colorNum]))
+  )
 
-    const barWithIndependentColor = series.filter(
-        ({ type, independentColor }) => type === 'bar' && independentColor
-    )
+  const barWithIndependentColor = series.filter(
+    ({ type, independentColor }) => type === 'bar' && independentColor
+  )
 
-    barWithIndependentColor.forEach((bar) => {
-        if (bar.independentColors) return
+  barWithIndependentColor.forEach((bar) => {
+    if (bar.independentColors) return
 
-        bar.independentColors = color
-    })
+    bar.independentColors = color
+  })
 }

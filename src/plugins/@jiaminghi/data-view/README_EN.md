@@ -15,10 +15,10 @@
 
 ## What is DataV?
 
--   DataV is a data **visualization** components library based on **Vue**（Of course there are also [React versions](https://github.com/DataV-Team/DataV-React)）.
--   Provide cool **SVG** borders and decorations.
--   Provide common **charts** such as line chart, etc..
--   flying line chart, carousel table and etc.
+* DataV is a data **visualization** components library based on **Vue**（Of course there are also [React versions](https://github.com/DataV-Team/DataV-React)）.
+* Provide cool **SVG** borders and decorations.
+* Provide common **charts** such as line chart, etc..
+* flying line chart, carousel table and etc.
 
 ### Install with npm
 
@@ -59,8 +59,8 @@ React version of the component library and feedback[Questionnaire](https://www.w
 
 ### TODO
 
--   **Map Component**
--   Refactor underlying dependencies using **TS**.
+* **Map Component**
+* Refactor underlying dependencies using **TS**.
 
 ### Acknowledgement
 
@@ -74,14 +74,14 @@ The development of the component library is based on personal learning and inter
 
 The Demo page uses the full-screen component, please view it after F11 full screen.
 
--   [Construction Data](http://datav.jiaminghi.com/demo/construction-data/index.html)
+* [Construction Data](http://datav.jiaminghi.com/demo/construction-data/index.html)
 
 ![construction-data](./demoImg/construction-data.jpg)
 
--   [Manage-Desk](http://datav.jiaminghi.com/demo/manage-desk/index.html)
+* [Manage-Desk](http://datav.jiaminghi.com/demo/manage-desk/index.html)
 
 ![manage-desk](./demoImg/manage-desk.jpg)
 
--   [Electronic-File](http://datav.jiaminghi.com/demo/electronic-file/index.html)
+* [Electronic-File](http://datav.jiaminghi.com/demo/electronic-file/index.html)
 
 ![electronic-file](./demoImg/electronic-file.jpg)

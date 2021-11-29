@@ -5,63 +5,62 @@
 <p align="center">
     <a href="https://travis-ci.com/jiaming743/Color"><img src="https://img.shields.io/travis/com/jiaming743/color.svg" alt="Travis CI"></a>
     <a href="https://github.com/jiaming743/Color/blob/master/LICENSE"><img src="https://img.shields.io/github/license/jiaming743/bezierCurve.svg" alt="LICENSE" /> </a>
-    <a href="https://www.npmjs.com/package/@jiaminghi/color"><img src="https://img.shields.io/npm/v/@jiaminghi/color.svg" alt="NPM" /> </a>
+    <a href="https://www.npmjs.com/package/@/plugins/@jiaminghi/color"><img src="https://img.shields.io/npm/v/@/plugins/@jiaminghi/color.svg" alt="NPM" /> </a>
 </p>
 
 ### This plugin provides some extension methods for color.
+- **[darken](#darken)**
 
--   **[darken](#darken)**
+  Deepen color.
 
-    Deepen color.
+- **[lighten](#lighten)**
 
--   **[lighten](#lighten)**
+  Brighten color.
 
-    Brighten color.
+- **[fade](#fade)**
 
--   **[fade](#fade)**
+  Adjust color opacity.
 
-    Adjust color opacity.
+- **[toHex](#toHex)**
 
--   **[toHex](#toHex)**
+  Convert color to Hex color.
 
-    Convert color to Hex color.
+- **[toRgb](#toRgb)**
 
--   **[toRgb](#toRgb)**
+  Convert color to Rgb|Rgba color.
 
-    Convert color to Rgb|Rgba color.
+- **[getOpacity](#getOpacity)**
 
--   **[getOpacity](#getOpacity)**
+  Get color opacity.
 
-    Get color opacity.
+- **[getRgbValue](#getRgbValue)**
 
--   **[getRgbValue](#getRgbValue)**
+  Get the color Rgb value.
 
-    Get the color Rgb value.
+- **[getRgbaValue](#getRgbaValue)**
 
--   **[getRgbaValue](#getRgbaValue)**
+  Get the color Rgba value.
 
-    Get the color Rgba value.
+- **[getColorFromRgbValue](#getColorFromRgbValue)**
 
--   **[getColorFromRgbValue](#getColorFromRgbValue)**
-
-    Get Color from Rgb|Rgba value.
+  Get Color from Rgb|Rgba value.
 
 ### Appendix
 
--   **[Color Keywords](#Color-Keywords)**
+- **[Color Keywords](#Color-Keywords)**
 
-    Built-in color keywords.
+  Built-in color keywords.
 
 ### Install with npm
 
 ```shell
-$ npm install @jiaminghi/color
+$ npm install @/plugins/@jiaminghi/color
 ```
 
 ### Use
 
 ```javascript
-import { toHex } from '@jiaminghi/color'
+import { toHex } from '@/plugins/@jiaminghi/color'
 
 // do something
 ```
@@ -75,12 +74,12 @@ import { toHex } from '@jiaminghi/color'
 <!--Compression version-->
 <script src="http://lib.jiaminghi.com/color/color.min.js"></script>
 <script>
-    const { darken, lighten } = window.color
-    // do something
+  const { darken, lighten } = window.color
+  // do something
 </script>
 ```
 
----
+------
 
 <h3 align="center">Examples</h3>
 
@@ -93,8 +92,8 @@ import { toHex } from '@jiaminghi/color'
  * @param {Number} percent Percent of Deepen (1-100)
  * @return {String|Boolean} Rgba color (Invalid input will return false)
  */
-function darken(color, percent) {
-    //...
+function darken (color, percent) {
+	//...
 }
 
 const before = '#3080E8'
@@ -107,6 +106,8 @@ const after = darken(color, 20)
     <img width="180px" src="./exampleImgs/1.jpg" />
 </p>
 
+
+
 #### lighten
 
 ```javascript
@@ -116,8 +117,8 @@ const after = darken(color, 20)
  * @param {Number} percent Percent of brighten (1-100)
  * @return {String|Boolean} Rgba color (Invalid input will return false)
  */
-function lighten(color, percent) {
-    //...
+function lighten (color, percent) {
+	//...
 }
 
 const before = '#3080E8'
@@ -130,6 +131,8 @@ const after = lighten(color, 20)
     <img width="180px" src="./exampleImgs/2.jpg" />
 </p>
 
+
+
 #### fade
 
 ```javascript
@@ -139,8 +142,8 @@ const after = lighten(color, 20)
  * @param {Number} percent Percent of opacity
  * @return {String|Boolean} Rgba color (Invalid input will return false)
  */
-function fade(color, percent) {
-    //...
+function fade (color, percent) {
+	//...
 }
 
 const before = '#3080E8'
@@ -153,6 +156,8 @@ const after = lighten(color, 20)
     <img width="180px" src="./exampleImgs/3.jpg" />
 </p>
 
+
+
 #### toHex
 
 ```javascript
@@ -161,8 +166,8 @@ const after = lighten(color, 20)
  * @param {String} color Hex|Rgb|Rgba color or color keyword
  * @return {String|Boolean} Hex color (Invalid input will return false)
  */
-function toHex(color) {
-    //...
+function toHex (color) {
+	//...
 }
 
 const before = 'rgb(48,128,232)'
@@ -170,6 +175,8 @@ const before = 'rgb(48,128,232)'
 const after = toHex(before)
 // after = '#3080e8'
 ```
+
+
 
 #### toRgb
 
@@ -180,8 +187,8 @@ const after = toHex(before)
  * @param {Number} opacity The opacity of color
  * @return {String|Boolean} Rgb|Rgba color (Invalid input will return false)
  */
-function toRgb(color, opacity) {
-    //...
+function toRgb (color, opacity) {
+	//...
 }
 
 const before = '#3080E8'
@@ -192,6 +199,8 @@ const after2 = toRgb(before, 0.2)
 // after2 = 'rgba(48,128,232,0.2)'
 ```
 
+
+
 #### getOpacity
 
 ```javascript
@@ -200,8 +209,8 @@ const after2 = toRgb(before, 0.2)
  * @param {String} color Hex|Rgb|Rgba color or color keyword
  * @return {Number|Boolean} Color opacity (Invalid input will return false)
  */
-function getOpacity(color) {
-    //...
+function getOpacity (color) {
+	//...
 }
 
 const color1 = '#3080E8'
@@ -213,6 +222,8 @@ const opacity2 = getOpacity(color2)
 // opacity2 = 0.2
 ```
 
+
+
 #### getRgbValue
 
 ```javascript
@@ -221,8 +232,8 @@ const opacity2 = getOpacity(color2)
  * @param {String} color Hex|Rgb|Rgba color or color keyword
  * @return {Array<Number>|Boolean} Rgb value of the color (Invalid input will return false)
  */
-function getRgbValue(color) {
-    //...
+function getRgbValue (color) {
+	//...
 }
 
 const color = '#3080E8'
@@ -230,6 +241,8 @@ const color = '#3080E8'
 const rgbValue = getRgbValue(color)
 // rgbValue = [48, 128, 232]
 ```
+
+
 
 #### getRgbaValue
 
@@ -239,8 +252,8 @@ const rgbValue = getRgbValue(color)
  * @param {String} color Hex|Rgb|Rgba color or color keyword
  * @return {Array<Number>|Boolean} Rgba value of the color (Invalid input will return false)
  */
-function getRgbaValue(color) {
-    //...
+function getRgbaValue (color) {
+	//...
 }
 
 const color1 = '#3080E8'
@@ -252,6 +265,8 @@ const rgbaValue2 = getRgbaValue(color2)
 // rgbaValue2 = [48, 128, 232, 0.2]
 ```
 
+
+
 #### getColorFromRgbValue
 
 ```javascript
@@ -260,8 +275,8 @@ const rgbaValue2 = getRgbaValue(color2)
  * @param {Array<Number>} value Rgb|Rgba color value
  * @return {String|Boolean} Rgb|Rgba color (Invalid input will return false)
  */
-function getColorFromRgbValue(value) {
-    //...
+function getColorFromRgbValue (value) {
+	//...
 }
 
 const value1 = [48, 128, 232]
@@ -272,6 +287,8 @@ const color1 = getColorFromRgbValue(value1)
 const color2 = getColorFromRgbValue(value2)
 // color2 = 'rgba(48,128,232,0.2)'
 ```
+
+
 
 #### Color Keywords
 

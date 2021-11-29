@@ -6,41 +6,41 @@
     <a href="https://github.com/DataV-Team/charts/blob/master/LICENSE">
         <img src="https://img.shields.io/github/license/DataV-Team/charts.svg" alt="LICENSE" />
     </a>
-    <a href="https://www.npmjs.com/package/@jiaminghi/charts">
-        <img src="https://img.shields.io/npm/v/@jiaminghi/charts.svg" alt="LICENSE" />
+    <a href="https://www.npmjs.com/package/@/plugins/@jiaminghi/charts">
+        <img src="https://img.shields.io/npm/v/@/plugins/@jiaminghi/charts.svg" alt="LICENSE" />
     </a>
 </p>
 
 ### What is Charts?
 
--   It is a `lightweight` chart library based on **canvas**.
+- It is a `lightweight` chart library based on **canvas**.
 
 ### Provides
 
--   `line`
--   `bar`
--   `pie`
--   `radar`
--   `gauge`
+* `line`
+* `bar`
+* `pie`
+* `radar`
+* `gauge`
 
 ### Install with npm
 
 ```shell
-$ npm install @jiaminghi/charts
+$ npm install @/plugins/@jiaminghi/charts
 ```
 
 ### Use
 
 ```javascript
-import Charts from '@jiaminghi/charts'
+import Charts from '@/plugins/@jiaminghi/charts'
 
 const container = document.getElementById('container')
 
 const myChart = new Charts(container)
 
 myChart.setOption({
-    title: 'My Chart'
-    // ...otherConfig
+  title: 'My Chart',
+  // ...otherConfig
 })
 ```
 
@@ -55,7 +55,7 @@ Detailed documents and examples can be viewed on the [HomePage](http://charts.ji
 <!--Compression version-->
 <script src="http://lib.jiaminghi.com/charts/charts.min.js"></script>
 <script>
-    const Charts = window.Charts.default
-    // do something
+  const Charts = window.Charts.default
+  // do something
 </script>
 ```

@@ -2,5 +2,5 @@ import './src/main.css'
 import Decoration9 from './src/main.vue'
 
 export default function (Vue) {
-    Vue.component(Decoration9.name, Decoration9)
+  Vue.component(Decoration9.name, Decoration9)
 }

@@ -5,33 +5,33 @@
 <p align="center">
     <a href="https://travis-ci.com/jiaming743/transition"><img src="https://img.shields.io/travis/com/jiaming743/transition.svg" alt="Travis CI"></a>
     <a href="https://github.com/jiaming743/transition/blob/master/LICENSE"><img src="https://img.shields.io/github/license/jiaming743/transition.svg" alt="LICENSE" /> </a>
-    <a href="https://www.npmjs.com/package/@jiaminghi/transition"><img src="https://img.shields.io/npm/v/@jiaminghi/transition.svg" alt="NPM" /></a>
+    <a href="https://www.npmjs.com/package/@/plugins/@jiaminghi/transition"><img src="https://img.shields.io/npm/v/@/plugins/@jiaminghi/transition.svg" alt="NPM" /></a>
 </p>
 
-### Transition 是什么?
+### Transition是什么?
 
--   它是一个基于**贝塞尔曲线**的动效插件。
--   它提供常用的**缓动曲线**。
--   支持**自定义**缓动曲线。
+- 它是一个基于**贝塞尔曲线**的动效插件。
+- 它提供常用的**缓动曲线**。
+- 支持**自定义**缓动曲线。
 
 ### 动画是如何产生的?
 
--   获取一帧动画数据
--   根据动画数据渲染图像
--   重复...
+* 获取一帧动画数据
+* 根据动画数据渲染图像
+* 重复...
 
-我们可以使用三组数据去描述一段动画（**动画起始状态**、**动画结束状态**、**缓动曲线**），根据这三组数据我们可以计算出动画过程中每一帧动画的状态。这就是**_Transition_**所提供的功能，根据每一帧动画的状态，我们不断的进行重绘，动画就产生了。
+我们可以使用三组数据去描述一段动画（**动画起始状态**、**动画结束状态**、**缓动曲线**），根据这三组数据我们可以计算出动画过程中每一帧动画的状态。这就是***Transition***所提供的功能，根据每一帧动画的状态，我们不断的进行重绘，动画就产生了。
 
-### npm 安装
+### npm安装
 
 ```shell
-$ npm install @jiaminghi/transition
+$ npm install @/plugins/@jiaminghi/transition
 ```
 
 ### 使用
 
 ```javascript
-import { transition, injectNewCurve } from '@jiaminghi/transition'
+import { transition, injectNewCurve } from '@/plugins/@jiaminghi/transition'
 
 // do something
 ```
@@ -45,19 +45,19 @@ import { transition, injectNewCurve } from '@jiaminghi/transition'
 <!--压缩版-->
 <script src="http://lib.jiaminghi.com/transition/transition.min.js"></script>
 <script>
-    const { transition, injectNewCurve } = window.transition
-    // do something
+  const { transition, injectNewCurve } = window.transition
+  // do something
 </script>
 ```
 
 详细文档及示例请移步[HomePage](http://transition.jiaminghi.com).
 
--   [注解](#注解)
--   [示例](#示例)
--   [扩展新曲线](#扩展新曲线)
--   [缓动曲线表](#缓动曲线表)
+- [注解](#注解)
+- [示例](#示例)
+- [扩展新曲线](#扩展新曲线)
+- [缓动曲线表](#缓动曲线表)
 
----
+------
 
 <h3 align="center">注解</h3>
 
@@ -71,14 +71,7 @@ import { transition, injectNewCurve } from '@jiaminghi/transition'
  * @param {Boolean} deep                   是否启用递归模式
  * @return {Array} 每一帧的动画数据
  */
-function transition(
-    tBC,
-    startState = null,
-    endState = null,
-    frameNum = 30,
-    deep = false
-) {
-    // ...
+function transition (tBC, startState = null, endState = null, frameNum = 30, deep = false) {  // ...
 }
 ```
 
@@ -86,15 +79,15 @@ function transition(
 
 **Transition** 支持三种数据类型以描述动画状态.
 
--   [Number](#Number)
--   [Array](#Array)
--   [Object](#Annotation)
--   [Recursive](#Recursive)
+* [Number](#Number)
+* [Array](#Array)
+* [Object](#Annotation)
+* [Recursive](#Recursive)
 
 #### Number
 
 ```javascript
-import transition from '@jiaminghi/transition'
+import transition from '@/plugins/@jiaminghi/transition'
 
 const beginState = 0
 const endState = 100
@@ -112,7 +105,7 @@ const animationState = transition('linear', beginState, endState, 10)
 #### Array
 
 ```javascript
-import transition from '@jiaminghi/transition'
+import transition from '@/plugins/@jiaminghi/transition'
 
 const beginState = [10, 20, 30]
 const endState = [100, 200, 300]
@@ -133,7 +126,7 @@ const animationState = transition('linear', beginState, endState, 10)
 #### Object
 
 ```javascript
-import transition from '@jiaminghi/transition'
+import transition from '@/plugins/@jiaminghi/transition'
 
 const objectBeginState = { x: 10, y: 10, r: 5}
 const objectEndState = { x: 100, y: 10, r: 5}
@@ -156,7 +149,7 @@ const animationState = transition('linear', objectBeginState, objectEndState, 5)
 启用递归模式以计算`Array`或`Object`中的深层数据.
 
 ```javascript
-import transition from '@jiaminghi/transition'
+import transition from '@/plugins/@jiaminghi/transition'
 
 const beginState = {
   points: [ [10, 30], [20, 80] ],
@@ -195,20 +188,20 @@ const animationState = transition('linear', beginState, endState, 3, true)
 
 **Notice**
 
--   非数值的属性或元素不参与计算过程.
--   起始状态与结束状态的数据类型（包括属性及元素的数量）必须保持一致.
+* 非数值的属性或元素不参与计算过程.
+* 起始状态与结束状态的数据类型（包括属性及元素的数量）必须保持一致.
 
 <h3 align="center">扩展新曲线</h3>
 
 如果你想扩展新的缓动曲线，你可以使用`Transition`提供的`injectNewCurve`方法去扩展。
 
 ```javascript
-import { injectNewCurve } from '@jiaminghi/transition'
+import { injectNewCurve } from '@/plugins/@jiaminghi/transition'
 
 const curveName = 'linear'
 
 // 可以使用绘制工具获得
-const bezierCurve = [[[0, 1]], [[1, 0]]]
+const bezierCurve = [[[0, 1]],[[1, 0]]]
 
 injectNewCurve(curveName, bezierCurve)
 ```
@@ -217,128 +210,103 @@ injectNewCurve(curveName, bezierCurve)
 
 <h3 align="center">缓动曲线表</h3>
 
--   [linear](#linear)
--   [easeInSine](#easeInSine)
--   [easeOutSine](#easeOutSine)
--   [easeInOutSine](#easeInOutSine)
--   [easeInQuad](#easeInQuad)
--   [easeOutQuad](#easeOutQuad)
--   [easeInOutQuad](#easeInOutQuad)
--   [easeInCubic](#easeInCubic)
--   [easeOutCubic](#easeOutCubic)
--   [easeInOutCubic](#easeInOutCubic)
--   [easeInQuart](#easeInQuart)
--   [easeOutQuart](#easeOutQuart)
--   [easeInOutQuart](#easeInOutQuart)
--   [easeInQuint](#easeInQuint)
--   [easeOutQuint](#easeOutQuint)
--   [easeInOutQuint](#easeInOutQuint)
--   [easeInBack](#easeInBack)
--   [easeOutBack](#easeOutBack)
--   [easeInOutBack](#easeInOutBack)
--   [easeInElastic](#easeInElastic)
--   [easeOutElastic](#easeOutElastic)
--   [easeInOutElastic](#easeInOutElastic)
--   [easeInBounce](#easeInBounce)
--   [easeOutBounce](#easeOutBounce)
--   [easeInOutBounce](#easeInOutBounce)
+* [linear](#linear)
+* [easeInSine](#easeInSine)
+* [easeOutSine](#easeOutSine)
+* [easeInOutSine](#easeInOutSine)
+* [easeInQuad](#easeInQuad)
+* [easeOutQuad](#easeOutQuad)
+* [easeInOutQuad](#easeInOutQuad)
+* [easeInCubic](#easeInCubic)
+* [easeOutCubic](#easeOutCubic)
+* [easeInOutCubic](#easeInOutCubic)
+* [easeInQuart](#easeInQuart)
+* [easeOutQuart](#easeOutQuart)
+* [easeInOutQuart](#easeInOutQuart)
+* [easeInQuint](#easeInQuint)
+* [easeOutQuint](#easeOutQuint)
+* [easeInOutQuint](#easeInOutQuint)
+* [easeInBack](#easeInBack)
+* [easeOutBack](#easeOutBack)
+* [easeInOutBack](#easeInOutBack)
+* [easeInElastic](#easeInElastic)
+* [easeOutElastic](#easeOutElastic)
+* [easeInOutElastic](#easeInOutElastic)
+* [easeInBounce](#easeInBounce)
+* [easeOutBounce](#easeOutBounce)
+* [easeInOutBounce](#easeInOutBounce)
 
 #### linear
-
 ![linear](/exampleImg/linear.gif)
 
 #### easeInSine
-
 ![linear](/exampleImg/easeInSine.gif)
 
 #### easeOutSine
-
 ![linear](/exampleImg/easeOutSine.gif)
 
 #### easeInOutSine
-
 ![linear](/exampleImg/easeInOutSine.gif)
 
 #### easeInQuad
-
 ![linear](/exampleImg/easeInQuad.gif)
 
 #### easeOutQuad
-
 ![linear](/exampleImg/easeOutQuad.gif)
 
 #### easeInOutQuad
-
 ![linear](/exampleImg/easeInOutQuad.gif)
 
 #### easeInCubic
-
 ![linear](/exampleImg/easeInCubic.gif)
 
 #### easeOutCubic
-
 ![linear](/exampleImg/easeOutCubic.gif)
 
 #### easeInOutCubic
-
 ![linear](/exampleImg/easeInOutCubic.gif)
 
 #### easeInQuart
-
 ![linear](/exampleImg/easeInQuart.gif)
 
 #### easeOutQuart
-
 ![linear](/exampleImg/easeOutQuart.gif)
 
 #### easeInOutQuart
-
 ![linear](/exampleImg/easeInOutQuart.gif)
 
 #### easeInQuint
-
 ![linear](/exampleImg/easeInQuint.gif)
 
 #### easeOutQuint
-
 ![linear](/exampleImg/easeOutQuint.gif)
 
 #### easeInOutQuint
-
 ![linear](/exampleImg/easeInOutQuint.gif)
 
 #### easeInBack
-
 ![linear](/exampleImg/easeInBack.gif)
 
 #### easeOutBack
-
 ![linear](/exampleImg/easeOutBack.gif)
 
 #### easeInOutBack
-
 ![linear](/exampleImg/easeInOutBack.gif)
 
 #### easeInElastic
-
 ![linear](/exampleImg/easeInElastic.gif)
 
 #### easeOutElastic
-
 ![linear](/exampleImg/easeOutElastic.gif)
 
 #### easeInOutElastic
-
 ![linear](/exampleImg/easeInOutElastic.gif)
 
 #### easeInBounce
-
 ![linear](/exampleImg/easeInBounce.gif)
 
 #### easeOutBounce
-
 ![linear](/exampleImg/easeOutBounce.gif)
 
 #### easeInOutBounce
-
 ![linear](/exampleImg/easeInOutBounce.gif)

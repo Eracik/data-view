@@ -9,21 +9,21 @@ const rgbaReg = /^(rgba|RGBA)/
  * @param {String} color Hex|Rgb|Rgba color or color keyword
  * @return {String|Boolean} Valid color Or false
  */
-function validator(color) {
-    let isHex = hexReg.test(color)
-    let isRgb = rgbReg.test(color)
+function validator (color) {
+  let isHex = hexReg.test(color)
+  let isRgb = rgbReg.test(color)
 
-    if (isHex || isRgb) return color
+  if (isHex || isRgb) return color
 
-    color = getColorByKeyword(color)
+  color = getColorByKeyword(color)
 
-    if (!color) {
-        console.error('Color: Invalid color!')
+  if (!color) {
+    console.error('Color: Invalid color!')
 
-        return false
-    }
+    return false
+  }
 
-    return color
+  return color
 }
 
 /**
@@ -31,16 +31,16 @@ function validator(color) {
  * @param {String} keyword Color keyword like red, green and etc.
  * @return {String|Boolean} Hex or rgba color (Invalid keyword will return false)
  */
-function getColorByKeyword(keyword) {
-    if (!keyword) {
-        console.error('getColorByKeywords: Missing parameters!')
+function getColorByKeyword (keyword) {
+  if (!keyword) {
+    console.error('getColorByKeywords: Missing parameters!')
 
-        return false
-    }
+    return false
+  }
 
-    if (!colorKeywords.has(keyword)) return false
+  if (!colorKeywords.has(keyword)) return false
 
-    return colorKeywords.get(keyword)
+  return colorKeywords.get(keyword)
 }
 
 /**
@@ -48,24 +48,24 @@ function getColorByKeyword(keyword) {
  * @param {String} color Hex|Rgb|Rgba color or color keyword
  * @return {Array<Number>|Boolean} Rgb value of the color (Invalid input will return false)
  */
-export function getRgbValue(color) {
-    if (!color) {
-        console.error('getRgbValue: Missing parameters!')
+export function getRgbValue (color) {
+  if (!color) {
+    console.error('getRgbValue: Missing parameters!')
 
-        return false
-    }
+    return false
+  }
 
-    color = validator(color)
+  color = validator(color)
 
-    if (!color) return false
+  if (!color) return false
 
-    const isHex = hexReg.test(color)
-    const isRgb = rgbReg.test(color)
+  const isHex = hexReg.test(color)
+  const isRgb = rgbReg.test(color)
 
-    const lowerColor = color.toLowerCase()
+  const lowerColor = color.toLowerCase()
 
-    if (isHex) return getRgbValueFromHex(lowerColor)
-    if (isRgb) return getRgbValueFromRgb(lowerColor)
+  if (isHex) return getRgbValueFromHex(lowerColor)
+  if (isRgb) return getRgbValueFromRgb(lowerColor)
 }
 
 /**
@@ -73,19 +73,14 @@ export function getRgbValue(color) {
  * @param {String} color Hex color
  * @return {Array<Number>} Rgb value of the color
  */
-function getRgbValueFromHex(color) {
-    color = color.replace('#', '')
+function getRgbValueFromHex (color) {
+  color = color.replace('#', '')
 
-    if (color.length === 3)
-        color = Array.from(color)
-            .map((hexNum) => hexNum + hexNum)
-            .join('')
+  if (color.length === 3) color = Array.from(color).map(hexNum => hexNum + hexNum).join('')
 
-    color = color.split('')
+  color = color.split('')
 
-    return new Array(3)
-        .fill(0)
-        .map((t, i) => parseInt(`0x${color[i * 2]}${color[i * 2 + 1]}`))
+  return new Array(3).fill(0).map((t, i) => parseInt(`0x${color[i * 2]}${color[i * 2 + 1]}`))
 }
 
 /**
@@ -93,12 +88,12 @@ function getRgbValueFromHex(color) {
  * @param {String} color Hex color
  * @return {Array} Rgb value of the color
  */
-function getRgbValueFromRgb(color) {
-    return color
-        .replace(/rgb\(|rgba\(|\)/g, '')
-        .split(',')
-        .slice(0, 3)
-        .map((n) => parseInt(n))
+function getRgbValueFromRgb (color) {
+  return color
+    .replace(/rgb\(|rgba\(|\)/g, '')
+    .split(',')
+    .slice(0, 3)
+    .map(n => parseInt(n))
 }
 
 /**
@@ -106,20 +101,20 @@ function getRgbValueFromRgb(color) {
  * @param {String} color Hex|Rgb|Rgba color or color keyword
  * @return {Array<Number>|Boolean} Rgba value of the color (Invalid input will return false)
  */
-export function getRgbaValue(color) {
-    if (!color) {
-        console.error('getRgbaValue: Missing parameters!')
+export function getRgbaValue (color) {
+  if (!color) {
+    console.error('getRgbaValue: Missing parameters!')
 
-        return false
-    }
+    return false
+  }
 
-    const colorValue = getRgbValue(color)
+  const colorValue = getRgbValue(color)
 
-    if (!colorValue) return false
+  if (!colorValue) return false
 
-    colorValue.push(getOpacity(color))
+  colorValue.push(getOpacity(color))
 
-    return colorValue
+  return colorValue
 }
 
 /**
@@ -127,29 +122,24 @@ export function getRgbaValue(color) {
  * @param {String} color Hex|Rgb|Rgba color or color keyword
  * @return {Number|Boolean} Color opacity (Invalid input will return false)
  */
-export function getOpacity(color) {
-    if (!color) {
-        console.error('getOpacity: Missing parameters!')
+export function getOpacity (color) {
+  if (!color) {
+    console.error('getOpacity: Missing parameters!')
 
-        return false
-    }
+    return false
+  }
 
-    color = validator(color)
+  color = validator(color)
 
-    if (!color) return false
+  if (!color) return false
 
-    const isRgba = rgbaReg.test(color)
+  const isRgba = rgbaReg.test(color)
 
-    if (!isRgba) return 1
+  if (!isRgba) return 1
 
-    color = color.toLowerCase()
+  color = color.toLowerCase()
 
-    return Number(
-        color
-            .split(',')
-            .slice(-1)[0]
-            .replace(/[)|\s]/g, '')
-    )
+  return Number(color.split(',').slice(-1)[0].replace(/[)|\s]/g, ''))
 }
 
 /**
@@ -158,22 +148,22 @@ export function getOpacity(color) {
  * @param {Number} opacity The opacity of color
  * @return {String|Boolean} Rgb|Rgba color (Invalid input will return false)
  */
-export function toRgb(color, opacity) {
-    if (!color) {
-        console.error('toRgb: Missing parameters!')
+export function toRgb (color, opacity) {
+  if (!color) {
+    console.error('toRgb: Missing parameters!')
 
-        return false
-    }
+    return false
+  }
 
-    const rgbValue = getRgbValue(color)
+  const rgbValue = getRgbValue(color)
 
-    if (!rgbValue) return false
+  if (!rgbValue) return false
 
-    const addOpacity = typeof opacity === 'number'
+  const addOpacity = typeof opacity === 'number'
 
-    if (addOpacity) return 'rgba(' + rgbValue.join(',') + `,${opacity})`
+  if (addOpacity) return 'rgba(' + rgbValue.join(',') + `,${opacity})`
 
-    return 'rgb(' + rgbValue.join(',') + ')'
+  return 'rgb(' + rgbValue.join(',') + ')'
 }
 
 /**
@@ -181,25 +171,22 @@ export function toRgb(color, opacity) {
  * @param {String} color Hex|Rgb|Rgba color or color keyword
  * @return {String|Boolean} Hex color (Invalid input will return false)
  */
-export function toHex(color) {
-    if (!color) {
-        console.error('toHex: Missing parameters!')
+export function toHex (color) {
+  if (!color) {
+    console.error('toHex: Missing parameters!')
 
-        return false
-    }
+    return false
+  }
 
-    if (hexReg.test(color)) return color
+  if (hexReg.test(color)) return color
 
-    color = getRgbValue(color)
-    if (!color) return false
+  color = getRgbValue(color)
+  if (!color) return false
 
-    return (
-        '#' +
-        color
-            .map((n) => Number(n).toString(16))
-            .map((n) => (n === '0' ? '00' : n))
-            .join('')
-    )
+  return '#' + color
+    .map(n => Number(n).toString(16))
+    .map(n => n === '0' ? '00' : n)
+    .join('')
 }
 
 /**
@@ -207,26 +194,26 @@ export function toHex(color) {
  * @param {Array<Number>} value Rgb|Rgba color value
  * @return {String|Boolean} Rgb|Rgba color (Invalid input will return false)
  */
-export function getColorFromRgbValue(value) {
-    if (!value) {
-        console.error('getColorFromRgbValue: Missing parameters!')
+export function getColorFromRgbValue (value) {
+  if (!value) {
+    console.error('getColorFromRgbValue: Missing parameters!')
 
-        return false
-    }
+    return false
+  }
 
-    const valueLength = value.length
+  const valueLength = value.length
 
-    if (valueLength !== 3 && valueLength !== 4) {
-        console.error('getColorFromRgbValue: Value is illegal!')
+  if (valueLength !== 3 && valueLength !== 4) {
+    console.error('getColorFromRgbValue: Value is illegal!')
 
-        return false
-    }
+    return false
+  }
 
-    let color = valueLength === 3 ? 'rgb(' : 'rgba('
+  let color = (valueLength === 3 ? 'rgb(' : 'rgba(')
 
-    color += value.join(',') + ')'
+  color += value.join(',') + ')'
 
-    return color
+  return color
 }
 
 /**
@@ -235,22 +222,22 @@ export function getColorFromRgbValue(value) {
  * @return {Number} Percent of Deepen (1-100)
  * @return {String|Boolean} Rgba color (Invalid input will return false)
  */
-export function darken(color, percent = 0) {
-    if (!color) {
-        console.error('darken: Missing parameters!')
+export function darken (color, percent = 0) {
+  if (!color) {
+    console.error('darken: Missing parameters!')
 
-        return false
-    }
+    return false
+  }
 
-    let rgbaValue = getRgbaValue(color)
+  let rgbaValue = getRgbaValue(color)
 
-    if (!rgbaValue) return false
+  if (!rgbaValue) return false
 
-    rgbaValue = rgbaValue
-        .map((v, i) => (i === 3 ? v : v - Math.ceil(2.55 * percent)))
-        .map((v) => (v < 0 ? 0 : v))
+  rgbaValue = rgbaValue
+    .map((v, i) => (i === 3 ? v : v - Math.ceil(2.55 * percent)))
+    .map(v => (v < 0 ? 0 : v))
 
-    return getColorFromRgbValue(rgbaValue)
+  return getColorFromRgbValue(rgbaValue)
 }
 
 /**
@@ -259,22 +246,22 @@ export function darken(color, percent = 0) {
  * @return {Number} Percent of brighten (1-100)
  * @return {String|Boolean} Rgba color (Invalid input will return false)
  */
-export function lighten(color, percent = 0) {
-    if (!color) {
-        console.error('lighten: Missing parameters!')
+export function lighten (color, percent = 0) {
+  if (!color) {
+    console.error('lighten: Missing parameters!')
 
-        return false
-    }
+    return false
+  }
 
-    let rgbaValue = getRgbaValue(color)
+  let rgbaValue = getRgbaValue(color)
 
-    if (!rgbaValue) return false
+  if (!rgbaValue) return false
 
-    rgbaValue = rgbaValue
-        .map((v, i) => (i === 3 ? v : v + Math.ceil(2.55 * percent)))
-        .map((v) => (v > 255 ? 255 : v))
+  rgbaValue = rgbaValue
+    .map((v, i) => (i === 3 ? v : v + Math.ceil(2.55 * percent)))
+    .map(v => (v > 255 ? 255 : v))
 
-    return getColorFromRgbValue(rgbaValue)
+  return getColorFromRgbValue(rgbaValue)
 }
 
 /**
@@ -283,30 +270,30 @@ export function lighten(color, percent = 0) {
  * @param {Number} Percent of opacity
  * @return {String|Boolean} Rgba color (Invalid input will return false)
  */
-export function fade(color, percent = 100) {
-    if (!color) {
-        console.error('fade: Missing parameters!')
+export function fade (color, percent = 100) {
+  if (!color) {
+    console.error('fade: Missing parameters!')
 
-        return false
-    }
+    return false
+  }
 
-    const rgbValue = getRgbValue(color)
+  const rgbValue = getRgbValue(color)
 
-    if (!rgbValue) return false
+  if (!rgbValue) return false
 
-    const rgbaValue = [...rgbValue, percent / 100]
+  const rgbaValue = [...rgbValue, percent / 100]
 
-    return getColorFromRgbValue(rgbaValue)
+  return getColorFromRgbValue(rgbaValue)
 }
 
 export default {
-    fade,
-    toHex,
-    toRgb,
-    darken,
-    lighten,
-    getOpacity,
-    getRgbValue,
-    getRgbaValue,
-    getColorFromRgbValue
+  fade,
+  toHex,
+  toRgb,
+  darken,
+  lighten,
+  getOpacity,
+  getRgbValue,
+  getRgbaValue,
+  getColorFromRgbValue
 }

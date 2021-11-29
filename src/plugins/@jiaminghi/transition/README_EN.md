@@ -5,33 +5,33 @@
 <p align="center">
     <a href="https://travis-ci.com/jiaming743/transition"><img src="https://img.shields.io/travis/com/jiaming743/transition.svg" alt="Travis CI"></a>
     <a href="https://github.com/jiaming743/transition/blob/master/LICENSE"><img src="https://img.shields.io/github/license/jiaming743/transition.svg" alt="LICENSE" /> </a>
-    <a href="https://www.npmjs.com/package/@jiaminghi/transition"><img src="https://img.shields.io/npm/v/@jiaminghi/transition.svg" alt="LICENSE" /> </a>
+    <a href="https://www.npmjs.com/package/@/plugins/@jiaminghi/transition"><img src="https://img.shields.io/npm/v/@/plugins/@jiaminghi/transition.svg" alt="LICENSE" /> </a>
 </p>
 
 ### What is Transition?
 
--   It is a dynamic effect plugin based on **Bezier Curve**.
--   It provides common **easing** curve.
--   **Customizable** easing curve.
+- It is a dynamic effect plugin based on **Bezier Curve**.
+- It provides common **easing** curve.
+- **Customizable** easing curve.
 
 ### How is the animation produced?
 
--   Get one frame data of the animation.
--   Draw this frame animation.
--   Repeat...
+* Get one frame data of the animation.
+* Draw this frame animation.
+* Repeat...
 
-We can use three sets of data to describe an animation (**animation start state**, **animation end state**, **easing curve**).Based on these three sets of data, we can calculate the **state of each frame** of the animation,this is what **_Transition_** provided.According to the data of each frame, we carry out continuous redrawing, and the animation is generated.
+We can use three sets of data to describe an animation (**animation start state**, **animation end state**, **easing curve**).Based on these three sets of data, we can calculate the **state of each frame** of the animation,this is what ***Transition*** provided.According to the data of each frame, we carry out continuous redrawing, and the animation is generated.
 
 ### Install with npm
 
 ```shell
-$ npm install @jiaminghi/transition
+$ npm install @/plugins/@jiaminghi/transition
 ```
 
 ### Use
 
 ```javascript
-import { transition, injectNewCurve } from '@jiaminghi/transition'
+import { transition, injectNewCurve } from '@/plugins/@jiaminghi/transition'
 
 // do something
 ```
@@ -45,19 +45,19 @@ import { transition, injectNewCurve } from '@jiaminghi/transition'
 <!--Compression version-->
 <script src="http://lib.jiaminghi.com/transition/transition.min.js"></script>
 <script>
-    const { transition, injectNewCurve } = window.transition
-    // do something
+  const { transition, injectNewCurve } = window.transition
+  // do something
 </script>
 ```
 
 Detailed documents and examples can be viewed on the [HomePage](http://transition.jiaminghi.com/EN/).
 
--   [Annotation](#Annotation)
--   [Examples](#examples)
--   [Extend New Easing Curve](#Extend-New-Easing-Curve)
--   [Easing Curve Table](#Easing-curve-table)
+- [Annotation](#Annotation)
+- [Examples](#examples)
+- [Extend New Easing Curve](#Extend-New-Easing-Curve)
+- [Easing Curve Table](#Easing-curve-table)
 
----
+------
 
 <h3 align="center">Annotation</h3>
 
@@ -72,14 +72,7 @@ Detailed documents and examples can be viewed on the [HomePage](http://transitio
  * @param {Boolean} deep                   Whether to use recursive mode
  * @return {Array} State of each frame of the animation
  */
-function transition(
-    tBC,
-    startState = false,
-    endState = false,
-    frameNum = 30,
-    deep = false
-) {
-    // ...
+function transition (tBC, startState = false, endState = false, frameNum = 30, deep = false) {  // ...
 }
 ```
 
@@ -87,15 +80,15 @@ function transition(
 
 **Transition** provides three data types to describe the animation state.
 
--   [Number](#Number)
--   [Array](#Array)
--   [Object](#Annotation)
--   [Recursive](#Recursive)
+* [Number](#Number)
+* [Array](#Array)
+* [Object](#Annotation)
+* [Recursive](#Recursive)
 
 #### Number
 
 ```javascript
-import transition from '@jiaminghi/transition'
+import transition from '@/plugins/@jiaminghi/transition'
 
 const beginState = 0
 const endState = 100
@@ -113,7 +106,7 @@ const animationState = transition('linear', beginState, endState, 10)
 #### Array
 
 ```javascript
-import transition from '@jiaminghi/transition'
+import transition from '@/plugins/@jiaminghi/transition'
 
 const beginState = [10, 20, 30]
 const endState = [100, 200, 300]
@@ -134,7 +127,7 @@ const animationState = transition('linear', beginState, endState, 10)
 #### Object
 
 ```javascript
-import transition from '@jiaminghi/transition'
+import transition from '@/plugins/@jiaminghi/transition'
 
 const objectBeginState = { x: 10, y: 10, r: 5}
 const objectEndState = { x: 100, y: 10, r: 5}
@@ -157,7 +150,7 @@ const animationState = transition('linear', objectBeginState, objectEndState, 5)
 Use recursive mode to calculate deep data in `Array` or `Object`.
 
 ```javascript
-import transition from '@jiaminghi/transition'
+import transition from '@/plugins/@jiaminghi/transition'
 
 const beginState = {
   points: [ [10, 30], [20, 80] ],
@@ -196,20 +189,20 @@ const animationState = transition('linear', beginState, endState, 3, true)
 
 **Notice**
 
--   Non-Number attribute or element does not participate in calculations.
--   The data type of the start and end state should be consistent（Including the number of attributes and elements）.
+* Non-Number attribute or element does not participate in calculations.
+* The data type of the start and end state should be consistent（Including the number of attributes and elements）.
 
 <h3 align="center">Extend New Easing Curve</h3>
 
 If you want to extend the new **easing curve**, you can use the `injectNewCurve` method provided by `Transition` to extend.
 
 ```javascript
-import { injectNewCurve } from '@jiaminghi/transition'
+import { injectNewCurve } from '@/plugins/@jiaminghi/transition'
 
 const curveName = 'linear'
 
 // Can be obtained by drawing tools
-const bezierCurve = [[[0, 1]], [[1, 0]]]
+const bezierCurve = [[[0, 1]],[[1, 0]]]
 
 injectNewCurve(curveName, bezierCurve)
 ```
@@ -218,128 +211,103 @@ injectNewCurve(curveName, bezierCurve)
 
 <h3 align="center">Easing Curve Table</h3>
 
--   [linear](#linear)
--   [easeInSine](#easeInSine)
--   [easeOutSine](#easeOutSine)
--   [easeInOutSine](#easeInOutSine)
--   [easeInQuad](#easeInQuad)
--   [easeOutQuad](#easeOutQuad)
--   [easeInOutQuad](#easeInOutQuad)
--   [easeInCubic](#easeInCubic)
--   [easeOutCubic](#easeOutCubic)
--   [easeInOutCubic](#easeInOutCubic)
--   [easeInQuart](#easeInQuart)
--   [easeOutQuart](#easeOutQuart)
--   [easeInOutQuart](#easeInOutQuart)
--   [easeInQuint](#easeInQuint)
--   [easeOutQuint](#easeOutQuint)
--   [easeInOutQuint](#easeInOutQuint)
--   [easeInBack](#easeInBack)
--   [easeOutBack](#easeOutBack)
--   [easeInOutBack](#easeInOutBack)
--   [easeInElastic](#easeInElastic)
--   [easeOutElastic](#easeOutElastic)
--   [easeInOutElastic](#easeInOutElastic)
--   [easeInBounce](#easeInBounce)
--   [easeOutBounce](#easeOutBounce)
--   [easeInOutBounce](#easeInOutBounce)
+* [linear](#linear)
+* [easeInSine](#easeInSine)
+* [easeOutSine](#easeOutSine)
+* [easeInOutSine](#easeInOutSine)
+* [easeInQuad](#easeInQuad)
+* [easeOutQuad](#easeOutQuad)
+* [easeInOutQuad](#easeInOutQuad)
+* [easeInCubic](#easeInCubic)
+* [easeOutCubic](#easeOutCubic)
+* [easeInOutCubic](#easeInOutCubic)
+* [easeInQuart](#easeInQuart)
+* [easeOutQuart](#easeOutQuart)
+* [easeInOutQuart](#easeInOutQuart)
+* [easeInQuint](#easeInQuint)
+* [easeOutQuint](#easeOutQuint)
+* [easeInOutQuint](#easeInOutQuint)
+* [easeInBack](#easeInBack)
+* [easeOutBack](#easeOutBack)
+* [easeInOutBack](#easeInOutBack)
+* [easeInElastic](#easeInElastic)
+* [easeOutElastic](#easeOutElastic)
+* [easeInOutElastic](#easeInOutElastic)
+* [easeInBounce](#easeInBounce)
+* [easeOutBounce](#easeOutBounce)
+* [easeInOutBounce](#easeInOutBounce)
 
 #### linear
-
 ![linear](/exampleImg/linear.gif)
 
 #### easeInSine
-
 ![linear](/exampleImg/easeInSine.gif)
 
 #### easeOutSine
-
 ![linear](/exampleImg/easeOutSine.gif)
 
 #### easeInOutSine
-
 ![linear](/exampleImg/easeInOutSine.gif)
 
 #### easeInQuad
-
 ![linear](/exampleImg/easeInQuad.gif)
 
 #### easeOutQuad
-
 ![linear](/exampleImg/easeOutQuad.gif)
 
 #### easeInOutQuad
-
 ![linear](/exampleImg/easeInOutQuad.gif)
 
 #### easeInCubic
-
 ![linear](/exampleImg/easeInCubic.gif)
 
 #### easeOutCubic
-
 ![linear](/exampleImg/easeOutCubic.gif)
 
 #### easeInOutCubic
-
 ![linear](/exampleImg/easeInOutCubic.gif)
 
 #### easeInQuart
-
 ![linear](/exampleImg/easeInQuart.gif)
 
 #### easeOutQuart
-
 ![linear](/exampleImg/easeOutQuart.gif)
 
 #### easeInOutQuart
-
 ![linear](/exampleImg/easeInOutQuart.gif)
 
 #### easeInQuint
-
 ![linear](/exampleImg/easeInQuint.gif)
 
 #### easeOutQuint
-
 ![linear](/exampleImg/easeOutQuint.gif)
 
 #### easeInOutQuint
-
 ![linear](/exampleImg/easeInOutQuint.gif)
 
 #### easeInBack
-
 ![linear](/exampleImg/easeInBack.gif)
 
 #### easeOutBack
-
 ![linear](/exampleImg/easeOutBack.gif)
 
 #### easeInOutBack
-
 ![linear](/exampleImg/easeInOutBack.gif)
 
 #### easeInElastic
-
 ![linear](/exampleImg/easeInElastic.gif)
 
 #### easeOutElastic
-
 ![linear](/exampleImg/easeOutElastic.gif)
 
 #### easeInOutElastic
-
 ![linear](/exampleImg/easeInOutElastic.gif)
 
 #### easeInBounce
-
 ![linear](/exampleImg/easeInBounce.gif)
 
 #### easeOutBounce
-
 ![linear](/exampleImg/easeOutBounce.gif)
 
 #### easeInOutBounce
-
 ![linear](/exampleImg/easeInOutBounce.gif)
