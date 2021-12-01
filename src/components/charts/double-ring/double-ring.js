@@ -30,7 +30,8 @@ const initCharts = (id, seriesInSideData, seriesOutSideData) => {
             textStyle: {
                 color: '#fff',
                 fontWeight: 600,
-                fontSize: 18
+                fontSize: 18,
+                fontFamily: 'Gen Jyuu Gothic'
             }
         },
         tooltip: {

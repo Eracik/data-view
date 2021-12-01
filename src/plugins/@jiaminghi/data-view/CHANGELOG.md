@@ -300,15 +300,15 @@
   │   ├── borderBox2
   │   │   └── index.vue
   │   ├── etc.
-  │   └── index.js
+  │   └── border.js
   ├── mixins
   │   └── autoResize.js
   ├── util
-  │   └── index.js
+  │   └── border.js
   │
-  ├── index.js
+  ├── border.js
   │
-  ├── package.json // main: 'index.js'
+  ├── package.json // main: 'border.js'
   └── etc.
   ```
 
@@ -322,14 +322,14 @@
   │   │   |   ├── src
   │   │   |   |   ├── main.vue
   │   │   |   |   └── main.css
-  │   │   |   └── index.js
+  │   │   |   └── border.js
   │   │   ├── etc.
-  │   │   └── index.js
+  │   │   └── border.js
   │   ├── mixin
   │   │   └── autoResize.js
   │   ├── util
-  │   │   └── index.js
-  │   └── index.js
+  │   │   └── border.js
+  │   └── border.js
   │
   ├── publish // For pre-publish process
   │
@@ -338,16 +338,16 @@
   │   │   ├── borderBox1
   │   │   |   ├── src
   │   │   |   |   └── main.vue
-  │   │   |   └── index.js
+  │   │   |   └── border.js
   │   │   ├── etc.
-  │   │   └── index.js
+  │   │   └── border.js
   │   ├── mixin
   │   │   └── autoResize.js
   │   ├── util
-  │   │   └── index.js
-  │   └── index.js
+  │   │   └── border.js
+  │   └── border.js
   │
-  ├── package.json // main: '/lib/index.js'
+  ├── package.json // main: '/lib/border.js'
   ├── publish.js
   └── etc.
   ```

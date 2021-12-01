@@ -19,7 +19,18 @@ const routes = [
     {
         path: '/data-view',
         name: 'DataView',
-        component: () => import('../views/data-view/data-view')
+        component: () => import('../views/data-view/data-view'),
+        meta: {
+            title: '数据看板 - 首页'
+        }
+    },
+    {
+        path: '/data-view/environment',
+        name: 'Environment',
+        component: () => import('../views/data-view/environment/environment'),
+        meta: {
+            title: '数据看板 - 环境'
+        }
     }
 ]
 

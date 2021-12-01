@@ -3,14 +3,9 @@
         <div class="bg-color"></div>
         <div class="container" ref="container">
             <div class="title">
-                <dv-decoration-8 style="width: 200px; height: 50px" />
                 <div style="width: 240px; height: 30px; text-align: center">
                     数据大看板
                 </div>
-                <dv-decoration-8
-                    :reverse="true"
-                    style="width: 200px; height: 50px"
-                />
             </div>
             <div class="module-charts">
                 <dv-border-box12 class="module module-left">
@@ -153,13 +148,23 @@
             padding: 15px;
             box-sizing: border-box;
             .title {
+                position: relative;
                 width: 100%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 color: #ffffff;
                 flex-basis: 70px;
+                line-height: 1;
                 font-size: 32px;
+                background-color:
+                    //#2e6099;
+                    rgba(46, 96, 153, 0.25);
+                //border-radius: 4px 4px 70px 70px;
+                margin-bottom: 15px;
+                //border: 1px solid #fff;
+                overflow: hidden;
+                border-radius: 12px;
             }
             .module-charts {
                 display: flex;

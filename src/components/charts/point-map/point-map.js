@@ -1,9 +1,31 @@
+import * as echarts from 'echarts/core'
+import {
+    TitleComponent,
+    ToolboxComponent,
+    TooltipComponent,
+    VisualMapComponent,
+    GeoComponent
+} from 'echarts/components'
+import {
+    MapChart,
+    EffectScatterChart,
+    ScatterChart,
+    LinesChart
+} from 'echarts/charts'
+import { CanvasRenderer } from 'echarts/renderers'
+echarts.use([
+    TitleComponent,
+    ToolboxComponent,
+    TooltipComponent,
+    VisualMapComponent,
+    GeoComponent,
+    MapChart,
+    CanvasRenderer,
+    EffectScatterChart,
+    ScatterChart,
+    LinesChart
+])
 const geoJSON_XUZHOU = require('./geoJson/city/GeoJSON_XuZhou.json')
-const areaGeoModuleFiles = require.context(
-    './geoJson/city/area',
-    true,
-    /\.json$/
-)
 const mapJson = []
 let mainMapData = [
     {
@@ -71,7 +93,11 @@ let mainMapData = [
 ]
 
 let mapData = []
-
+const areaGeoModuleFiles = require.context(
+    './geoJson/city/area',
+    true,
+    /\.json$/
+)
 areaGeoModuleFiles.keys().reduce((modules, modulePath) => {
     const moduleKey = areaGeoModuleFiles(modulePath).features[0].properties.name
     const moduleValue = areaGeoModuleFiles(modulePath)
@@ -92,47 +118,53 @@ areaGeoModuleFiles.keys().reduce((modules, modulePath) => {
 // console.log('mapData ======> ', JSON.stringify(mapData))
 let currentJson = geoJSON_XUZHOU
 mapData = mainMapData
-import * as echarts from 'echarts/core'
-import {
-    TitleComponent,
-    ToolboxComponent,
-    TooltipComponent,
-    VisualMapComponent,
-    GeoComponent
-} from 'echarts/components'
-import { MapChart, EffectScatterChart, ScatterChart } from 'echarts/charts'
-import { CanvasRenderer } from 'echarts/renderers'
-echarts.use([
-    TitleComponent,
-    ToolboxComponent,
-    TooltipComponent,
-    VisualMapComponent,
-    GeoComponent,
-    MapChart,
-    CanvasRenderer,
-    EffectScatterChart,
-    ScatterChart
-])
 
 let option
 let chartDom = null
 let myChart = null
+let linearData = [
+    {
+        name: '云龙区',
+        value: 10,
+        coords: [
+            [117.269232, 34.212042],
+            [117.269232, 33.868042]
+        ]
+    },
+    {
+        name: '鼓楼区',
+        value: 10,
+        coords: [
+            [117.140874, 34.308857],
+            [117.140874, 34.968042]
+        ]
+    },
+    {
+        name: '泉山区',
+        value: 10,
+        coords: [
+            [117.14344, 34.263318],
+            [116.64344, 34.263318]
+        ]
+    }
+]
 const createMap = (changeArea) => {
     const _changeArea = changeArea
     chartDom = document.getElementById('main')
     myChart = echarts.init(chartDom, 'dark')
-    // let index = -1
     myChart.on('click', (e) => {
         console.log('click map ===> ', e)
         if (typeof e.data === 'undefined') {
             alert('跳转至区级平台')
             return
         }
+
         let chooseName = mapJson.filter((item) => {
             return item.name == e.name
         })
         if (chooseName.length) {
             currentJson = chooseName[0].json
+            linearData = []
         } else {
             console.log('this child ===> ', e)
             alert('跳转至' + e.name + '工地端')
@@ -174,11 +206,37 @@ const createMap = (changeArea) => {
         const $back = document.getElementsByClassName('back')[0]
         $back.addEventListener('click', () => {
             mapData = mainMapData
+            linearData = [
+                {
+                    name: '云龙区',
+                    value: 10,
+                    coords: [
+                        [117.269232, 34.212042],
+                        [117.269232, 33.868042]
+                    ]
+                },
+                {
+                    name: '鼓楼区',
+                    value: 10,
+                    coords: [
+                        [117.140874, 34.308857],
+                        [117.140874, 34.968042]
+                    ]
+                },
+                {
+                    name: '泉山区',
+                    value: 10,
+                    coords: [
+                        [117.14344, 34.263318],
+                        [117.14344, 33.868042]
+                    ]
+                }
+            ]
             currentJson = geoJSON_XUZHOU
             _changeArea(0)
-            mapInit()
+            initMap()
         })
-        mapInit()
+        initMap()
     })
     myChart.showLoading('default', {
         text: '统计中，请稍候...',
@@ -187,7 +245,7 @@ const createMap = (changeArea) => {
         textColor: '#fff'
     })
     setTimeout(function () {
-        mapInit()
+        initMap()
     }, 1000)
 }
 
@@ -200,7 +258,7 @@ const getAreaName = () => {
     }
 }
 
-const mapInit = () => {
+const initMap = () => {
     // console.log('currentJson ===> ', currentJson)
     // const geoJson = require(currentJson)
     echarts.registerMap('XUZHOU', currentJson)
@@ -216,12 +274,13 @@ const mapInit = () => {
             textStyle: {
                 color: '#fff',
                 fontWeight: 100,
-                fontSize: 22
+                fontSize: 24,
+                fontFamily: 'Gen Jyuu Gothic'
             }
         },
         tooltip: {
-            show: false,
-            trigger: 'item'
+            show: false
+            // trigger: 'item'
             // formatter: function (params) {
             //     const arr = mapData.filter((item) => item.name === params.name)
             //     console.log('arr ', JSON.stringify(arr))
@@ -462,7 +521,74 @@ const mapInit = () => {
                 symbolOffset: [0, -20],
                 z: 999,
                 data: mapData
-            }
+            },
+            {
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                label: {
+                    normal: {
+                        show: true,
+                        formatter: function (params) {
+                            let name = params.name
+                            let text = `{fline|${name}}`
+                            return text
+                        },
+                        color: '#fff',
+                        rich: {
+                            fline: {
+                                padding: [0, 25],
+                                color: '#fff',
+                                textShadowColor: '#030615',
+                                textShadowBlur: '0',
+                                textShadowOffsetX: 1,
+                                textShadowOffsetY: 1,
+                                fontSize: 14,
+                                fontWeight: 400
+                            }
+                        }
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                itemStyle: {
+                    color: 'rgba(255,255,255,0)'
+                },
+                symbolOffset: [-25, 10],
+                z: 1000,
+                data: [
+                    {
+                        name: '丰县',
+                        value: [116.609115, 34.689993]
+                    },
+                    {
+                        name: '贾汪区',
+                        value: [117.466549, 34.383225]
+                    },
+                    {
+                        name: '睢宁县',
+                        value: [117.883874, 33.940583]
+                    },
+                    {
+                        name: '铜山区',
+                        value: [117.402665, 34.133766]
+                    },
+                    {
+                        name: '沛县',
+                        value: [116.89743, 34.695157],
+                        datas: 444
+                    },
+                    {
+                        name: '邳州市',
+                        value: [117.894633, 34.394653],
+                        datas: 555
+                    },
+                    {
+                        name: '新沂市',
+                        value: [118.340051, 34.280354]
+                    }
+                ]
+            },
             // {
             //     type: 'scatter',
             //     coordinateSystem: 'geo',
@@ -507,6 +633,34 @@ const mapInit = () => {
             //     z: 1000,
             //     data: mapData
             // }
+            {
+                // 含引导线的省份，用lines实现
+                type: 'lines',
+                symbol: 'circle',
+                symbolSize: [0, 0],
+                tooltip: {
+                    show: false
+                },
+                label: {
+                    show: true,
+                    formatter: '{b}',
+                    padding: [5, 5],
+                    color: '#fff',
+                    textShadowColor: '#000000',
+                    textShadowBlur: '0',
+                    textShadowOffsetX: 1,
+                    textShadowOffsetY: 1,
+                    fontSize: 14,
+                    fontWeight: 400,
+                    opacity: 1
+                },
+                lineStyle: {
+                    type: 'dotted',
+                    color: '#fff',
+                    width: 1
+                },
+                data: linearData
+            }
         ]
     }
     option && myChart.setOption(option)

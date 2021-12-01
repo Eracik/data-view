@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import('./assets/style/common.scss')
+import('./assets/style/_font.scss')
 // import BaiduMap from 'vue-baidu-map'
 import './icons/index'
 import DataV from './plugins/@jiaminghi/data-view'
